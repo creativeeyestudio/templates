@@ -1,0 +1,19 @@
+name: "projets"
+
+services:
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "8090:80"
+    volumes:
+      - ./projets:/var/www/projets
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  projets:
+    image: php:8.2-fpm
+    container_name: templates-php
+    volumes:
+      - ./projets:/var/www/projets
