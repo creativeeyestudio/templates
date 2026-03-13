@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>La Bocca — Ristorante Italiano · Fontenay-sous-Bois</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;0,700;1,300;1,600;1,700&family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F2EAD5;
+    --red: #C0392B;
+    --dark: #0E0C08;
+    --gold: #C9962A;
+    --warm: #1C1510;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  #cur {
+    width: 10px; height: 10px;
+    background: var(--red); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9999;
+    transform: translate(-50%,-50%);
+    transition: width .25s, height .25s;
+  }
+  #cur-r {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(192,57,43,.5); border-radius: 50%;
+    position: fixed; pointer-events: none; z-index: 9998;
+    transform: translate(-50%,-50%);
+    transition: opacity .3s;
+  }
+  a, button { cursor: none; }
+
+  /* NAVBAR */
+  nav {
+    position: fixed; top:0; left:0; right:0; z-index: 500;
+    padding: 32px 52px;
+    display: flex; justify-content: space-between; align-items: center;
+    transition: background .4s, padding .4s, backdrop-filter .4s;
+  }
+  nav.scrolled {
+    background: rgba(14,12,8,.92);
+    backdrop-filter: blur(12px);
+    padding: 18px 52px;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 1.9rem; letter-spacing: 5px;
+    color: var(--cream); text-decoration: none;
+    position: relative; z-index: 600;
+    transition: color .35s;
+  }
+  .nav-logo.menu-open { color: var(--dark); }
+
+  /* BURGER */
+  .burger {
+    position: relative; z-index: 600;
+    width: 48px; height: 40px;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-end;
+    gap: 7px; background: none; border: none; padding: 4px;
+  }
+  .burger span {
+    display: block; height: 1.5px; border-radius: 2px;
+    background: var(--cream);
+    transition: all .4s cubic-bezier(.77,0,.18,1);
+  }
+  .burger span:nth-child(1) { width: 32px; }
+  .burger span:nth-child(2) { width: 20px; }
+  .burger span:nth-child(3) { width: 28px; }
+  .burger.open span { background: var(--dark); }
+  .burger.open span:nth-child(1) { width:30px; transform: translateY(8.5px) rotate(45deg); }
+  .burger.open span:nth-child(2) { width:0; opacity:0; }
+  .burger.open span:nth-child(3) { width:30px; transform: translateY(-8.5px) rotate(-45deg); }
+
+  /* FULLSCREEN MENU */
+  #fs-menu {
+    position: fixed; inset: 0; z-index: 400;
+    background: var(--cream);
+    display: flex;
+    clip-path: circle(0% at calc(100% - 74px) 52px);
+    transition: clip-path .8s cubic-bezier(.77,0,.18,1);
+    pointer-events: none;
+  }
+  #fs-menu.open {
+    clip-path: circle(180% at calc(100% - 74px) 52px);
+    pointer-events: all;
+  }
+
+  .fs-left {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 110px 80px 80px;
+  }
+
+  .fs-tag {
+    font-size: .65rem; letter-spacing: 5px; text-transform: uppercase;
+    color: var(--red); margin-bottom: 52px; opacity: .75;
+  }
+
+  .fs-nav { list-style: none; }
+
+  .fs-nav li {
+    border-bottom: 1px solid rgba(14,12,8,.09);
+    overflow: hidden;
+  }
+  .fs-nav li:first-child { border-top: 1px solid rgba(14,12,8,.09); }
+
+  .fs-nav a {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 22px 0;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5.5vw, 5rem);
+    font-weight: 600; line-height: 1;
+    color: var(--dark); text-decoration: none;
+    transition: color .25s, padding-left .3s;
+  }
+  .fs-nav a .n {
+    font-family: 'DM Sans', sans-serif;
+    font-size: .65rem; letter-spacing: 3px;
+    color: var(--red); opacity: .5;
+    align-self: flex-start; margin-top: 8px;
+    transition: opacity .2s;
+  }
+  .fs-nav a .arrow {
+    font-size: 1.4rem; opacity: 0;
+    transform: translateX(-16px);
+    transition: opacity .25s, transform .3s;
+  }
+  .fs-nav a:hover { color: var(--red); padding-left: 16px; }
+  .fs-nav a:hover .n { opacity: 1; }
+  .fs-nav a:hover .arrow { opacity: 1; transform: translateX(0); }
+
+  .fs-right {
+    width: 320px;
+    background: var(--warm);
+    display: flex; flex-direction: column;
+    justify-content: flex-end;
+    padding: 60px 44px;
+    gap: 28px;
+  }
+
+  .fs-r-lbl { font-size:.6rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+  .fs-r-val { font-size:.88rem; color:var(--cream); opacity:.65; line-height:1.75; font-weight:300; }
+  .fs-r-val a { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(242,234,213,.2); }
+
+  .fs-socials { display:flex; gap:18px; margin-top:20px; }
+  .fs-socials a { font-size:.6rem; letter-spacing:3px; text-transform:uppercase; color:rgba(242,234,213,.3); text-decoration:none; transition:color .2s; }
+  .fs-socials a:hover { color:var(--cream); }
+
+  /* HERO */
+  #hero {
+    height: 100vh; position: relative;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  .h-bg-red { position:absolute; inset:0; background:var(--red); z-index:0; }
+  .h-bg-dark {
+    position:absolute; inset:0; z-index:1;
+    background: var(--dark);
+    clip-path: polygon(0 0, 55% 0, 38% 100%, 0 100%);
+  }
+  .h-grain {
+    position:absolute; inset:0; z-index:3; pointer-events:none; opacity:.035;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 180px;
+  }
+
+  .h-wordmark {
+    position:absolute; right:-60px; bottom:-90px; z-index:2;
+    font-family:'Bebas Neue',cursive;
+    font-size: clamp(160px, 26vw, 360px);
+    color: rgba(255,255,255,.045);
+    letter-spacing: -6px; line-height: 1;
+    user-select: none; pointer-events: none;
+  }
+
+  .h-vert {
+    position:absolute; left:48px; top:50%; transform:translateY(-50%);
+    z-index:4; writing-mode:vertical-rl;
+    font-family:'Bebas Neue',cursive; font-size:.85rem; letter-spacing:8px;
+    color:rgba(242,234,213,.1); user-select:none;
+  }
+
+  .h-body {
+    position:relative; z-index:4; flex:1;
+    display:flex; align-items:flex-end;
+    padding: 0 64px 80px;
+    gap: 60px;
+  }
+
+  .h-main { flex:1; max-width:680px; }
+
+  .h-eyebrow {
+    display:inline-flex; align-items:center; gap:14px;
+    font-size:.65rem; letter-spacing:5px; text-transform:uppercase;
+    color:var(--gold); margin-bottom:28px;
+    opacity:0; animation: up .7s .4s forwards;
+  }
+  .h-eyebrow::before { content:''; width:32px; height:1px; background:var(--gold); }
+
+  h1.h-title {
+    font-family:'Cormorant Garamond',serif;
+    font-size: clamp(4rem, 10vw, 10rem);
+    font-weight:300; line-height:.86; letter-spacing:-3px;
+    opacity:0; animation: up .8s .6s forwards;
+  }
+  h1.h-title .ghost {
+    display:block;
+    -webkit-text-stroke: 1.5px rgba(242,234,213,.4);
+    color:transparent;
+  }
+  h1.h-title strong {
+    display:block; font-weight:700; font-style:italic;
+  }
+
+  .h-desc {
+    margin-top:36px; max-width:340px;
+    font-size:.93rem; font-weight:300; line-height:1.8;
+    color:rgba(242,234,213,.5);
+    opacity:0; animation: up .7s .85s forwards;
+  }
+
+  .h-cta {
+    margin-top:44px; display:flex; gap:14px; align-items:center;
+    opacity:0; animation: up .7s 1.05s forwards;
+  }
+
+  .btn-a {
+    background:var(--cream); color:var(--dark);
+    padding:15px 34px;
+    font-size:.7rem; letter-spacing:3px; text-transform:uppercase; font-weight:500;
+    text-decoration:none; display:inline-block;
+    transition:background .25s, color .25s, transform .2s;
+  }
+  .btn-a:hover { background:var(--gold); color:var(--cream); transform:translateY(-2px); }
+
+  .btn-b {
+    border:1px solid rgba(242,234,213,.2); color:var(--cream);
+    padding:15px 28px;
+    font-size:.7rem; letter-spacing:3px; text-transform:uppercase; font-weight:400;
+    text-decoration:none; display:inline-block;
+    transition:border-color .25s, background .25s;
+  }
+  .btn-b:hover { border-color:var(--cream); background:rgba(242,234,213,.05); }
+
+  .h-side {
+    display:flex; flex-direction:column; justify-content:flex-end;
+    gap:36px; align-items:flex-end;
+    opacity:0; animation: fadein 1s 1.3s forwards;
+    padding-bottom:4px;
+  }
+
+  .h-hours { text-align:right; }
+  .h-hl { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .h-hv { font-size:.8rem; opacity:.45; line-height:1.9; font-weight:300; }
+
+  .scroll-hint {
+    display:flex; flex-direction:column; align-items:center; gap:10px;
+    font-size:.55rem; letter-spacing:4px; text-transform:uppercase; opacity:.3;
+  }
+  .scroll-hint::after {
+    content:''; width:1px; height:52px; background:var(--cream);
+    animation: scl 2.2s 2s infinite;
+  }
+  @keyframes scl {
+    0%   { transform:scaleY(0); transform-origin:top; }
+    49%  { transform:scaleY(1); transform-origin:top; }
+    50%  { transform-origin:bottom; }
+    100% { transform:scaleY(0); transform-origin:bottom; }
+  }
+
+  /* SECTIONS */
+  section.pg {
+    min-height:100vh; position:relative;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:120px 64px; overflow:hidden;
+  }
+
+  .s-lbl { font-size:.62rem; letter-spacing:5px; text-transform:uppercase; color:var(--red); margin-bottom:14px; }
+  .s-ttl {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(2.8rem,5vw,5rem); font-weight:600; line-height:1; letter-spacing:-1px;
+  }
+  .s-ttl em { font-style:italic; }
+
+  /* MENU */
+  #menu { background:var(--cream); color:var(--dark); }
+  #menu .s-ttl { color:var(--dark); }
+
+  .menu-wrap {
+    display:grid; grid-template-columns:240px 1fr; gap:72px; margin-top:56px;
+  }
+
+  .cat-list { display:flex; flex-direction:column; gap:2px; padding-top:4px; }
+
+  .cat-btn {
+    text-align:left; background:none; border:none;
+    padding:13px 18px; padding-left:16px;
+    font-size:.75rem; letter-spacing:3px; text-transform:uppercase;
+    color:rgba(14,12,8,.3); font-family:'DM Sans',sans-serif; font-weight:500;
+    border-left:2px solid transparent;
+    transition:color .2s, border-color .2s, padding-left .25s, background .2s;
+  }
+  .cat-btn .cn { font-size:.52rem; vertical-align:super; margin-right:7px; opacity:.7; }
+  .cat-btn.active, .cat-btn:hover { color:var(--dark); border-left-color:var(--red); padding-left:24px; background:rgba(192,57,43,.04); }
+  .cat-btn.active { color:var(--red); font-weight:600; }
+
+  .m-panel { display:none; }
+  .m-panel.active { display:block; }
+
+  .m-item {
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:17px 0; border-bottom:1px solid rgba(14,12,8,.07); gap:24px;
+    transition:padding-left .2s;
+  }
+  .m-item:hover { padding-left:6px; }
+  .m-name { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:700; margin-bottom:3px; }
+  .m-desc { font-size:.76rem; opacity:.42; line-height:1.5; font-weight:300; }
+  .m-price { font-family:'Bebas Neue',cursive; font-size:1.3rem; color:var(--red); white-space:nowrap; }
+
+  /* AMBIANCE */
+  #ambiance {
+    background: var(--dark);
+    padding: 0;
+    flex-direction: row;
+    min-height: 100vh;
+  }
+
+  .amb-visual {
+    flex: 1.1; position: relative; overflow: hidden;
+    background: #1a0f0a;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .amb-visual-inner {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 40% 55%, rgba(192,57,43,.18) 0%, transparent 65%),
+      radial-gradient(ellipse 50% 70% at 80% 20%, rgba(201,150,42,.06) 0%, transparent 60%),
+      linear-gradient(160deg, #1a0f0a 0%, #0e0c08 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .amb-glyph-wrap {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    width: 340px; height: 340px;
+  }
+
+  .amb-cell {
+    background: rgba(255,255,255,.025);
+    border: 1px solid rgba(255,255,255,.04);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.6rem;
+    transition: background .3s;
+    position: relative; overflow: hidden;
+  }
+  .amb-cell:hover { background: rgba(192,57,43,.1); }
+  .amb-cell::after {
+    content: attr(data-label);
+    position: absolute; bottom: 8px; left: 0; right: 0; text-align: center;
+    font-size: .5rem; letter-spacing: 3px; text-transform: uppercase;
+    color: rgba(242,234,213,.25); font-family: 'DM Sans', sans-serif;
+  }
+
+  .amb-big-num {
+    position: absolute; bottom: -40px; right: -20px;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 200px; color: rgba(255,255,255,.025);
+    line-height: 1; user-select: none; z-index: 1;
+  }
+
+  .amb-text {
+    flex: 1;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 100px 72px;
+  }
+
+  .amb-body {
+    font-size: 1rem; font-weight: 300; line-height: 1.85;
+    color: rgba(242,234,213,.55); max-width: 400px; margin-top: 20px;
+  }
+
+  .amb-stats {
+    display: flex; gap: 44px; margin-top: 52px;
+  }
+  .amb-num {
+    font-family: 'Bebas Neue', cursive; font-size: 3.8rem;
+    color: var(--gold); letter-spacing: 2px; line-height: 1;
+  }
+  .amb-unit { font-size: .6rem; letter-spacing: 4px; text-transform: uppercase; opacity: .4; margin-top: 4px; }
+
+  /* PRODUITS */
+  #produits { background: var(--cream); color: var(--dark); }
+  #produits .s-ttl { color: var(--dark); }
+
+  .prod-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 56px;
+  }
+
+  .prod-card {
+    background: rgba(14,12,8,.04);
+    padding: 40px 32px;
+    border: 1px solid rgba(14,12,8,.07);
+    position: relative; overflow: hidden;
+    transition: background .3s, transform .3s;
+  }
+  .prod-card:hover { background: rgba(14,12,8,.07); transform: translateY(-4px); }
+  .prod-card::before {
+    content: attr(data-num);
+    position: absolute; right: 20px; top: 16px;
+    font-family: 'Bebas Neue', cursive; font-size: 4rem;
+    color: rgba(192,57,43,.07); line-height: 1;
+  }
+
+  .prod-icon { font-size: 2.2rem; margin-bottom: 20px; }
+
+  .prod-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 700; margin-bottom: 10px; line-height: 1.1;
+  }
+  .prod-name em { font-style: italic; color: var(--red); }
+
+  .prod-desc { font-size: .82rem; opacity: .5; line-height: 1.7; font-weight: 300; }
+
+  .prod-footer {
+    margin-top: 52px;
+    display: flex; align-items: center; gap: 20px;
+  }
+  .prod-footer-line { flex: 1; height: 1px; background: rgba(14,12,8,.1); }
+  .prod-footer-text { font-size: .65rem; letter-spacing: 4px; text-transform: uppercase; opacity: .4; white-space: nowrap; }
+
+  /* CONTACT */
+  #contact { background:var(--warm); }
+
+  .contact-grid {
+    display:grid; grid-template-columns:1fr 1fr; gap:72px; margin-top:56px; align-items:start;
+  }
+  .c-block { margin-bottom:32px; }
+  .c-lbl { font-size:.58rem; letter-spacing:4px; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .c-val { font-family:'Cormorant Garamond',serif; font-size:1.25rem; font-weight:600; color:var(--cream); line-height:1.5; }
+  .c-val a { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(242,234,213,.2); }
+  .c-note { font-size:.82rem; font-weight:300; opacity:.5; line-height:1.8; margin-top:4px; }
+
+  .map-mock {
+    aspect-ratio:1; background:rgba(255,255,255,.03);
+    border:1px solid rgba(255,255,255,.06);
+    display:flex; align-items:center; justify-content:center;
+    font-size:3.5rem; position:relative; overflow:hidden;
+  }
+  .map-mock::before {
+    content:''; position:absolute; inset:0;
+    background:radial-gradient(circle at 50% 50%, rgba(201,150,42,.07) 0%, transparent 70%);
+  }
+  .map-mock-lbl {
+    position:absolute; bottom:22px; left:22px;
+    font-family:'Cormorant Garamond',serif; font-size:.85rem; opacity:.3; letter-spacing:1px;
+  }
+
+  footer {
+    background:var(--dark); padding:22px 64px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:.6rem; letter-spacing:3px; text-transform:uppercase; opacity:.28;
+  }
+
+  /* REVEAL */
+  .rv { opacity:0; transform:translateY(28px); transition:opacity .7s ease,transform .7s ease; }
+  .rv.on { opacity:1; transform:none; }
+  .rv2 { opacity:0; transform:translateY(28px); transition:opacity .7s .15s ease,transform .7s .15s ease; }
+  .rv2.on { opacity:1; transform:none; }
+
+  @keyframes up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+  @keyframes fadein { from{opacity:0} to{opacity:1} }
+
+  @media(max-width:768px){
+    nav{padding:22px 24px;}
+    nav.scrolled{padding:16px 24px;}
+    .fs-right{display:none;}
+    .fs-left{padding:110px 28px 60px;}
+    .fs-nav a{font-size:clamp(2.2rem,10vw,3.5rem);}
+    #hero .h-body{padding:0 24px 60px; gap:0;}
+    .h-side{display:none;}
+    .h-vert{display:none;}
+    section.pg{padding:100px 24px;}
+    .menu-wrap{grid-template-columns:1fr;gap:28px;}
+    .cat-list{flex-direction:row;flex-wrap:wrap;}
+    #ambiance{flex-direction:column;}
+    .amb-visual{min-height:55vw;}
+    .amb-glyph-wrap{width:260px;height:260px;}
+    .amb-text{padding:60px 24px;}
+    .amb-stats{gap:24px;}
+    .prod-grid{grid-template-columns:1fr;gap:2px;}
+    .contact-grid{grid-template-columns:1fr;gap:32px;}
+    footer{padding:18px 24px;flex-direction:column;gap:6px;text-align:center;}
+  }
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- NAV -->
+<nav id="nb">
+  <a href="#hero" class="nav-logo" id="nlogo">La Bocca</a>
+  <button class="burger" id="brgr" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- FULLSCREEN MENU -->
+<div id="fs-menu">
+  <div class="fs-left">
+    <div class="fs-tag">Ristorante Italiano · Fontenay-sous-Bois</div>
+    <ul class="fs-nav">
+      <li><a href="#hero" class="fsl"><span><span class="n">01 —</span> Accueil</span><span class="arrow">→</span></a></li>
+      <li><a href="#menu" class="fsl"><span><span class="n">02 —</span> Menu</span><span class="arrow">→</span></a></li>
+      <li><a href="#ambiance" class="fsl"><span><span class="n">03 —</span> La Salle</span><span class="arrow">→</span></a></li>
+      <li><a href="#produits" class="fsl"><span><span class="n">04 —</span> Nos Produits</span><span class="arrow">→</span></a></li>
+      <li><a href="#contact" class="fsl"><span><span class="n">05 —</span> Réserver</span><span class="arrow">→</span></a></li>
+    </ul>
+  </div>
+  <div class="fs-right">
+    <div>
+      <div class="fs-r-lbl">Adresse</div>
+      <div class="fs-r-val">12 Rue de Rosny<br>94120 Fontenay-sous-Bois</div>
+    </div>
+    <div>
+      <div class="fs-r-lbl">Téléphone</div>
+      <div class="fs-r-val"><a href="tel:+33143765892">01 43 76 58 92</a></div>
+    </div>
+    <div>
+      <div class="fs-r-lbl">Horaires</div>
+      <div class="fs-r-val">Mar–Ven · 12h–14h30 & 19h–23h<br>Sam–Dim · 12h–15h & 19h–23h30<br><span style="opacity:.4">Fermé le lundi</span></div>
+    </div>
+    <div class="fs-socials">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+      <a href="#">TripAdvisor</a>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="h-bg-red"></div>
+  <div class="h-bg-dark"></div>
+  <div class="h-grain"></div>
+  <div class="h-wordmark">BOCCA</div>
+  <div class="h-vert">LA BOCCA · FONTENAY · EST. 2018</div>
+
+  <div class="h-body">
+    <div class="h-main">
+      <div class="h-eyebrow">Fontenay-sous-Bois · Est. 2018</div>
+      <h1 class="h-title">
+        <span class="ghost">Cucina</span>
+        <strong>Italiana</strong>
+      </h1>
+      <p class="h-desc">Une cuisine du Sud au cœur du Val-de-Marne — produits italiens, recettes de famille, vins de la Botte.</p>
+      <div class="h-cta">
+        <a href="#contact" class="btn-a">Réserver une table</a>
+        <a href="#menu" class="btn-b">Voir le menu</a>
+      </div>
+    </div>
+
+    <div class="h-side">
+      <div class="h-hours">
+        <div class="h-hl">Horaires</div>
+        <div class="h-hv">Mar – Ven<br>12h–14h30 · 19h–23h<br>Sam – Dim<br>12h–15h · 19h–23h30</div>
+      </div>
+      <div class="scroll-hint">Défiler</div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section id="menu" class="pg">
+  <div class="s-lbl rv">La Cucina</div>
+  <h2 class="s-ttl rv2">Notre <em>menu</em></h2>
+
+  <div class="menu-wrap">
+    <div class="cat-list rv">
+      <button class="cat-btn active" onclick="switchCat('antipasti',this)"><span class="cn">01</span>Antipasti</button>
+      <button class="cat-btn" onclick="switchCat('pasta',this)"><span class="cn">02</span>Pasta & Risotto</button>
+      <button class="cat-btn" onclick="switchCat('pizze',this)"><span class="cn">03</span>Pizze</button>
+      <button class="cat-btn" onclick="switchCat('dolci',this)"><span class="cn">04</span>Dolci</button>
+      <button class="cat-btn" onclick="switchCat('vins',this)"><span class="cn">05</span>Vins Italiens</button>
+    </div>
+    <div class="rv2">
+      <div class="m-panel active" id="p-antipasti">
+        <div class="m-item"><div><div class="m-name">Bruschetta al Pomodoro</div><div class="m-desc">Tomates fraîches, basilic, ail, huile d'olive extra-vierge</div></div><div class="m-price">8€</div></div>
+        <div class="m-item"><div><div class="m-name">Burrata Pugliese</div><div class="m-desc">Burrata crémeuse, tomates cerises rôties, pistache, roquette</div></div><div class="m-price">14€</div></div>
+        <div class="m-item"><div><div class="m-name">Carpaccio di Manzo</div><div class="m-desc">Bœuf affiné, câpres, parmesan 24 mois, citron, huile</div></div><div class="m-price">16€</div></div>
+        <div class="m-item"><div><div class="m-name">Prosciutto e Melone</div><div class="m-desc">Jambon cru de Parme 18 mois, melon de saison, miel de truffe</div></div><div class="m-price">15€</div></div>
+        <div class="m-item"><div><div class="m-name">Calamari Fritti</div><div class="m-desc">Encornets frits, citron, aïoli maison</div></div><div class="m-price">13€</div></div>
+        <div class="m-item"><div><div class="m-name">Vitello Tonnato</div><div class="m-desc">Veau tranché, sauce thon-câpres, œuf de caille</div></div><div class="m-price">17€</div></div>
+        <div class="m-item"><div><div class="m-name">Focaccia della Casa</div><div class="m-desc">Focaccia maison, fleur de sel, romarin, olives Taggiasca</div></div><div class="m-price">7€</div></div>
+      </div>
+      <div class="m-panel" id="p-pasta">
+        <div class="m-item"><div><div class="m-name">Spaghetti Carbonara</div><div class="m-desc">Guanciale, pecorino, œuf, poivre — recette romaine classique</div></div><div class="m-price">18€</div></div>
+        <div class="m-item"><div><div class="m-name">Tagliatelle al Ragù</div><div class="m-desc">Ragù bolognais mijoté 5h, parmesan, pâtes fraîches maison</div></div><div class="m-price">20€</div></div>
+        <div class="m-item"><div><div class="m-name">Cacio e Pepe</div><div class="m-desc">Tonnarelli, pecorino affiné, poivre de Sarawak</div></div><div class="m-price">17€</div></div>
+        <div class="m-item"><div><div class="m-name">Pappardelle ai Funghi</div><div class="m-desc">Cèpes, girolles, crème légère, thym, copeaux de truffe</div></div><div class="m-price">22€</div></div>
+        <div class="m-item"><div><div class="m-name">Risotto al Limone e Gamberi</div><div class="m-desc">Carnaroli, citron de Sicile, beurre mantecat, gambas saisies</div></div><div class="m-price">23€</div></div>
+        <div class="m-item"><div><div class="m-name">Linguine allo Scoglio</div><div class="m-desc">Moules, palourdes, gambas, bisque maison, persil</div></div><div class="m-price">26€</div></div>
+        <div class="m-item"><div><div class="m-name">Gnocchi alla Sorrentina</div><div class="m-desc">Gnocchis maison, tomate San Marzano, mozzarella di bufala</div></div><div class="m-price">19€</div></div>
+      </div>
+      <div class="m-panel" id="p-pizze">
+        <div class="m-item"><div><div class="m-name">Margherita DOC</div><div class="m-desc">San Marzano, fior di latte, basilic, huile d'olive</div></div><div class="m-price">14€</div></div>
+        <div class="m-item"><div><div class="m-name">Diavola</div><div class="m-desc">Tomate, salami piccante calabrais, mozzarella, piment doux</div></div><div class="m-price">17€</div></div>
+        <div class="m-item"><div><div class="m-name">Quattro Formaggi</div><div class="m-desc">Mozzarella, gorgonzola, taleggio, parmesan, miel, noix</div></div><div class="m-price">18€</div></div>
+        <div class="m-item"><div><div class="m-name">Prosciutto e Burrata</div><div class="m-desc">Tomate, jambon de Parme, burrata fraîche, roquette</div></div><div class="m-price">20€</div></div>
+        <div class="m-item"><div><div class="m-name">Tartufo Nero</div><div class="m-desc">Crème de truffe, champignons, mozzarella, truffe noire</div></div><div class="m-price">26€</div></div>
+        <div class="m-item"><div><div class="m-name">Vegetariana</div><div class="m-desc">Courgette, aubergine, poivrons grillés, ricotta, pesto</div></div><div class="m-price">16€</div></div>
+        <div class="m-item"><div><div class="m-name">Bismarck</div><div class="m-desc">Tomate, mozzarella, jambon cuit, œuf au plat, parmesan</div></div><div class="m-price">17€</div></div>
+      </div>
+      <div class="m-panel" id="p-dolci">
+        <div class="m-item"><div><div class="m-name">Tiramisù della Nonna</div><div class="m-desc">Recette familiale, mascarpone, café fort, biscuits savoiardi</div></div><div class="m-price">9€</div></div>
+        <div class="m-item"><div><div class="m-name">Cannolo Siciliano</div><div class="m-desc">Ricotta fraîche, zeste d'orange, chocolat, pistache de Bronte</div></div><div class="m-price">8€</div></div>
+        <div class="m-item"><div><div class="m-name">Panna Cotta al Lampone</div><div class="m-desc">Vanille Bourbon, coulis de framboises fraîches</div></div><div class="m-price">8€</div></div>
+        <div class="m-item"><div><div class="m-name">Gelato Artigianale</div><div class="m-desc">3 boules : pistache, stracciatella, citron ou chocolat</div></div><div class="m-price">7€</div></div>
+        <div class="m-item"><div><div class="m-name">Torta al Cioccolato</div><div class="m-desc">Fondant chocolat 72%, glace vanille, fleur de sel</div></div><div class="m-price">10€</div></div>
+        <div class="m-item"><div><div class="m-name">Affogato al Caffè</div><div class="m-desc">Espresso sur gelato fior di latte, amaretti émiettés</div></div><div class="m-price">7€</div></div>
+      </div>
+      <div class="m-panel" id="p-vins">
+        <div class="m-item"><div><div class="m-name">Chianti Classico — Toscane</div><div class="m-desc">Sangiovese, notes de cerise, tabac, épices douces · 2020</div></div><div class="m-price">38€</div></div>
+        <div class="m-item"><div><div class="m-name">Barolo — Piémont</div><div class="m-desc">Nebbiolo puissant, tanins soyeux, longue finale · 2019</div></div><div class="m-price">68€</div></div>
+        <div class="m-item"><div><div class="m-name">Primitivo di Manduria — Puglia</div><div class="m-desc">Fruité intense, mûre, réglisse, corps généreux · 2021</div></div><div class="m-price">42€</div></div>
+        <div class="m-item"><div><div class="m-name">Pinot Grigio — Frioul</div><div class="m-desc">Blanc sec et frais, floral, agrumes, minéral · 2022</div></div><div class="m-price">34€</div></div>
+        <div class="m-item"><div><div class="m-name">Prosecco DOC — Vénétie</div><div class="m-desc">Bulles fines, pomme verte, pêche blanche · NV</div></div><div class="m-price">29€</div></div>
+        <div class="m-item"><div><div class="m-name">Amarone della Valpolicella</div><div class="m-desc">Assemblage complexe, raisins passerillés, velouté · 2018</div></div><div class="m-price">78€</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMBIANCE -->
+<section id="ambiance" class="pg" style="padding:0;flex-direction:row;">
+  <div class="amb-visual">
+    <img
+      src="https://lh3.googleusercontent.com/p/AF1QipOTIbQ5-tqwIlIqMls6Atoe_vuwFFu4DHpjgrE=s0"
+      alt="Salle du restaurant La Bocca"
+      style="width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:brightness(.85) saturate(1.1);"
+    />
+    <div style="position:absolute;inset:0;background:linear-gradient(to right, transparent 60%, rgba(14,12,8,.35) 100%);pointer-events:none;"></div>
+  </div>
+  <div class="amb-text">
+    <div class="s-lbl rv">Il Ristorante</div>
+    <h2 class="s-ttl rv2">L'<em>ambiance</em><br>de la salle</h2>
+    <p class="amb-body rv">
+      Chez La Bocca, chaque détail compte. Une salle chaleureuse aux tons ocre et briques, éclairée à la bougie, où le bois brut se mêle aux faïences du Sud. Une terrasse ombragée pour les beaux jours, une cave visible depuis la salle, et une musique italienne qui vous transporte directement à Naples.
+    </p>
+    <div class="amb-stats rv2">
+      <div>
+        <div class="amb-num">120</div>
+        <div class="amb-unit">Couverts</div>
+      </div>
+      <div>
+        <div class="amb-num">30</div>
+        <div class="amb-unit">En terrasse</div>
+      </div>
+      <div>
+        <div class="amb-num">40+</div>
+        <div class="amb-unit">Références vins</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRODUITS -->
+<section id="produits" class="pg">
+  <div class="s-lbl rv">Qualità Prima</div>
+  <h2 class="s-ttl rv2">La qualité de<br>nos <em>produits</em></h2>
+
+  <div class="prod-grid">
+    <div class="prod-card rv" data-num="01">
+      <div class="prod-icon">🌿</div>
+      <div class="prod-name">Huiles & <em>Vinaigres</em></div>
+      <div class="prod-desc">Notre huile d'olive extra-vierge est importée directement depuis les oliveraies de Sicile. Pressée à froid, elle révèle des arômes herbacés et fruités qui subliment chaque plat.</div>
+    </div>
+    <div class="prod-card rv2" data-num="02">
+      <div class="prod-icon">🧀</div>
+      <div class="prod-name">Fromages <em>affinés</em></div>
+      <div class="prod-desc">Parmesan Reggiano 24 mois, burrata de Pouille livrée fraîche deux fois par semaine, pecorino sardo affiné… Nos fromages viennent directement des producteurs artisanaux.</div>
+    </div>
+    <div class="prod-card rv" data-num="03">
+      <div class="prod-icon">🍅</div>
+      <div class="prod-name">Tomates <em>San Marzano</em></div>
+      <div class="prod-desc">Les seules et uniques tomates qui entrent dans nos sauces. Cultivées dans le sol volcanique du Vésuve, certifiées DOP, elles donnent à nos pizze et pastas leur goût inimitable.</div>
+    </div>
+    <div class="prod-card rv2" data-num="04">
+      <div class="prod-icon">🥩</div>
+      <div class="prod-name">Charcuteries <em>italiennes</em></div>
+      <div class="prod-desc">Prosciutto di Parma 18 mois, guanciale de Lazio, salami piccante calabrais… Toutes nos charcuteries sont importées auprès de maisons italiennes familiales sélectionnées avec soin.</div>
+    </div>
+    <div class="prod-card rv" data-num="05">
+      <div class="prod-icon">🌾</div>
+      <div class="prod-name">Pâtes <em>fraîches maison</em></div>
+      <div class="prod-desc">Tagliatelle, pappardelle, gnocchi… Nos pâtes sont pétries et façonnées chaque matin dans notre cuisine. Farine de blé dur de Barilla, œufs fermiers, et le savoir-faire napolitain de Marco.</div>
+    </div>
+    <div class="prod-card rv2" data-num="06">
+      <div class="prod-icon">🍷</div>
+      <div class="prod-name">Vins <em>de la Botte</em></div>
+      <div class="prod-desc">Une carte de 40 références exclusivement italiennes : Barolo, Chianti, Amarone, Primitivo, Prosecco… Sélectionnés lors de voyages annuels dans les régions viticoles, en direct des domaines.</div>
+    </div>
+  </div>
+
+  <div class="prod-footer rv">
+    <div class="prod-footer-line"></div>
+    <div class="prod-footer-text">Sélectionnés avec passion · Importés d'Italie · Sans compromis</div>
+    <div class="prod-footer-line"></div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="pg">
+  <div class="s-lbl rv">Venez nous voir</div>
+  <h2 class="s-ttl rv2">Réserver <em>une table</em></h2>
+  <div class="contact-grid">
+    <div class="rv">
+      <div class="c-block">
+        <div class="c-lbl">Téléphone</div>
+        <div class="c-val"><a href="tel:+33143765892">01 43 76 58 92</a></div>
+      </div>
+      <div class="c-block">
+        <div class="c-lbl">Adresse</div>
+        <div class="c-val">12 Rue de Rosny</div>
+        <div class="c-note">94120 Fontenay-sous-Bois<br>RER E · Arrêt Fontenay-sous-Bois</div>
+      </div>
+      <div class="c-block">
+        <div class="c-lbl">Horaires</div>
+        <div class="c-note" style="font-size:.88rem;opacity:.65">
+          Mardi – Vendredi · 12h–14h30 & 19h–23h<br>
+          Samedi – Dimanche · 12h–15h & 19h–23h30<br>
+          <strong style="opacity:.5">Fermé le lundi</strong>
+        </div>
+      </div>
+      <div class="c-block">
+        <div class="c-lbl">Email</div>
+        <div class="c-val" style="font-size:1rem"><a href="mailto:reservation@labocca-fontenay.fr">reservation@labocca-fontenay.fr</a></div>
+      </div>
+    </div>
+    <div class="rv2 map-mock">
+      📍
+      <div class="map-mock-lbl">La Bocca · Fontenay-sous-Bois</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2025 La Bocca</span>
+  <span>🇮🇹 Cucina Italiana Autentica</span>
+  <span>Fait avec amore · Fontenay-sous-Bois</span>
+</footer>
+
+<script>
+// CURSOR
+const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+(function loop(){rx+=(mx-rx)*.12;ry+=(my-ry)*.12;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+// BURGER
+const brgr=document.getElementById('brgr'),fsm=document.getElementById('fs-menu'),nlogo=document.getElementById('nlogo');
+let menuOpen=false;
+function toggleMenu(){
+  menuOpen=!menuOpen;
+  brgr.classList.toggle('open',menuOpen);
+  fsm.classList.toggle('open',menuOpen);
+  nlogo.classList.toggle('menu-open',menuOpen);
+  document.body.style.overflow=menuOpen?'hidden':'';
+}
+brgr.addEventListener('click',toggleMenu);
+document.querySelectorAll('.fsl').forEach(a=>a.addEventListener('click',()=>{if(menuOpen)toggleMenu();}));
+
+// NAV scroll
+window.addEventListener('scroll',()=>{document.getElementById('nb').classList.toggle('scrolled',scrollY>60);});
+
+// MENU TABS
+function switchCat(id,el){
+  document.querySelectorAll('.m-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('p-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// REVEAL
+const rvEls=document.querySelectorAll('.rv,.rv2');
+new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');}});
+},{threshold:.1}).observe && rvEls.forEach(el=>new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');}});
+},{threshold:.1}).observe(el));
+</script>
+</body>
+</html>

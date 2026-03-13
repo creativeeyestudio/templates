@@ -1,0 +1,1626 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le César Hôtel ★★★★ — Provins, Patrimoine UNESCO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #f5f0e8;
+    --cream-dark: #ede6d4;
+    --gold: #b8912a;
+    --gold-light: #d4ab4e;
+    --gold-pale: #f0e4c2;
+    --black: #0e0d0b;
+    --charcoal: #1c1a16;
+    --stone: #6b6355;
+    --stone-light: #9c9082;
+    --white: #fdfaf5;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    background: var(--cream);
+    color: var(--charcoal);
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ═══ SCROLLBAR ═══ */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--cream-dark); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* ═══ HEADER ═══ */
+  header {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 3rem;
+    height: 80px;
+    transition: background 0.5s, box-shadow 0.5s, height 0.4s;
+  }
+
+  header.scrolled {
+    background: rgba(14,13,11,0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 1px 0 rgba(184,145,42,0.3);
+    height: 64px;
+  }
+
+  .header-logo {
+    text-decoration: none;
+    text-align: center;
+    flex: 1;
+  }
+
+  .header-logo .logo-name {
+    font-family: 'Cinzel', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .header-logo .logo-stars {
+    font-size: 0.65rem;
+    color: var(--gold-light);
+    letter-spacing: 0.4em;
+    display: block;
+    margin-top: 2px;
+  }
+
+  .header-left {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+
+  .header-right {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1.5rem;
+  }
+
+  /* Hamburger */
+  .hamburger {
+    width: 36px;
+    height: 28px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: none;
+    border: none;
+    padding: 0;
+    position: relative;
+    z-index: 1100;
+  }
+
+  .hamburger span {
+    display: block;
+    height: 1px;
+    background: var(--white);
+    transition: transform 0.4s cubic-bezier(0.77,0,0.175,1), opacity 0.3s, width 0.3s;
+    transform-origin: left center;
+  }
+
+  .hamburger span:nth-child(2) { width: 70%; }
+
+  .hamburger.open span:nth-child(1) {
+    transform: rotate(45deg) translateY(-1px);
+    width: 100%;
+  }
+
+  .hamburger.open span:nth-child(2) {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+
+  .hamburger.open span:nth-child(3) {
+    transform: rotate(-45deg) translateY(1px);
+    width: 100%;
+  }
+
+  /* Réserver btn */
+  .btn-reserve {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold-light);
+    border: none;
+    padding: 10px 22px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.3s, color 0.3s, transform 0.2s;
+    display: inline-block;
+  }
+
+  .btn-reserve:hover {
+    background: var(--gold);
+    color: var(--white);
+    transform: translateY(-1px);
+  }
+
+  /* ═══ FULLSCREEN MENU ═══ */
+  .fullscreen-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 1050;
+    background: var(--black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    clip-path: circle(0% at calc(3rem + 18px) 40px);
+    transition: clip-path 0.7s cubic-bezier(0.77,0,0.175,1);
+    pointer-events: none;
+  }
+
+  .fullscreen-menu.open {
+    clip-path: circle(150% at calc(3rem + 18px) 40px);
+    pointer-events: all;
+  }
+
+  .menu-inner {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    padding: 8rem 4rem 4rem;
+    gap: 6rem;
+  }
+
+  .menu-col-main {
+    flex: 2;
+  }
+
+  .menu-col-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 2rem;
+  }
+
+  .menu-nav {
+    list-style: none;
+  }
+
+  .menu-nav > li {
+    overflow: hidden;
+    border-bottom: 1px solid rgba(184,145,42,0.15);
+  }
+
+  .menu-nav > li:first-child {
+    border-top: 1px solid rgba(184,145,42,0.15);
+  }
+
+  .menu-nav > li > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 0;
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    font-weight: 300;
+    color: var(--white);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: color 0.3s, opacity 0.5s, transform 0.5s;
+    transition-delay: calc(var(--i) * 0.07s);
+    letter-spacing: 0.02em;
+  }
+
+  .menu-nav > li > a .menu-arrow {
+    font-size: 1.2rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    transition: opacity 0.3s, transform 0.3s;
+    color: var(--gold-light);
+  }
+
+  .menu-nav > li > a:hover {
+    color: var(--gold-light);
+  }
+
+  .menu-nav > li > a:hover .menu-arrow {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .fullscreen-menu.open .menu-nav > li > a {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .menu-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    margin-right: 1rem;
+    opacity: 0.7;
+  }
+
+  .menu-info-text {
+    font-size: 0.75rem;
+    color: var(--stone-light);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .menu-info-val {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+    line-height: 1.5;
+  }
+
+  .menu-info-val a {
+    color: var(--cream);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .menu-info-val a:hover { color: var(--gold-light); }
+
+  .menu-divider {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+    opacity: 0.5;
+  }
+
+  .menu-langs {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .menu-lang {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: var(--stone-light);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .menu-lang:hover, .menu-lang.active { color: var(--gold-light); }
+
+  /* ═══ HERO ═══ */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(to bottom, rgba(14,13,11,0.3) 0%, rgba(14,13,11,0.1) 40%, rgba(14,13,11,0.6) 100%),
+      url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 12s ease-out forwards;
+  }
+
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to { transform: scale(1.0); }
+  }
+
+  .hero-content {
+    position: relative;
+    text-align: center;
+    color: var(--white);
+    padding: 0 2rem;
+    animation: heroFadeUp 1.2s 0.3s both;
+  }
+
+  @keyframes heroFadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-eyebrow {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: block;
+  }
+
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 300;
+    line-height: 0.9;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .hero-subtitle {
+    font-size: 0.9rem;
+    letter-spacing: 0.25em;
+    opacity: 0.8;
+    text-transform: uppercase;
+    margin-bottom: 3rem;
+  }
+
+  .hero-cta {
+    display: inline-flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold-light);
+    border: none;
+    padding: 14px 32px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: var(--gold);
+    color: var(--white);
+    transform: translateY(-2px);
+  }
+
+  .btn-outline {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--white);
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.5);
+    padding: 14px 32px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+
+  .btn-outline:hover {
+    border-color: var(--gold-light);
+    color: var(--gold-light);
+  }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-family: 'Cinzel', serif;
+    animation: bounce 2s infinite;
+  }
+
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, rgba(184,145,42,0.8), transparent);
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* ═══ GOLD LINE ORNAMENT ═══ */
+  .ornament {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .ornament::before, .ornament::after {
+    content: '';
+    display: block;
+    height: 1px;
+    width: 60px;
+    background: linear-gradient(to right, transparent, var(--gold));
+  }
+
+  .ornament::after {
+    background: linear-gradient(to left, transparent, var(--gold));
+  }
+
+  .ornament-diamond {
+    width: 6px;
+    height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  /* ═══ SECTIONS COMMUNES ═══ */
+  section { position: relative; }
+
+  .section-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: 0.01em;
+  }
+
+  .section-title em { font-style: italic; color: var(--gold); }
+
+  .section-body {
+    font-size: 1rem;
+    line-height: 1.85;
+    color: var(--stone);
+    max-width: 520px;
+    font-weight: 300;
+  }
+
+  /* ═══ INTRO ═══ */
+  .intro {
+    padding: 8rem 3rem;
+    background: var(--white);
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .intro-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .intro .section-title { margin-bottom: 1.5rem; }
+
+  .intro .section-body {
+    margin: 0 auto 3rem;
+    max-width: 600px;
+    font-size: 1.05rem;
+  }
+
+  .intro-badges {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 3rem;
+    flex-wrap: wrap;
+  }
+
+  .badge {
+    text-align: center;
+  }
+
+  .badge-icon {
+    font-size: 1.8rem;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .badge-text {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    color: var(--stone);
+    text-transform: uppercase;
+  }
+
+  /* ═══ ROOMS GRID ═══ */
+  .rooms {
+    padding: 7rem 3rem;
+    background: var(--cream);
+  }
+
+  .rooms-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .rooms-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .room-card {
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    text-decoration: none;
+    display: block;
+  }
+
+  .room-card:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+
+  .room-img {
+    width: 100%;
+    height: 100%;
+    min-height: 280px;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.4,0,0.2,1);
+    display: block;
+  }
+
+  .room-card:nth-child(1) .room-img { min-height: 580px; }
+
+  .room-card:hover .room-img { transform: scale(1.05); }
+
+  .room-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(14,13,11,0.85) 0%, transparent 60%);
+    transition: opacity 0.4s;
+  }
+
+  .room-card:hover .room-overlay {
+    background: linear-gradient(to top, rgba(14,13,11,0.92) 0%, rgba(14,13,11,0.15) 100%);
+  }
+
+  .room-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 2rem 1.8rem;
+    color: var(--white);
+  }
+
+  .room-num {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+
+  .room-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem;
+    font-weight: 300;
+    line-height: 1.1;
+    margin-bottom: 0.3rem;
+  }
+
+  .room-card:nth-child(1) .room-name { font-size: 2.8rem; }
+
+  .room-tagline {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.1em;
+    margin-bottom: 1rem;
+  }
+
+  .room-discover {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .room-discover::after {
+    content: '→';
+    transition: transform 0.3s;
+  }
+
+  .room-card:hover .room-discover {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .room-card:hover .room-discover::after { transform: translateX(4px); }
+
+  /* ═══ SPLIT: UNESCO + IMAGE ═══ */
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+  }
+
+  .split-img {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .split-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s;
+  }
+
+  .split-img:hover img { transform: scale(1.03); }
+
+  .split-content {
+    background: var(--charcoal);
+    display: flex;
+    align-items: center;
+    padding: 5rem 5rem;
+    color: var(--cream);
+  }
+
+  .split-content .section-title { color: var(--cream); margin-bottom: 1.5rem; }
+  .split-content .section-body { color: rgba(245,240,232,0.65); margin-bottom: 2.5rem; }
+  .split-content .section-label { color: var(--gold-light); }
+
+  .split-content .btn-primary { background: var(--gold); color: var(--white); }
+  .split-content .btn-primary:hover { background: var(--gold-light); }
+
+  /* ═══ SERVICES ═══ */
+  .services {
+    padding: 7rem 3rem;
+    background: var(--white);
+    text-align: center;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+    max-width: 1200px;
+    margin: 4rem auto 0;
+  }
+
+  .service-item {
+    padding: 3rem 2.5rem;
+    background: var(--cream);
+    transition: background 0.3s;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-item::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--gold);
+    transform: scaleX(0);
+    transition: transform 0.4s;
+  }
+
+  .service-item:hover::before { transform: scaleX(1); }
+  .service-item:hover { background: var(--cream-dark); }
+
+  .service-icon {
+    font-size: 2rem;
+    margin-bottom: 1.2rem;
+    color: var(--gold);
+    display: block;
+  }
+
+  .service-name {
+    font-family: 'Cinzel', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--charcoal);
+    margin-bottom: 0.7rem;
+  }
+
+  .service-desc {
+    font-size: 0.85rem;
+    color: var(--stone);
+    line-height: 1.7;
+  }
+
+  /* ═══ OFFRES ═══ */
+  .offers {
+    padding: 7rem 3rem;
+    background: var(--charcoal);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .offers::before {
+    content: 'OFFRES';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    transform: translateY(-50%) rotate(90deg);
+    font-family: 'Cinzel', serif;
+    font-size: 8rem;
+    color: rgba(255,255,255,0.03);
+    letter-spacing: 0.3em;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+
+  .offers-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    color: var(--cream);
+  }
+
+  .offers-header .section-label { color: var(--gold-light); }
+  .offers-header .section-title { color: var(--cream); }
+
+  .offers-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .offer-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(184,145,42,0.2);
+    padding: 2.5rem;
+    position: relative;
+    transition: border-color 0.3s, background 0.3s;
+    text-decoration: none;
+    display: block;
+    overflow: hidden;
+  }
+
+  .offer-card:hover {
+    border-color: rgba(184,145,42,0.6);
+    background: rgba(184,145,42,0.05);
+  }
+
+  .offer-tag {
+    font-family: 'Cinzel', serif;
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .offer-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    color: var(--cream);
+    line-height: 1.2;
+    margin-bottom: 1rem;
+  }
+
+  .offer-desc {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+  }
+
+  .offer-link {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: gap 0.3s;
+  }
+
+  .offer-card:hover .offer-link { gap: 1rem; }
+
+  /* ═══ PROVINS ═══ */
+  .provins {
+    position: relative;
+    height: 65vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .provins-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(rgba(14,13,11,0.55), rgba(14,13,11,0.55)),
+      url('https://images.unsplash.com/photo-1543628607-f0bac77c2e64?w=1800&q=80') center/cover no-repeat;
+    transform: scale(1.02);
+    transition: transform 8s ease-out;
+  }
+
+  .provins:hover .provins-bg { transform: scale(1.0); }
+
+  .provins-content {
+    position: relative;
+    color: var(--white);
+    padding: 0 2rem;
+    max-width: 700px;
+  }
+
+  .provins-content .section-label { color: var(--gold-light); }
+  .provins-content .section-title { color: var(--white); margin: 0.5rem 0 1.5rem; }
+  .provins-content .section-body { margin: 0 auto 2.5rem; color: rgba(255,255,255,0.75); max-width: 500px; }
+
+  /* ═══ BOOKING WIDGET ═══ */
+  .booking-bar {
+    background: var(--black);
+    padding: 2rem 3rem;
+    position: sticky;
+    bottom: 0;
+    z-index: 500;
+    border-top: 1px solid rgba(184,145,42,0.3);
+  }
+
+  .booking-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .booking-label {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .booking-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 130px;
+  }
+
+  .booking-field label {
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--stone-light);
+    font-family: 'Cinzel', serif;
+  }
+
+  .booking-field input, .booking-field select {
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(184,145,42,0.3);
+    color: var(--cream);
+    font-family: 'Jost', sans-serif;
+    font-size: 0.85rem;
+    padding: 4px 0;
+    outline: none;
+    transition: border-color 0.3s;
+    font-weight: 300;
+  }
+
+  .booking-field input:focus, .booking-field select:focus {
+    border-color: var(--gold-light);
+  }
+
+  .booking-field input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: invert(0.5) sepia(1) hue-rotate(5deg) saturate(2);
+    cursor: pointer;
+  }
+
+  .booking-field select option { background: var(--black); }
+
+  .booking-submit {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--black);
+    background: var(--gold-light);
+    border: none;
+    padding: 14px 28px;
+    cursor: pointer;
+    transition: all 0.3s;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .booking-submit:hover {
+    background: var(--gold);
+    color: var(--white);
+  }
+
+  .booking-divider {
+    width: 1px;
+    height: 40px;
+    background: rgba(184,145,42,0.2);
+    flex-shrink: 0;
+  }
+
+  /* ═══ FOOTER ═══ */
+  footer {
+    background: var(--black);
+    color: var(--cream);
+    padding: 5rem 3rem 2rem;
+    border-top: 1px solid rgba(184,145,42,0.15);
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 4rem;
+    max-width: 1200px;
+    margin: 0 auto 4rem;
+  }
+
+  .footer-logo-wrap {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.12em;
+    color: var(--cream);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .footer-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--stone-light);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+  }
+
+  .footer-contact p {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.55);
+    line-height: 2;
+  }
+
+  .footer-contact a {
+    color: rgba(245,240,232,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-contact a:hover { color: var(--gold-light); }
+
+  .footer-col h4 {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-col ul { list-style: none; }
+
+  .footer-col ul li {
+    margin-bottom: 0.6rem;
+  }
+
+  .footer-col ul li a {
+    font-size: 0.82rem;
+    color: rgba(245,240,232,0.45);
+    text-decoration: none;
+    transition: color 0.3s;
+    letter-spacing: 0.03em;
+  }
+
+  .footer-col ul li a:hover { color: var(--cream); }
+
+  .footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(184,145,42,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-size: 0.72rem;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: 0.08em;
+  }
+
+  .footer-socials {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .footer-social {
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    color: rgba(245,240,232,0.35);
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+
+  .footer-social:hover { color: var(--gold-light); }
+
+  /* ═══ SCROLL ANIMATIONS ═══ */
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.7s, transform 0.7s;
+  }
+
+  .reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ═══ RESPONSIVE ═══ */
+  @media (max-width: 1024px) {
+    .rooms-grid { grid-template-columns: repeat(2, 1fr); }
+    .room-card:nth-child(1) { grid-column: span 2; }
+    .split { grid-template-columns: 1fr; }
+    .split-img { min-height: 350px; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 768px) {
+    header { padding: 0 1.5rem; }
+    .rooms-grid { grid-template-columns: 1fr; }
+    .room-card:nth-child(1) { grid-column: span 1; }
+    .services-grid { grid-template-columns: 1fr; }
+    .offers-grid { grid-template-columns: 1fr; }
+    .booking-inner { flex-direction: column; align-items: stretch; }
+    .booking-divider { display: none; }
+    .footer-top { grid-template-columns: 1fr; gap: 2.5rem; }
+    .menu-inner { flex-direction: column; gap: 2rem; padding: 7rem 2rem 2rem; }
+    .menu-col-info { padding-bottom: 0; }
+    .intro-badges { gap: 2rem; }
+    .split-content { padding: 3rem 2rem; }
+  }
+
+  /* ═══ UNESCO STRIP ═══ */
+  .unesco-strip {
+    background: var(--gold);
+    padding: 0.9rem 2rem;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    color: var(--black);
+    text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════ HEADER ════════════ -->
+<header id="header">
+  <div class="header-left">
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
+
+  <a href="#" class="header-logo">
+    <span class="logo-name">Le César</span>
+    <span class="logo-stars">★ ★ ★ ★</span>
+  </a>
+
+  <div class="header-right">
+    <a href="#booking" class="btn-reserve">Réserver</a>
+  </div>
+</header>
+
+<!-- ════════════ FULLSCREEN MENU ════════════ -->
+<nav class="fullscreen-menu" id="fullscreenMenu">
+  <div class="menu-inner">
+    <div class="menu-col-main">
+      <ul class="menu-nav">
+        <li><a href="#" style="--i:1">
+          <span><span class="menu-num">01</span> L'Hôtel</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+        <li><a href="#rooms" style="--i:2">
+          <span><span class="menu-num">02</span> Nos Chambres</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+        <li><a href="#offers" style="--i:3">
+          <span><span class="menu-num">03</span> Nos Offres</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+        <li><a href="#provins" style="--i:4">
+          <span><span class="menu-num">04</span> Provins UNESCO</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+        <li><a href="#services" style="--i:5">
+          <span><span class="menu-num">05</span> Services & Bien-être</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+        <li><a href="#booking" style="--i:6">
+          <span><span class="menu-num">06</span> Réserver</span>
+          <span class="menu-arrow">→</span>
+        </a></li>
+      </ul>
+    </div>
+
+    <div class="menu-col-info">
+      <div class="menu-info-text">Adresse</div>
+      <div class="menu-info-val">13 rue de Sainte Croix<br>77160 Provins, France</div>
+
+      <div class="menu-info-text">Téléphone</div>
+      <div class="menu-info-val"><a href="tel:+33160520520">+33 (0)1 60 520 520</a></div>
+
+      <div class="menu-info-text">Email</div>
+      <div class="menu-info-val"><a href="mailto:contact@lecesarhotel.com">contact@lecesarhotel.com</a></div>
+
+      <div class="menu-divider"></div>
+
+      <div class="menu-langs">
+        <a href="#" class="menu-lang active">FR</a>
+        <a href="#" class="menu-lang">EN</a>
+        <a href="#" class="menu-lang">DE</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════ HERO ════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-eyebrow">Hôtel 4 étoiles — Provins</span>
+    <h1 class="hero-title">Le <em>César</em><br>Hôtel</h1>
+    <p class="hero-subtitle">Un voyage dans le temps, au cœur de l'UNESCO</p>
+    <div class="hero-cta">
+      <a href="#booking" class="btn-primary">Réserver un séjour</a>
+      <a href="#rooms" class="btn-outline">Découvrir les chambres</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- ════════════ UNESCO STRIP ════════════ -->
+<div class="unesco-strip">
+  ✦ &nbsp; Patrimoine mondial de l'UNESCO &nbsp; ✦ &nbsp; À 1h de Paris &nbsp; ✦ &nbsp; Île-de-France &nbsp; ✦
+</div>
+
+<!-- ════════════ INTRO ════════════ -->
+<section class="intro" id="hotel">
+  <div class="intro-inner">
+    <div class="ornament reveal"><div class="ornament-diamond"></div></div>
+    <span class="section-label reveal">Notre Histoire</span>
+    <h2 class="section-title reveal">Un voyage<br>dans le <em>Temps</em></h2>
+    <p class="section-body reveal">Au cœur d'une authentique cité médiévale, Provins est classée au patrimoine mondial de l'UNESCO. Nichée en Île-de-France, à une heure de Paris et des aéroports de Roissy et d'Orly, Le César Hôtel vous invite à vivre une expérience unique entre histoire, élégance et sérénité.</p>
+
+    <div class="intro-badges">
+      <div class="badge reveal reveal-delay-1">
+        <span class="badge-icon">🏰</span>
+        <div class="badge-text">Cité médiévale</div>
+      </div>
+      <div class="badge reveal reveal-delay-2">
+        <span class="badge-icon">🌿</span>
+        <div class="badge-text">Cadre d'exception</div>
+      </div>
+      <div class="badge reveal reveal-delay-3">
+        <span class="badge-icon">⭐</span>
+        <div class="badge-text">4 étoiles</div>
+      </div>
+      <div class="badge reveal reveal-delay-1">
+        <span class="badge-icon">🚂</span>
+        <div class="badge-text">1h de Paris</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ ROOMS ════════════ -->
+<section class="rooms" id="rooms">
+  <div class="rooms-header">
+    <div class="ornament reveal"><div class="ornament-diamond"></div></div>
+    <span class="section-label reveal">Nos Chambres</span>
+    <h2 class="section-title reveal">Rêver au <em>César</em></h2>
+  </div>
+
+  <div class="rooms-grid">
+    <a href="#" class="room-card reveal">
+      <img class="room-img" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80" alt="Suite César" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">01 — Chambre Signature</span>
+        <div class="room-name">César Suite</div>
+        <div class="room-tagline">Partez à l'aventure</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+
+    <a href="#" class="room-card reveal reveal-delay-1">
+      <img class="room-img" src="https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600&q=80" alt="César Luxe" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">02</span>
+        <div class="room-name">César Luxe</div>
+        <div class="room-tagline">Laissez-vous emporter</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+
+    <a href="#" class="room-card reveal reveal-delay-2">
+      <img class="room-img" src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600&q=80" alt="César Chic" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">03</span>
+        <div class="room-name">César Chic</div>
+        <div class="room-tagline">Poussez la porte</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+
+    <a href="#" class="room-card reveal reveal-delay-1">
+      <img class="room-img" src="https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=600&q=80" alt="César Standard" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">04</span>
+        <div class="room-name">César</div>
+        <div class="room-tagline">Soyez curieux</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+
+    <a href="#" class="room-card reveal reveal-delay-3">
+      <img class="room-img" src="https://images.unsplash.com/photo-1597003966060-96ef9f76efaa?w=600&q=80" alt="Bien-être" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">05</span>
+        <div class="room-name">Bien-être</div>
+        <div class="room-tagline">Restez positif</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+
+    <a href="#" class="room-card reveal reveal-delay-2">
+      <img class="room-img" src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Buzz Bar" loading="lazy">
+      <div class="room-overlay"></div>
+      <div class="room-info">
+        <span class="room-num">06</span>
+        <div class="room-name">Buzz Bar</div>
+        <div class="room-tagline">Un verre, une histoire</div>
+        <div class="room-discover">Découvrir</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════ SPLIT — UNESCO ════════════ -->
+<div class="split" id="provins">
+  <div class="split-img reveal">
+    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=900&q=80" alt="Provins ville médiévale" loading="lazy">
+  </div>
+  <div class="split-content">
+    <div>
+      <div class="ornament" style="justify-content:flex-start; margin-bottom:1.5rem;">
+        <div class="ornament-diamond" style="background:var(--gold-light)"></div>
+      </div>
+      <span class="section-label">Patrimoine de l'humanité</span>
+      <h2 class="section-title reveal">Provins,<br>cité <em>médiévale</em></h2>
+      <p class="section-body reveal">Provins est l'une des rares villes médiévales d'Europe à avoir conservé l'intégralité de ses remparts. Inscrite au patrimoine mondial de l'UNESCO depuis 2001, elle partage cet honneur avec Pingyao, sa cité sœur en Chine. Laissez-vous envoûter par ses ruelles pavées, ses foires médiévales et ses tours séculaires.</p>
+      <a href="#" class="btn-primary">Explorer Provins</a>
+    </div>
+  </div>
+</div>
+
+<!-- ════════════ SERVICES ════════════ -->
+<section class="services" id="services">
+  <div class="ornament reveal"><div class="ornament-diamond"></div></div>
+  <span class="section-label reveal">Prestations</span>
+  <h2 class="section-title reveal">L'art de<br>vous <em>recevoir</em></h2>
+
+  <div class="services-grid">
+    <div class="service-item reveal">
+      <span class="service-icon">🛎</span>
+      <div class="service-name">Réception 24h/24</div>
+      <div class="service-desc">Notre équipe est à votre service à toute heure pour rendre votre séjour inoubliable.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-1">
+      <span class="service-icon">☕</span>
+      <div class="service-name">Petit-Déjeuner</div>
+      <div class="service-desc">Un buffet généreux aux saveurs locales pour bien commencer chaque journée.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-2">
+      <span class="service-icon">🍸</span>
+      <div class="service-name">Buzz Bar</div>
+      <div class="service-desc">Notre bar intimiste vous accueille pour un cocktail au coin du feu ou un apéritif en terrasse.</div>
+    </div>
+    <div class="service-item reveal">
+      <span class="service-icon">🧘</span>
+      <div class="service-name">Espace Zen</div>
+      <div class="service-desc">Détente et régénération dans notre espace bien-être privatisé sur réservation.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-1">
+      <span class="service-icon">📋</span>
+      <div class="service-name">Séminaires</div>
+      <div class="service-desc">Des espaces modulables pour vos événements professionnels dans un cadre historique unique.</div>
+    </div>
+    <div class="service-item reveal reveal-delay-2">
+      <span class="service-icon">🅿️</span>
+      <div class="service-name">Parking Privé</div>
+      <div class="service-desc">Parking sécurisé à disposition, idéalement situé à deux pas de la cité médiévale.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════ OFFRES ════════════ -->
+<section class="offers" id="offers">
+  <div class="offers-header">
+    <div class="ornament reveal"><div class="ornament-diamond"></div></div>
+    <span class="section-label reveal">Offres Exclusives</span>
+    <h2 class="section-title reveal">Nos <em>offres</em> spéciales</h2>
+  </div>
+
+  <div class="offers-grid">
+    <a href="#" class="offer-card reveal">
+      <span class="offer-tag">Week-end romantique</span>
+      <div class="offer-title">Escapade Médiévale</div>
+      <div class="offer-desc">2 nuits en chambre César Chic, petit-déjeuner inclus, visite guidée de Provins et accès au Buzz Bar.</div>
+      <div class="offer-link">Découvrir l'offre →</div>
+    </a>
+    <a href="#" class="offer-card reveal reveal-delay-1">
+      <span class="offer-tag">Bien-être & Détente</span>
+      <div class="offer-title">Séjour Zen au César</div>
+      <div class="offer-desc">Profitez d'une nuit en César Luxe avec accès privatisé à l'espace bien-être et soin personnalisé.</div>
+      <div class="offer-link">Découvrir l'offre →</div>
+    </a>
+    <a href="#" class="offer-card reveal reveal-delay-2">
+      <span class="offer-tag">En famille</span>
+      <div class="offer-title">Aventure en Famille</div>
+      <div class="offer-desc">Package famille avec nuit en Suite, petit-déjeuner, atelier médiéval pour les enfants et parking offert.</div>
+      <div class="offer-link">Découvrir l'offre →</div>
+    </a>
+  </div>
+</section>
+
+<!-- ════════════ PROVINS IMMERSIVE BANNER ════════════ -->
+<section class="provins">
+  <div class="provins-bg"></div>
+  <div class="provins-content">
+    <div class="ornament reveal"><div class="ornament-diamond" style="background:var(--white)"></div></div>
+    <span class="section-label reveal">Le temps d'un séjour</span>
+    <h2 class="section-title reveal">Vivez<br>l'<em>Histoire</em></h2>
+    <p class="section-body reveal">À seulement une heure de Paris, plongez dans mille ans d'histoire au cœur de l'une des cités médiévales les mieux préservées d'Europe.</p>
+    <a href="#booking" class="btn-primary">Réserver maintenant</a>
+  </div>
+</section>
+
+<!-- ════════════ BOOKING BAR ════════════ -->
+<div class="booking-bar" id="booking">
+  <div class="booking-inner">
+    <div class="booking-label">Réserver</div>
+    <div class="booking-divider"></div>
+
+    <div class="booking-field">
+      <label>Arrivée</label>
+      <input type="date" id="checkin">
+    </div>
+
+    <div class="booking-divider"></div>
+
+    <div class="booking-field">
+      <label>Départ</label>
+      <input type="date" id="checkout">
+    </div>
+
+    <div class="booking-divider"></div>
+
+    <div class="booking-field">
+      <label>Adultes</label>
+      <select>
+        <option>1 adulte</option>
+        <option>2 adultes</option>
+        <option>3 adultes</option>
+        <option>4 adultes</option>
+      </select>
+    </div>
+
+    <div class="booking-divider"></div>
+
+    <div class="booking-field">
+      <label>Chambre</label>
+      <select>
+        <option>César Standard</option>
+        <option>César Chic</option>
+        <option>César Luxe</option>
+        <option>César Suite</option>
+      </select>
+    </div>
+
+    <button class="booking-submit" onclick="window.open('http://www.secure-hotel-booking.com/LE-CESAR-HOTEL/2Z1V/dateselection', '_blank')">
+      Vérifier disponibilités
+    </button>
+  </div>
+</div>
+
+<!-- ════════════ FOOTER ════════════ -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <span class="footer-logo-wrap">Le César</span>
+      <div class="footer-tagline">"Laissez-vous séduire par un endroit<br>calme et d'exception."</div>
+      <div class="footer-contact">
+        <p>13 rue de Sainte Croix<br>77160 Provins, France</p>
+        <p><a href="tel:+33160520520">+33 (0)1 60 520 520</a></p>
+        <p><a href="mailto:contact@lecesarhotel.com">contact@lecesarhotel.com</a></p>
+        <p style="margin-top:0.5rem; color:rgba(245,240,232,0.25); font-size:0.75rem;">GPS : 48.5604069 — 3.2806852</p>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>L'Hôtel</h4>
+      <ul>
+        <li><a href="#">La réception</a></li>
+        <li><a href="#">Le petit déjeuner</a></li>
+        <li><a href="#">Le Buzz Bar</a></li>
+        <li><a href="#">Espace Bien-être</a></li>
+        <li><a href="#">Séminaires & Affaires</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Chambres</h4>
+      <ul>
+        <li><a href="#">César</a></li>
+        <li><a href="#">César Chic</a></li>
+        <li><a href="#">César Luxe</a></li>
+        <li><a href="#">César Suite</a></li>
+        <li><a href="#">Nos Tarifs</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-col">
+      <h4>Découvrir</h4>
+      <ul>
+        <li><a href="#">Provins UNESCO</a></li>
+        <li><a href="#">Nos Offres</a></li>
+        <li><a href="#">Actualités</a></li>
+        <li><a href="#">Contact</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2025 Le César Hôtel — Provins. Tous droits réservés. Site officiel.</span>
+    <div class="footer-socials">
+      <a href="#" class="footer-social">Facebook</a>
+      <a href="#" class="footer-social">Instagram</a>
+      <a href="#" class="footer-social">TripAdvisor</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ════════════ JS ════════════ -->
+<script>
+  // ── Header scroll ──
+  const header = document.getElementById('header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Hamburger + fullscreen menu ──
+  const hamburger = document.getElementById('hamburger');
+  const menu = document.getElementById('fullscreenMenu');
+  let menuOpen = false;
+
+  hamburger.addEventListener('click', () => {
+    menuOpen = !menuOpen;
+    hamburger.classList.toggle('open', menuOpen);
+    menu.classList.toggle('open', menuOpen);
+    document.body.style.overflow = menuOpen ? 'hidden' : '';
+  });
+
+  // Close on nav link click
+  menu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      menuOpen = false;
+      hamburger.classList.remove('open');
+      menu.classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+
+  // ── Scroll reveal ──
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  reveals.forEach(el => observer.observe(el));
+
+  // ── Date defaults ──
+  const today = new Date();
+  const tomorrow = new Date(today);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const fmt = d => d.toISOString().split('T')[0];
+  const ci = document.getElementById('checkin');
+  const co = document.getElementById('checkout');
+  if (ci) ci.value = fmt(today);
+  if (co) co.value = fmt(tomorrow);
+  if (ci) ci.addEventListener('change', () => {
+    const d = new Date(ci.value);
+    d.setDate(d.getDate() + 1);
+    if (co && co.value <= ci.value) co.value = fmt(d);
+  });
+</script>
+</body>
+</html>

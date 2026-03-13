@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>L'Unique de la Goële — Restaurant Brasserie à Montgé</title>
+  <meta name="description" content="L'Unique de la Goële — Restaurant brasserie traditionnel à Montgé-en-Goële, Seine-et-Marne. Cuisine française généreuse, produits du terroir, ambiance chaleureuse.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ═══════════════════════════════════════════════
+       CSS VARIABLES
+    ═══════════════════════════════════════════════ */
+    :root {
+      --noir:        #111009;
+      --noir-soft:   #1A180F;
+      --bordeaux:    #7A1F2E;
+      --bordeaux-lt: #9E2E41;
+      --or:          #C8A84B;
+      --or-lt:       #E0C47A;
+      --creme:       #F4EED8;
+      --creme-soft:  #EDE5CC;
+      --pierre:      #8C836E;
+      --blanc:       #FDFAF2;
+
+      --f-display: 'Playfair Display', Georgia, serif;
+      --f-body:    'Libre Baskerville', Georgia, serif;
+      --f-sans:    'Raleway', sans-serif;
+
+      --nav-h: 78px;
+      --ease:  cubic-bezier(.25,.46,.45,.94);
+      --z-nav: 100;
+      --z-ovl: 200;
+    }
+
+    /* ═══════════════════════════════════════════════
+       RESET
+    ═══════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      background: var(--creme);
+      color: var(--noir);
+      font-family: var(--f-body);
+      font-size: 1rem;
+      line-height: 1.8;
+      overflow-x: hidden;
+    }
+    ::selection { background: var(--bordeaux); color: var(--creme); }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Grain texture overlay ── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='1'/%3E%3C/svg%3E");
+      opacity: .028;
+      pointer-events: none;
+      z-index: 9999;
+    }
+
+    /* ═══════════════════════════════════════════════
+       NAVBAR
+    ═══════════════════════════════════════════════ */
+    #navbar {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 2.2rem;
+      z-index: var(--z-nav);
+      transition: background .4s var(--ease), height .4s var(--ease), box-shadow .4s;
+    }
+    #navbar.scrolled {
+      background: rgba(17,16,9,.96);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      height: 60px;
+      box-shadow: 0 1px 0 rgba(200,168,75,.18);
+    }
+
+    /* Hamburger */
+    #burger {
+      display: flex; flex-direction: column; gap: 5px;
+      width: 44px; height: 44px; align-items: flex-start; justify-content: center;
+      background: none; border: none; cursor: pointer; padding: 6px 4px;
+      position: relative; z-index: calc(var(--z-ovl) + 1);
+    }
+    #burger span {
+      display: block; height: 1px; background: var(--creme);
+      transition: transform .4s var(--ease), opacity .3s, width .3s;
+    }
+    #burger span:nth-child(1) { width: 26px; }
+    #burger span:nth-child(2) { width: 18px; }
+    #burger span:nth-child(3) { width: 26px; }
+    #burger.open span:nth-child(1) { width: 26px; transform: translateY(6px) rotate(45deg); }
+    #burger.open span:nth-child(2) { opacity: 0; }
+    #burger.open span:nth-child(3) { width: 26px; transform: translateY(-6px) rotate(-45deg); }
+
+    /* Logo centré */
+    #nav-logo {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      text-align: center; pointer-events: none; line-height: 1.1;
+    }
+    #nav-logo .nl { font-family: var(--f-display); font-style: italic; font-size: 1.15rem; font-weight: 400; color: var(--creme); letter-spacing: .02em; }
+    #nav-logo .ns { font-family: var(--f-sans); font-size: .52rem; font-weight: 300; letter-spacing: .3em; text-transform: uppercase; color: var(--or); margin-top: 2px; display: block; }
+
+    /* Réserver */
+    #nav-resa {
+      font-family: var(--f-sans); font-size: .6rem; font-weight: 600;
+      letter-spacing: .22em; text-transform: uppercase;
+      color: var(--or); border: 1px solid rgba(200,168,75,.5);
+      padding: 9px 20px;
+      transition: background .25s, color .25s, border-color .25s;
+    }
+    #nav-resa:hover { background: var(--or); color: var(--noir); border-color: var(--or); }
+
+    /* ═══════════════════════════════════════════════
+       MENU OVERLAY
+    ═══════════════════════════════════════════════ */
+    #overlay {
+      position: fixed; inset: 0; z-index: var(--z-ovl);
+      display: grid; grid-template-columns: 1fr;
+      opacity: 0; pointer-events: none;
+      transition: opacity .5s var(--ease);
+    }
+    @media(min-width:900px){ #overlay { grid-template-columns: 1fr 400px; } }
+    #overlay.open { opacity: 1; pointer-events: all; }
+
+    #ovl-left {
+      background: rgba(14,12,7,.97);
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 100px 4rem 3rem;
+      border-right: 1px solid rgba(200,168,75,.15);
+    }
+
+    .ovl-nav { list-style: none; }
+    .ovl-nav li { overflow: hidden; margin-bottom: .2rem; }
+    .ovl-nav li a {
+      display: flex; align-items: baseline; gap: 1.2rem; padding: .5rem 0;
+      transform: translateY(44px); opacity: 0;
+      transition: transform .6s cubic-bezier(.22,1,.36,1), opacity .5s, color .2s;
+    }
+    #overlay.open .ovl-nav li a { transform: translateY(0); opacity: 1; }
+    .ovl-nav li:nth-child(1) a { transition-delay:.05s }
+    .ovl-nav li:nth-child(2) a { transition-delay:.10s }
+    .ovl-nav li:nth-child(3) a { transition-delay:.15s }
+    .ovl-nav li:nth-child(4) a { transition-delay:.20s }
+    .ovl-nav li:nth-child(5) a { transition-delay:.25s }
+    .ovl-nav li:nth-child(6) a { transition-delay:.30s }
+    .ovl-nav li a:hover .lm { color: var(--or-lt); }
+
+    .ln { font-family:var(--f-sans); font-size:.6rem; font-weight:300; color:var(--bordeaux); letter-spacing:.1em; min-width:22px; }
+    .lc { display:flex; flex-direction:column; }
+    .lm { font-family:var(--f-display); font-size:clamp(2rem,5vw,3rem); font-weight:400; color:var(--creme); line-height:1; transition:color .2s; }
+    .ls { font-family:var(--f-body); font-style:italic; font-size:.85rem; color:var(--pierre); margin-top:2px; }
+
+    .ovl-footer {
+      margin-top: auto; padding-top: 2rem;
+      border-top: 1px solid rgba(255,255,255,.08);
+      display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: space-between; align-items: flex-end;
+      opacity: 0; transform: translateY(8px);
+      transition: opacity .5s .4s, transform .5s .4s;
+    }
+    #overlay.open .ovl-footer { opacity: 1; transform: translateY(0); }
+    .ovl-addr { font-family:var(--f-sans); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--pierre); line-height:1.9; }
+    .ovl-soc { display:flex; gap:1.2rem; }
+    .ovl-soc a { font-family:var(--f-sans); font-size:.6rem; letter-spacing:.18em; text-transform:uppercase; color:var(--pierre); transition:color .2s; }
+    .ovl-soc a:hover { color:var(--or-lt); }
+
+    /* Right panel */
+    #ovl-right { display:none; position:relative; overflow:hidden; }
+    @media(min-width:900px){ #ovl-right { display:block; } }
+    .oi { position:absolute; inset:0; background-size:cover; background-position:center; opacity:0; transition:opacity .7s var(--ease); }
+    .oi.active { opacity:1; }
+    #ovl-cap { position:absolute; bottom:2rem; left:2rem; right:2rem; font-family:var(--f-body); font-style:italic; font-size:.85rem; color:rgba(255,255,255,.6); }
+
+    /* ═══════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════ */
+    #hero {
+      position: relative; height: 100svh; min-height: 620px;
+      display: flex; align-items: flex-end; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      /* TODO: Remplacer par la vraie photo du restaurant */
+      background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1800&q=80');
+      background-size: cover; background-position: center 35%;
+      animation: hZoom 14s ease-out both;
+    }
+    @keyframes hZoom { from{transform:scale(1.07)} to{transform:scale(1)} }
+    .hero-grad {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(17,16,9,.1) 0%, rgba(17,16,9,.08) 40%, rgba(17,16,9,.78) 100%);
+    }
+    /* Decorative red band */
+    .hero-band {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--bordeaux), var(--or), var(--bordeaux));
+    }
+
+    .hero-content { position:relative; z-index:2; padding:3rem 3rem 4.5rem; max-width:760px; }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .7rem;
+      font-family: var(--f-sans); font-size:.58rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+      color: var(--or); margin-bottom: 1.2rem;
+    }
+    .hero-badge::before { content:''; display:block; width:30px; height:1px; background:var(--bordeaux); }
+
+    h1.hero-title {
+      font-family: var(--f-display); font-size: clamp(3rem,9vw,6.5rem);
+      font-weight: 900; line-height: .95; color: var(--creme);
+      margin-bottom: 1.2rem; letter-spacing: -.01em;
+    }
+    h1.hero-title em { font-style:italic; font-weight:400; color:var(--or-lt); }
+
+    .hero-sub {
+      font-family: var(--f-body); font-style:italic; font-size:1.1rem;
+      color:rgba(244,238,216,.75); max-width:440px; line-height:1.7; margin-bottom:2rem;
+    }
+
+    .hero-btns { display:flex; gap:1rem; flex-wrap:wrap; }
+
+    .btn-rouge {
+      font-family:var(--f-sans); font-size:.6rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+      background:var(--bordeaux); color:var(--creme); padding:13px 28px;
+      transition:background .25s;
+    }
+    .btn-rouge:hover { background:var(--bordeaux-lt); }
+
+    .btn-ghost {
+      font-family:var(--f-sans); font-size:.6rem; font-weight:600; letter-spacing:.22em; text-transform:uppercase;
+      border:1px solid rgba(244,238,216,.4); color:var(--creme); padding:13px 28px;
+      transition:background .25s, border-color .25s;
+    }
+    .btn-ghost:hover { background:rgba(255,255,255,.08); border-color:var(--or); }
+
+    /* scroll indicator */
+    .hero-scroll { position:absolute; right:2.5rem; bottom:3.5rem; z-index:2; display:flex; flex-direction:column; align-items:center; gap:.5rem; }
+    .hero-scroll span { font-family:var(--f-sans); font-size:.55rem; letter-spacing:.3em; text-transform:uppercase; color:rgba(244,238,216,.4); writing-mode:vertical-lr; }
+    .scroll-bar { width:1px; height:52px; background:linear-gradient(to bottom, var(--or), transparent); animation:sb 2s ease infinite; }
+    @keyframes sb { 0%,100%{transform:scaleY(1);opacity:.5} 50%{transform:scaleY(.4);opacity:1} }
+
+    /* ═══════════════════════════════════════════════
+       UTILITIES
+    ═══════════════════════════════════════════════ */
+    .si { max-width:1180px; margin:0 auto; padding:0 2rem; }
+    .sp { padding:5.5rem 0; }
+    @media(min-width:768px){ .sp { padding:7.5rem 0; } }
+
+    .tag {
+      display:inline-flex; align-items:center; gap:.7rem;
+      font-family:var(--f-sans); font-size:.58rem; font-weight:500; letter-spacing:.28em; text-transform:uppercase;
+      color:var(--bordeaux); margin-bottom:1rem;
+    }
+    .tag::before { content:''; display:block; width:28px; height:1px; background:var(--bordeaux); }
+
+    h2 {
+      font-family:var(--f-display); font-size:clamp(2rem,4.5vw,3.4rem);
+      font-weight:700; line-height:1.05; color:var(--noir); margin-bottom:1.2rem;
+    }
+    h2 em { font-weight:400; color:var(--bordeaux); }
+
+    .lead { font-family:var(--f-body); font-style:italic; font-size:1.05rem; color:var(--pierre); line-height:1.85; max-width:600px; }
+
+    .sep { width:52px; height:2px; background:var(--bordeaux); margin:1.4rem 0; }
+
+    /* Reveal */
+    .rv { opacity:0; transform:translateY(28px); transition:opacity .7s var(--ease), transform .7s var(--ease); }
+    .rv.in { opacity:1; transform:translateY(0); }
+    .d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s} .d4{transition-delay:.4s}
+
+    /* ═══════════════════════════════════════════════
+       INTRO BAND
+    ═══════════════════════════════════════════════ */
+    #intro { background:var(--noir); overflow:hidden; }
+    .intro-wrap {
+      display:grid; grid-template-columns:1fr;
+      @media(min-width:900px){ grid-template-columns:1fr 1fr; }
+    }
+    .intro-text-col { padding:5rem 3rem 5rem 2rem; }
+    @media(min-width:900px){ .intro-text-col { padding:6rem 4rem; } }
+    .intro-text-col .tag { color:var(--or); }
+    .intro-text-col .tag::before { background:var(--or); }
+    .intro-text-col h2 { color:var(--creme); }
+    .intro-text-col h2 em { color:var(--or-lt); }
+    .intro-text-col .lead { color:rgba(244,238,216,.6); max-width:480px; }
+    .intro-text-col .sep { background:var(--bordeaux); }
+
+    .intro-img-col {
+      position:relative; min-height:400px; overflow:hidden;
+    }
+    .intro-img-col img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .intro-img-col::after {
+      content:''; position:absolute; inset:0;
+      background:linear-gradient(to right, var(--noir) 0%, transparent 40%);
+    }
+    @media(max-width:899px){ .intro-img-col { display:none; } }
+
+    .intro-stats {
+      display:flex; gap:2.5rem; flex-wrap:wrap; margin-top:2.5rem;
+    }
+    .stat-num { font-family:var(--f-display); font-size:2.6rem; font-style:italic; color:var(--or); line-height:1; }
+    .stat-lbl { font-family:var(--f-sans); font-size:.58rem; letter-spacing:.2em; text-transform:uppercase; color:var(--pierre); margin-top:3px; }
+
+    /* ═══════════════════════════════════════════════
+       CARTE & MENUS
+    ═══════════════════════════════════════════════ */
+    #carte { background:var(--creme-soft); }
+
+    .carte-header { display:flex; flex-wrap:wrap; align-items:flex-end; justify-content:space-between; gap:1.5rem; margin-bottom:3rem; }
+
+    /* Tab navigation */
+    .menu-tabs { display:flex; gap:0; border-bottom:1px solid rgba(122,31,46,.2); margin-bottom:3rem; flex-wrap:wrap; }
+    .menu-tab {
+      font-family:var(--f-sans); font-size:.6rem; font-weight:600; letter-spacing:.2em; text-transform:uppercase;
+      padding:10px 20px; color:var(--pierre); border-bottom:2px solid transparent; cursor:pointer;
+      transition:color .2s, border-color .2s; margin-bottom:-1px; background:none; border-top:none; border-left:none; border-right:none;
+    }
+    .menu-tab.active { color:var(--bordeaux); border-bottom-color:var(--bordeaux); }
+    .menu-tab:hover:not(.active) { color:var(--noir); }
+
+    .menu-panel { display:none; }
+    .menu-panel.active { display:block; }
+
+    .menu-section-title {
+      font-family:var(--f-display); font-size:1.5rem; font-style:italic;
+      color:var(--bordeaux); text-align:center; margin-bottom:2rem;
+      display:flex; align-items:center; gap:1rem;
+    }
+    .menu-section-title::before, .menu-section-title::after { content:''; flex:1; height:1px; background:rgba(122,31,46,.2); }
+
+    .menu-grid { display:grid; grid-template-columns:1fr; gap:0; }
+    @media(min-width:700px){ .menu-grid { grid-template-columns:1fr 1fr; gap:0 3rem; } }
+
+    .menu-item {
+      display:flex; justify-content:space-between; align-items:baseline; gap:1rem;
+      padding:.9rem 0; border-bottom:1px solid rgba(140,131,110,.15);
+    }
+    .menu-item:last-child { border-bottom:none; }
+    .mi-left { flex:1; }
+    .mi-name { font-family:var(--f-display); font-size:1.05rem; font-weight:500; color:var(--noir); }
+    .mi-desc { font-family:var(--f-body); font-style:italic; font-size:.82rem; color:var(--pierre); margin-top:2px; }
+    .mi-price { font-family:var(--f-sans); font-size:.8rem; font-weight:600; color:var(--bordeaux); white-space:nowrap; }
+
+    .menu-note { font-family:var(--f-body); font-style:italic; font-size:.88rem; color:var(--pierre); text-align:center; margin-top:2.5rem; }
+
+    /* formule cards */
+    .formules-grid { display:grid; grid-template-columns:1fr; gap:1.5rem; }
+    @media(min-width:600px){ .formules-grid { grid-template-columns:repeat(3,1fr); } }
+
+    .formule-card {
+      background:var(--blanc); border-top:3px solid var(--bordeaux); padding:2rem 1.5rem;
+      text-align:center;
+    }
+    .fc-name { font-family:var(--f-display); font-size:1.2rem; font-style:italic; color:var(--bordeaux); margin-bottom:.5rem; }
+    .fc-price { font-family:var(--f-display); font-size:2rem; font-style:italic; color:var(--or); line-height:1; margin-bottom:.8rem; }
+    .fc-price span { font-size:.7rem; font-style:normal; color:var(--pierre); font-family:var(--f-sans); }
+    .fc-includes { font-family:var(--f-body); font-size:.88rem; color:var(--pierre); line-height:1.7; }
+
+    /* ═══════════════════════════════════════════════
+       AMBIANCE SECTION
+    ═══════════════════════════════════════════════ */
+    #ambiance { background:var(--blanc); }
+    .amb-grid { display:grid; grid-template-columns:1fr; gap:4rem; align-items:center; }
+    @media(min-width:900px){ .amb-grid { grid-template-columns:1fr 1fr; } }
+
+    .amb-imgs { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    .amb-img-big { grid-column:1/-1; }
+    .amb-imgs img { width:100%; object-fit:cover; display:block; }
+    .amb-imgs img.tall { height:280px; }
+    .amb-imgs img.short { height:180px; }
+
+    .blockq {
+      font-family:var(--f-display); font-size:1.2rem; font-style:italic; font-weight:400;
+      color:var(--bordeaux); border-left:3px solid var(--bordeaux); padding-left:1.3rem;
+      margin:1.5rem 0; line-height:1.65;
+    }
+
+    /* ═══════════════════════════════════════════════
+       GALERIE
+    ═══════════════════════════════════════════════ */
+    #galerie { background:var(--noir); }
+    #galerie .tag { color:var(--or); }
+    #galerie .tag::before { background:var(--or); }
+    #galerie h2 { color:var(--creme); }
+
+    .gal-masonry {
+      columns: 1; column-gap: 1rem; margin-top:2.5rem;
+    }
+    @media(min-width:600px){ .gal-masonry { columns:2; } }
+    @media(min-width:900px){ .gal-masonry { columns:3; } }
+
+    .gal-item { break-inside:avoid; margin-bottom:1rem; overflow:hidden; display:block; }
+    .gal-item img { width:100%; display:block; transition:transform .6s var(--ease); }
+    .gal-item:hover img { transform:scale(1.04); }
+
+    /* ═══════════════════════════════════════════════
+       INFOS PRATIQUES BAND
+    ═══════════════════════════════════════════════ */
+    #infos { background:var(--bordeaux); }
+    .infos-grid { display:grid; grid-template-columns:1fr; gap:2.5rem; }
+    @media(min-width:600px){ .infos-grid { grid-template-columns:repeat(3,1fr); } }
+
+    .info-block { border-left:1px solid rgba(255,255,255,.2); padding-left:1.5rem; }
+    .ib-icon { font-size:1.4rem; margin-bottom:.7rem; }
+    .ib-title { font-family:var(--f-sans); font-size:.58rem; font-weight:600; letter-spacing:.25em; text-transform:uppercase; color:rgba(244,238,216,.6); margin-bottom:.4rem; }
+    .ib-content { font-family:var(--f-body); font-size:.95rem; color:var(--creme); line-height:1.8; }
+    .ib-content a { border-bottom:1px solid rgba(244,238,216,.3); transition:border-color .2s; }
+    .ib-content a:hover { border-bottom-color:var(--or); }
+
+    /* ═══════════════════════════════════════════════
+       RÉSERVATION SECTION
+    ═══════════════════════════════════════════════ */
+    #reservation { background:var(--creme-soft); }
+    .resa-wrap { display:grid; grid-template-columns:1fr; gap:4rem; }
+    @media(min-width:900px){ .resa-wrap { grid-template-columns:1fr 1fr; align-items:start; } }
+
+    .resa-info .lead { font-style:normal; color:var(--charcoal); }
+
+    .resa-detail { display:flex; gap:1rem; margin-bottom:1.2rem; align-items:flex-start; }
+    .rd-icon { font-size:1rem; color:var(--bordeaux); margin-top:3px; min-width:20px; }
+    .rd-text { font-family:var(--f-body); font-size:.95rem; color:var(--pierre); line-height:1.6; }
+    .rd-text strong { font-family:var(--f-sans); font-size:.58rem; letter-spacing:.18em; text-transform:uppercase; color:var(--noir); display:block; margin-bottom:2px; }
+
+    /* Form */
+    .form { display:flex; flex-direction:column; gap:1.1rem; }
+    .fr2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:580px){ .fr2 { grid-template-columns:1fr; } }
+    .fg { display:flex; flex-direction:column; gap:.4rem; }
+    .fg label { font-family:var(--f-sans); font-size:.55rem; letter-spacing:.22em; text-transform:uppercase; color:var(--pierre); }
+    .fg input, .fg select, .fg textarea {
+      font-family:var(--f-body); font-size:.95rem; color:var(--noir);
+      background:var(--blanc); border:1px solid rgba(140,131,110,.35);
+      padding:11px 13px; outline:none; -webkit-appearance:none;
+      transition:border-color .2s;
+    }
+    .fg input:focus, .fg select:focus, .fg textarea:focus { border-color:var(--bordeaux); }
+    .fg textarea { resize:vertical; }
+
+    #fstatus { font-family:var(--f-sans); font-size:.65rem; letter-spacing:.1em; color:var(--bordeaux); }
+
+    /* ═══════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════ */
+    footer { background:var(--noir-soft); padding:3.5rem 0 2rem; }
+    .ft { max-width:1180px; margin:0 auto; padding:0 2rem; }
+    .ft-top { display:grid; grid-template-columns:1fr; gap:2.5rem; padding-bottom:2.5rem; border-bottom:1px solid rgba(255,255,255,.07); margin-bottom:1.8rem; }
+    @media(min-width:700px){ .ft-top { grid-template-columns:2fr 1fr 1fr; } }
+
+    .ft-brand { font-family:var(--f-display); font-size:1.4rem; font-style:italic; color:var(--creme); margin-bottom:.4rem; }
+    .ft-tagline { font-family:var(--f-body); font-style:italic; font-size:.88rem; color:var(--pierre); margin-bottom:1rem; }
+    .ft-col-title { font-family:var(--f-sans); font-size:.55rem; letter-spacing:.25em; text-transform:uppercase; color:var(--or); margin-bottom:.9rem; }
+    .ft-links { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
+    .ft-links a { font-family:var(--f-body); font-size:.9rem; color:rgba(244,238,216,.4); transition:color .2s; }
+    .ft-links a:hover { color:var(--or-lt); }
+    .ft-bottom { display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; }
+    .ft-copy { font-family:var(--f-sans); font-size:.55rem; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.2); }
+
+    /* ═══════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════ */
+    @media(max-width:768px){
+      #ovl-left { padding:88px 1.8rem 2.5rem; }
+      .hero-content { padding:2rem 1.5rem 3.5rem; }
+      .hero-scroll { display:none; }
+      .si { padding:0 1.25rem; }
+      .intro-text-col { padding:3.5rem 1.25rem; }
+    }
+
+    /* Decorative ornament */
+    .ornament {
+      display:block; text-align:center; font-family:var(--f-display);
+      font-size:1.8rem; color:var(--bordeaux); opacity:.35; line-height:1;
+      margin:1.5rem 0;
+      user-select:none;
+    }
+
+    /* ─── Intro grid media query fix for inline ─── */
+    @media(min-width:900px){
+      .intro-wrap { grid-template-columns: 1fr 1fr; }
+    }
+    /* ─── Ambiance grid media query fix ─── */
+    @media(min-width:900px){
+      .amb-grid { grid-template-columns: 1fr 1fr; }
+      .amb-grid .amb-text { order:2; }
+      .amb-grid .amb-imgs { order:1; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════ NAVBAR ═══════ -->
+<nav id="navbar">
+  <button id="burger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
+
+  <div id="nav-logo">
+    <span class="nl">L'Unique de la Goële</span>
+    <span class="ns">Restaurant · Montgé-en-Goële</span>
+  </div>
+
+  <a href="#reservation" id="nav-resa">Réserver</a>
+</nav>
+
+<!-- ═══════ OVERLAY ═══════ -->
+<div id="overlay" role="dialog" aria-modal="true" aria-label="Navigation">
+
+  <div id="ovl-left">
+    <ul class="ovl-nav">
+      <li><a href="#intro"       data-img="0"><span class="ln">01</span><span class="lc"><span class="lm">La Maison</span><span class="ls">Notre histoire, notre passion</span></span></a></li>
+      <li><a href="#carte"       data-img="1"><span class="ln">02</span><span class="lc"><span class="lm">Carte & Menus</span><span class="ls">Cuisine traditionnelle française</span></span></a></li>
+      <li><a href="#ambiance"    data-img="2"><span class="ln">03</span><span class="lc"><span class="lm">L'Ambiance</span><span class="ls">Une salle chaleureuse & conviviale</span></span></a></li>
+      <li><a href="#galerie"     data-img="3"><span class="ln">04</span><span class="lc"><span class="lm">Galerie</span><span class="ls">Le restaurant en images</span></span></a></li>
+      <li><a href="#infos"       data-img="4"><span class="ln">05</span><span class="lc"><span class="lm">Infos pratiques</span><span class="ls">Horaires, accès, contact</span></span></a></li>
+      <li><a href="#reservation" data-img="5"><span class="ln">06</span><span class="lc"><span class="lm">Réservation</span><span class="ls">Réserver votre table</span></span></a></li>
+    </ul>
+
+    <div class="ovl-footer">
+      <address class="ovl-addr" style="font-style:normal;">
+        1 rue du Vieux Château<br>
+        Montgé-en-Goële — 77230<br>
+        <!-- TODO: Ajouter le vrai téléphone -->
+        <a href="tel:+33XXXXXXXXX" style="color:var(--pierre);">+33 (0)X XX XX XX XX</a>
+      </address>
+      <div class="ovl-soc">
+        <a href="https://www.facebook.com/p/Lunique-de-la-Go%C3%ABle-61567116171566/" target="_blank" rel="noopener">Facebook</a>
+        <!-- TODO: Ajouter Instagram si disponible -->
+        <a href="#" target="_blank" rel="noopener">Instagram</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="ovl-right">
+    <!-- TODO: Remplacer par les vraies photos du restaurant -->
+    <div class="oi active" style="background-image:url('https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80')"></div>
+    <div class="oi"        style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&q=80')"></div>
+    <div class="oi"        style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80')"></div>
+    <div class="oi"        style="background-image:url('https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&q=80')"></div>
+    <div class="oi"        style="background-image:url('https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=800&q=80')"></div>
+    <div class="oi"        style="background-image:url('https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&q=80')"></div>
+    <p id="ovl-cap">La Maison</p>
+  </div>
+</div>
+
+<!-- ═══════ HERO ═══════ -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grad"></div>
+  <div class="hero-band"></div>
+
+  <div class="hero-content">
+    <p class="hero-badge">Brasserie Traditionnelle · Montgé-en-Goële</p>
+    <h1 class="hero-title">L'Unique<br><em>de la Goële</em></h1>
+    <p class="hero-sub">
+      <!-- TODO: Personnaliser la description -->
+      Une cuisine généreuse et sincère, ancrée dans le terroir de Seine-et-Marne,
+      servie dans une salle au charme authentique.
+    </p>
+    <div class="hero-btns">
+      <a href="#reservation" class="btn-rouge">Réserver une table</a>
+      <a href="#carte" class="btn-ghost">Voir la carte</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <span>Découvrir</span>
+    <div class="scroll-bar"></div>
+  </div>
+</section>
+
+<!-- ═══════ INTRO ═══════ -->
+<section id="intro">
+  <div class="intro-wrap">
+    <div class="intro-text-col si">
+      <span class="tag rv">Le restaurant</span>
+      <h2 class="rv d1">Une brasserie<br><em>comme avant</em></h2>
+      <div class="sep rv d2"></div>
+      <p class="lead rv d2">
+        <!-- TODO: Remplacer par l'histoire vraie du restaurant -->
+        Niché au pied du vieux château de Montgé-en-Goële, <strong style="color:var(--or-lt);font-style:normal;">L'Unique</strong>
+        est né de l'envie simple de partager une table honnête : des produits frais,
+        des recettes d'ici, une salle qui sent bon la convivialité.
+      </p>
+      <div class="intro-stats rv d3">
+        <div>
+          <!-- TODO: Mettre les vraies stats -->
+          <div class="stat-num">12</div>
+          <div class="stat-lbl">Tables</div>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <div class="stat-lbl">Fait maison</div>
+        </div>
+        <div>
+          <div class="stat-num">35km</div>
+          <div class="stat-lbl">De Paris</div>
+        </div>
+      </div>
+    </div>
+    <div class="intro-img-col">
+      <!-- TODO: Photo de la salle ou de la facade -->
+      <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=900&q=80" alt="Salle du restaurant" loading="lazy">
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ CARTE & MENUS ═══════ -->
+<section id="carte" class="sp">
+  <div class="si">
+    <div class="carte-header">
+      <div>
+        <span class="tag rv">À table</span>
+        <h2 class="rv d1">Carte <em>&amp; Menus</em></h2>
+      </div>
+      <!-- TODO: Remplacer par vrai lien PDF si disponible -->
+      <a href="#" class="btn-rouge rv d2" style="font-family:var(--f-sans);font-size:.6rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;padding:11px 22px;">Télécharger la carte PDF</a>
+    </div>
+
+    <!-- Tabs -->
+    <div class="menu-tabs rv">
+      <button class="menu-tab active" data-tab="formules">Formules</button>
+      <button class="menu-tab" data-tab="entrees">Entrées</button>
+      <button class="menu-tab" data-tab="plats">Plats</button>
+      <button class="menu-tab" data-tab="desserts">Desserts</button>
+    </div>
+
+    <!-- Panel: Formules -->
+    <div class="menu-panel active" id="tab-formules">
+      <div class="formules-grid rv">
+        <div class="formule-card">
+          <div class="fc-name">Formule Midi</div>
+          <div class="fc-price">16 <span>€</span></div>
+          <div class="fc-includes">
+            <!-- TODO: Adapter les formules réelles -->
+            Entrée + Plat<br>ou Plat + Dessert<br><em>du jour</em>
+          </div>
+        </div>
+        <div class="formule-card">
+          <div class="fc-name">Formule Complète</div>
+          <div class="fc-price">22 <span>€</span></div>
+          <div class="fc-includes">
+            Entrée + Plat<br>+ Dessert<br><em>du jour</em>
+          </div>
+        </div>
+        <div class="formule-card" style="border-top-color:var(--or);">
+          <div class="fc-name" style="color:var(--or);">Menu Goële</div>
+          <div class="fc-price">32 <span>€</span></div>
+          <div class="fc-includes">
+            Entrée + Plat + Dessert<br><em>Produits du terroir &amp;</em><br><em>verre de vin inclus</em>
+          </div>
+        </div>
+      </div>
+      <p class="menu-note rv">Menus disponibles le midi en semaine · Carte disponible tous les jours<br><!-- TODO: Adapter les jours/horaires réels --></p>
+    </div>
+
+    <!-- Panel: Entrées -->
+    <div class="menu-panel" id="tab-entrees">
+      <!-- TODO: Remplacer par les vraies entrées -->
+      <div class="menu-section-title rv">Entrées</div>
+      <div class="menu-grid rv">
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Soupe à l'oignon gratinée</div><div class="mi-desc">Croûtons maison, gruyère fondu</div></div><div class="mi-price">9 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Terrine de campagne</div><div class="mi-desc">Cornichons, pain grillé au beurre</div></div><div class="mi-price">10 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Salade de chèvre chaud</div><div class="mi-desc">Miel, noix, lardons dorés</div></div><div class="mi-price">11 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Œuf en meurette</div><div class="mi-desc">Sauce au vin rouge, lardons, champignons</div></div><div class="mi-price">12 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Escargots de Bourgogne</div><div class="mi-desc">Beurre persillé maison — 6 pièces</div></div><div class="mi-price">13 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Velouté de saison</div><div class="mi-desc">Selon l'arrivage du marché</div></div><div class="mi-price">8 €</div></div>
+      </div>
+    </div>
+
+    <!-- Panel: Plats -->
+    <div class="menu-panel" id="tab-plats">
+      <!-- TODO: Remplacer par les vrais plats -->
+      <div class="menu-section-title rv">Plats</div>
+      <div class="menu-grid rv">
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Bœuf bourguignon</div><div class="mi-desc">Cuisson longue, purée beurre noisette</div></div><div class="mi-price">22 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Entrecôte grillée</div><div class="mi-desc">Beurre maître d'hôtel, frites maison</div></div><div class="mi-price">26 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Confit de canard</div><div class="mi-desc">Sarladaises, salade frisée aux lardons</div></div><div class="mi-price">21 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Sole meunière</div><div class="mi-desc">Beurre citron, pommes vapeur</div></div><div class="mi-price">24 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Tête de veau gribiche</div><div class="mi-desc">Sauce gribiche maison, câpres</div></div><div class="mi-price">19 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Plat du jour</div><div class="mi-desc">Selon l'inspiration du chef — ardoise</div></div><div class="mi-price">16 €</div></div>
+      </div>
+    </div>
+
+    <!-- Panel: Desserts -->
+    <div class="menu-panel" id="tab-desserts">
+      <!-- TODO: Remplacer par les vrais desserts -->
+      <div class="menu-section-title rv">Desserts</div>
+      <div class="menu-grid rv">
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Crème brûlée à la vanille</div><div class="mi-desc">Vanille de Madagascar, caramel craquant</div></div><div class="mi-price">8 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Tarte Tatin</div><div class="mi-desc">Pommes caramélisées, crème fraîche épaisse</div></div><div class="mi-price">9 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Profiteroles</div><div class="mi-desc">Glace vanille, sauce chocolat chaud</div></div><div class="mi-price">9 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Île flottante</div><div class="mi-desc">Crème anglaise, caramel, pralin</div></div><div class="mi-price">7 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Fromages affinés</div><div class="mi-desc">Sélection de la maison, confiture du jour</div></div><div class="mi-price">10 €</div></div>
+        <div class="menu-item"><div class="mi-left"><div class="mi-name">Moelleux au chocolat</div><div class="mi-desc">Cœur coulant, glace caramel beurre salé</div></div><div class="mi-price">9 €</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ AMBIANCE ═══════ -->
+<section id="ambiance" class="sp">
+  <div class="si">
+    <div class="amb-grid">
+
+      <div class="amb-imgs rv">
+        <!-- TODO: Remplacer par photos réelles de la salle -->
+        <div class="amb-img-big"><img class="tall" src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=800&q=80" alt="Salle du restaurant" loading="lazy"></div>
+        <img class="short" src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=600&q=80" alt="Détail table" loading="lazy">
+        <img class="short" src="https://images.unsplash.com/photo-1541614101331-1a5a3a194e92?w=600&q=80" alt="Comptoir" loading="lazy">
+      </div>
+
+      <div class="amb-text">
+        <span class="tag rv">L'ambiance</span>
+        <h2 class="rv d1">Une salle<br><em>qui vous accueille</em></h2>
+        <div class="sep rv d2"></div>
+        <p class="lead rv d2" style="font-style:normal; color:var(--pierre);">
+          <!-- TODO: Décrire la vraie ambiance du restaurant -->
+          Ici, les nappes à carreaux côtoient les pierres apparentes.
+          Le zinc du comptoir brille sous les lumières tamisées, et les conversations
+          s'étirent jusqu'au café.
+        </p>
+        <blockquote class="blockq rv d3">
+          <!-- TODO: Citation réelle du patron ou de l'esprit du lieu -->
+          « On cuisine comme on reçoit des amis — avec générosité, sans prétention. »
+        </blockquote>
+        <p class="rv d3" style="font-family:var(--f-body);font-size:.9rem;color:var(--pierre);line-height:1.75;">
+          <!-- TODO: Compléter avec infos réelles (capacité, terrasse, privatisation...) -->
+          Salle principale de <strong>40 couverts</strong> · Terrasse extérieure l'été ·
+          Privatisation possible pour groupes et événements.
+        </p>
+        <div class="rv d4" style="margin-top:2rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="#reservation" class="btn-rouge">Réserver une table</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ GALERIE ═══════ -->
+<section id="galerie" class="sp">
+  <div class="si">
+    <span class="tag rv">Photos</span>
+    <h2 class="rv d1">Le restaurant<br><em>en images</em></h2>
+
+    <div class="gal-masonry">
+      <!-- TODO: Remplacer par les vraies photos -->
+      <a class="gal-item rv"><img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Table dressée" loading="lazy"></a>
+      <a class="gal-item rv d1"><img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Salle" loading="lazy"></a>
+      <a class="gal-item rv d2"><img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=80" alt="Plat" loading="lazy"></a>
+      <a class="gal-item rv d1"><img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80" alt="Cuisine" loading="lazy"></a>
+      <a class="gal-item rv d2"><img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=80" alt="Assiette" loading="lazy"></a>
+      <a class="gal-item rv"><img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=600&q=80" alt="Détail" loading="lazy"></a>
+      <a class="gal-item rv d3"><img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Verre de vin" loading="lazy"></a>
+      <a class="gal-item rv d1"><img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80" alt="Vue d'ensemble" loading="lazy"></a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ INFOS PRATIQUES ═══════ -->
+<section id="infos" class="sp">
+  <div class="si">
+    <div class="infos-grid">
+
+      <div class="info-block rv">
+        <div class="ib-icon">🕐</div>
+        <div class="ib-title">Horaires</div>
+        <div class="ib-content">
+          <!-- TODO: Mettre les vrais horaires -->
+          <strong style="color:var(--or-lt);font-family:var(--f-sans);font-size:.7rem;letter-spacing:.1em;">Déjeuner</strong>
+          Mar – Dim : 12h00 – 14h30<br><br>
+          <strong style="color:var(--or-lt);font-family:var(--f-sans);font-size:.7rem;letter-spacing:.1em;">Dîner</strong>
+          Ven – Sam : 19h30 – 22h00<br><br>
+          <em style="font-size:.85rem;opacity:.7;">Fermé le lundi</em>
+        </div>
+      </div>
+
+      <div class="info-block rv d1">
+        <div class="ib-icon">📍</div>
+        <div class="ib-title">Accès</div>
+        <div class="ib-content">
+          1 rue du Vieux Château<br>
+          Montgé-en-Goële — 77230<br><br>
+          <em style="font-size:.85rem;opacity:.7;">Parking gratuit sur place</em><br>
+          Paris : 50 min · CDG : 20 min
+        </div>
+      </div>
+
+      <div class="info-block rv d2">
+        <div class="ib-icon">📞</div>
+        <div class="ib-title">Contact & Réservation</div>
+        <div class="ib-content">
+          <!-- TODO: Mettre le vrai téléphone et email -->
+          <a href="tel:+33XXXXXXXXX">+33 (0)X XX XX XX XX</a><br>
+          <a href="mailto:contact@luniquedelagoele.fr">contact@luniquedelagoele.fr</a><br><br>
+          <em style="font-size:.85rem;opacity:.7;">Réservation conseillée<br>le week-end</em>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ RÉSERVATION ═══════ -->
+<section id="reservation" class="sp">
+  <div class="si">
+    <div class="resa-wrap">
+
+      <div class="resa-info">
+        <span class="tag rv">Votre table</span>
+        <h2 class="rv d1">Réserver<br><em>une table</em></h2>
+        <div class="sep rv d2"></div>
+        <p class="rv d2" style="font-family:var(--f-body);font-size:.95rem;color:var(--pierre);line-height:1.8;max-width:440px;margin-bottom:2rem;">
+          <!-- TODO: Personnaliser -->
+          Remplissez le formulaire ci-contre et nous vous confirmerons
+          votre réservation par retour d'e-mail ou par téléphone
+          dans les plus brefs délais.
+        </p>
+
+        <div class="resa-detail rv d2">
+          <span class="rd-icon">🍽</span>
+          <div class="rd-text"><strong>Groupes &amp; événements</strong>Privatisation possible — contactez-nous directement pour tout événement de plus de 12 personnes.</div>
+        </div>
+        <div class="resa-detail rv d3">
+          <span class="rd-icon">🌿</span>
+          <div class="rd-text"><strong>Allergies &amp; régimes</strong>Merci de nous préciser vos intolérances dans le message, nous adapterons notre cuisine.</div>
+        </div>
+
+        <span class="ornament" aria-hidden="true">✦ ✦ ✦</span>
+      </div>
+
+      <form class="form rv d1" id="resa-form" novalidate>
+        <div class="fr2">
+          <div class="fg"><label for="r-nom">Prénom & Nom *</label><input type="text" id="r-nom" placeholder="Jean Dupont" required></div>
+          <div class="fg"><label for="r-tel">Téléphone *</label><input type="tel" id="r-tel" placeholder="06 XX XX XX XX" required></div>
+        </div>
+        <div class="fg"><label for="r-email">E-mail *</label><input type="email" id="r-email" placeholder="votre@email.fr" required></div>
+        <div class="fr2">
+          <div class="fg">
+            <label for="r-date">Date souhaitée</label>
+            <input type="date" id="r-date">
+          </div>
+          <div class="fg">
+            <label for="r-heure">Service</label>
+            <select id="r-heure">
+              <option value="">Choisir</option>
+              <option>Déjeuner — 12h00</option>
+              <option>Déjeuner — 13h00</option>
+              <option>Dîner — 19h30 (Ven/Sam)</option>
+              <option>Dîner — 20h30 (Ven/Sam)</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label for="r-couverts">Nombre de couverts</label>
+          <select id="r-couverts">
+            <option value="">Sélectionner</option>
+            <option>1 personne</option>
+            <option>2 personnes</option>
+            <option>3 personnes</option>
+            <option>4 personnes</option>
+            <option>5 personnes</option>
+            <option>6 personnes</option>
+            <option>7 personnes ou plus</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label for="r-msg">Message (allergies, occasion spéciale…)</label>
+          <textarea id="r-msg" rows="3" placeholder="Informations complémentaires…"></textarea>
+        </div>
+        <div style="display:flex;gap:1rem;align-items:center;flex-wrap:wrap;">
+          <button type="submit" class="btn-rouge" style="font-family:var(--f-sans);font-size:.6rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;cursor:pointer;border:none;">Envoyer ma demande →</button>
+          <span id="fstatus"></span>
+        </div>
+        <p style="font-family:var(--f-sans);font-size:.55rem;color:var(--pierre);letter-spacing:.08em;">* Champs obligatoires. Vos données ne seront pas transmises à des tiers.</p>
+      </form>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer>
+  <div class="ft">
+    <div class="ft-top">
+      <div>
+        <div class="ft-brand">L'Unique de la Goële</div>
+        <div class="ft-tagline">Restaurant brasserie · Montgé-en-Goële</div>
+        <p style="font-family:var(--f-sans);font-size:.58rem;color:rgba(244,238,216,.25);letter-spacing:.1em;line-height:2;">
+          1 rue du Vieux Château<br>Montgé-en-Goële — 77230
+        </p>
+      </div>
+      <div>
+        <div class="ft-col-title">Le restaurant</div>
+        <ul class="ft-links">
+          <li><a href="#intro">La Maison</a></li>
+          <li><a href="#carte">Carte &amp; Menus</a></li>
+          <li><a href="#ambiance">L'Ambiance</a></li>
+          <li><a href="#galerie">Galerie</a></li>
+          <li><a href="#reservation">Réservation</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="ft-col-title">Informations</div>
+        <ul class="ft-links">
+          <li><a href="#infos">Horaires &amp; Accès</a></li>
+          <!-- TODO: Créer les pages légales -->
+          <li><a href="#">Mentions légales</a></li>
+          <li><a href="#">Politique de confidentialité</a></li>
+          <li><a href="https://www.facebook.com/p/Lunique-de-la-Go%C3%ABle-61567116171566/" target="_blank" rel="noopener">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="ft-bottom">
+      <p class="ft-copy">© 2025 L'Unique de la Goële — Tous droits réservés</p>
+      <p class="ft-copy">Montgé-en-Goële, Seine-et-Marne</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════ JAVASCRIPT ═══════ -->
+<script>
+  // ── Navbar scroll ──────────────────────────────────
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 70);
+  }, {passive:true});
+
+  // ── Menu overlay ───────────────────────────────────
+  const burger  = document.getElementById('burger');
+  const overlay = document.getElementById('overlay');
+  let isOpen = false;
+
+  function open() {
+    isOpen = true;
+    overlay.classList.add('open');
+    burger.classList.add('open');
+    burger.setAttribute('aria-expanded','true');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    isOpen = false;
+    overlay.classList.remove('open');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded','false');
+    document.body.style.overflow = '';
+  }
+
+  burger.addEventListener('click', () => isOpen ? close() : open());
+  document.addEventListener('keydown', e => e.key === 'Escape' && isOpen && close());
+  overlay.querySelectorAll('.ovl-nav a').forEach(a => a.addEventListener('click', close));
+
+  // ── Overlay image hover ────────────────────────────
+  const imgs  = overlay.querySelectorAll('.oi');
+  const cap   = document.getElementById('ovl-cap');
+  const caps  = ['La Maison','Carte & Menus','L\'Ambiance','Galerie','Infos pratiques','Réservation'];
+
+  overlay.querySelectorAll('.ovl-nav li a').forEach(a => {
+    a.addEventListener('mouseenter', () => {
+      const i = +a.dataset.img;
+      imgs.forEach((img, j) => img.classList.toggle('active', i === j));
+      cap.textContent = caps[i] || '';
+    });
+  });
+
+  // ── Scroll reveal ──────────────────────────────────
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.rv').forEach(el => obs.observe(el));
+
+  // ── Menu tabs ──────────────────────────────────────
+  document.querySelectorAll('.menu-tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.menu-panel').forEach(p => p.classList.remove('active'));
+      tab.classList.add('active');
+      document.getElementById('tab-' + tab.dataset.tab).classList.add('active');
+    });
+  });
+
+  // ── Contact form ───────────────────────────────────
+  document.getElementById('resa-form').addEventListener('submit', e => {
+    e.preventDefault();
+    const nom = document.getElementById('r-nom').value.trim();
+    const tel = document.getElementById('r-tel').value.trim();
+    const st  = document.getElementById('fstatus');
+    if (!nom || !tel) { st.textContent = 'Merci de remplir les champs obligatoires.'; st.style.color='#9E2E41'; return; }
+    st.textContent = 'Envoi en cours…'; st.style.color='var(--bordeaux)';
+    // TODO: Brancher sur Formspree, Netlify Forms ou votre backend
+    setTimeout(() => {
+      st.textContent = '✓ Demande envoyée ! Nous vous confirmons sous 24h.';
+      st.style.color = 'var(--or)';
+      e.target.reset();
+    }, 700);
+  });
+</script>
+
+</body>
+</html>

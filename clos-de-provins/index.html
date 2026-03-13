@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Le Clos de Provins — Chambres d'Hôtes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Cinzel:wght@400;500;600&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --noir-violet:   #0f0618;
+      --profond:       #1e0a2e;
+      --byzantin:      #3a1558;
+      --violet-mid:    #6b35a0;
+      --violet-light:  #9b65c8;
+      --violet-pale:   #e8d8f8;
+      --parchemin:     #f8f2e8;
+      --creme:         #fdf9f2;
+      --or:            #d4a843;
+      --or-clair:      #f0cc70;
+      --or-pale:       #f5e8c0;
+      --blanc:         #fefcf8;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Raleway', sans-serif; background: var(--creme); color: var(--profond); overflow-x: hidden; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 52px; height: 84px;
+      background: rgba(30, 10, 46, 0.96);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(212,168,67,.2);
+      transition: all .4s ease;
+    }
+    nav.scrolled { height: 66px; box-shadow: 0 4px 40px rgba(15,6,24,.4); }
+
+    .nav-logo { text-align: center; }
+    .nav-logo .sub { font-family: 'Raleway', sans-serif; font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--violet-light); display: block; margin-bottom: 3px; }
+    .nav-logo .name { font-family: 'Cinzel', serif; font-size: 19px; font-weight: 500; color: var(--blanc); letter-spacing: 3px; }
+    .nav-logo .orn { display: block; font-size: 10px; color: var(--or); letter-spacing: 8px; margin-top: 3px; }
+
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-family: 'Raleway', sans-serif; font-size: 10px; font-weight: 500; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(254,252,248,.65); text-decoration: none; transition: color .3s; position: relative; }
+    .nav-links a::after { content: ''; position: absolute; bottom: -5px; left: 0; right: 0; height: 1px; background: var(--or); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+    .nav-links a:hover { color: var(--or-clair); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+
+    .nav-cta { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--profond); background: var(--or); border: none; padding: 12px 28px; cursor: pointer; transition: all .3s; }
+    .nav-cta:hover { background: var(--or-clair); transform: translateY(-1px); }
+
+    /* ─── HERO ─── */
+    .hero { height: 100vh; min-height: 720px; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(160deg, rgba(15,6,24,.75) 0%, rgba(58,21,88,.5) 55%, rgba(15,6,24,.85) 100%),
+        url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1800&q=80') center/cover no-repeat;
+      transform: scale(1.06);
+      animation: heroZoom 20s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom { from { transform: scale(1.06); } to { transform: scale(1.13); } }
+
+    .hero-pattern {
+      position: absolute; inset: 0; opacity: .06;
+      background-image: repeating-linear-gradient(45deg, var(--or) 0, var(--or) 1px, transparent 0, transparent 28px), repeating-linear-gradient(-45deg, var(--or) 0, var(--or) 1px, transparent 0, transparent 28px);
+    }
+
+    .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 24px; animation: fadeUp 1.2s ease both; }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: translateY(0); } }
+
+    .hero-eyebrow { font-family: 'Raleway', sans-serif; font-size: 10px; letter-spacing: 6px; text-transform: uppercase; color: var(--violet-light); margin-bottom: 22px; display: flex; align-items: center; justify-content: center; gap: 16px; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 40px; height: 1px; background: var(--violet-light); opacity: .6; }
+
+    .hero-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(58px, 9vw, 108px); font-weight: 300; color: var(--blanc); line-height: .95; letter-spacing: 2px; margin-bottom: 8px; }
+    .hero-title em { font-style: italic; color: var(--or); }
+
+    .hero-sub { font-family: 'Cinzel', serif; font-size: clamp(11px, 1.5vw, 14px); letter-spacing: 8px; text-transform: uppercase; color: rgba(254,252,248,.6); margin-bottom: 36px; }
+
+    .hero-divider { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 36px; color: var(--or); }
+    .hero-divider span { width: 64px; height: 1px; background: var(--or); opacity: .5; display: block; }
+    .hero-divider i { font-style: normal; font-size: 20px; }
+
+    .hero-desc { font-family: 'Cormorant Garamond', serif; font-size: clamp(17px, 2vw, 22px); font-weight: 300; font-style: italic; color: rgba(254,252,248,.82); max-width: 580px; margin: 0 auto 48px; line-height: 1.75; }
+
+    .hero-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+    .btn-gold { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--profond); background: var(--or); border: 1px solid var(--or); padding: 18px 44px; cursor: pointer; text-decoration: none; display: inline-block; transition: all .3s; }
+    .btn-gold:hover { background: var(--or-clair); border-color: var(--or-clair); transform: translateY(-2px); }
+
+    .btn-ghost { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--blanc); background: transparent; border: 1px solid rgba(254,252,248,.35); padding: 18px 44px; cursor: pointer; text-decoration: none; display: inline-block; transition: all .3s; }
+    .btn-ghost:hover { border-color: var(--or); color: var(--or); }
+
+    .hero-scroll { position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(254,252,248,.35); font-family: 'Raleway', sans-serif; font-size: 8px; letter-spacing: 3px; text-transform: uppercase; animation: bounce 2.2s ease-in-out infinite; }
+    .hero-scroll::after { content: ''; display: block; width: 1px; height: 44px; background: linear-gradient(to bottom, rgba(212,168,67,.5), transparent); }
+    @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 55% { transform: translateX(-50%) translateY(8px); } }
+
+    /* ─── UNESCO ─── */
+    .unesco { background: var(--byzantin); border-top: 1px solid rgba(212,168,67,.3); border-bottom: 1px solid rgba(212,168,67,.3); padding: 14px 48px; text-align: center; }
+    .unesco p { font-family: 'Raleway', sans-serif; font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: rgba(254,252,248,.55); }
+    .unesco strong { color: var(--or); }
+
+    /* ─── BOOKING ─── */
+    .booking-bar { background: var(--profond); padding: 28px 52px; display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap; border-bottom: 2px solid var(--or); }
+    .bfield { display: flex; flex-direction: column; padding: 0 36px; border-right: 1px solid rgba(212,168,67,.2); }
+    .bfield:last-of-type { border-right: none; }
+    .bfield label { font-family: 'Raleway', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet-light); margin-bottom: 7px; }
+    .bfield input, .bfield select { background: transparent; border: none; font-family: 'Cormorant Garamond', serif; font-size: 18px; color: var(--blanc); outline: none; cursor: pointer; min-width: 130px; }
+    .bfield select option { background: var(--profond); }
+    .btn-book { margin-left: 36px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--profond); background: var(--or); border: none; padding: 18px 40px; cursor: pointer; transition: all .3s; }
+    .btn-book:hover { background: var(--or-clair); transform: translateY(-1px); }
+
+    /* ─── COMMONS ─── */
+    .sec { padding: 108px 52px; }
+    .sec-label { font-family: 'Raleway', sans-serif; font-size: 9px; font-weight: 500; letter-spacing: 5px; text-transform: uppercase; color: var(--or); display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+    .sec-label::after { content: ''; display: block; width: 44px; height: 1px; background: var(--or); opacity: .55; }
+    .sec-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(38px, 5vw, 64px); font-weight: 300; line-height: 1.1; margin-bottom: 26px; }
+    .sec-title em { font-style: italic; }
+    .sec-body { font-family: 'Cormorant Garamond', serif; font-size: 19px; font-weight: 300; line-height: 1.85; }
+
+    /* ─── ABOUT — clair ─── */
+    .about { background: var(--creme); }
+    .about .sec-title { color: var(--profond); }
+    .about .sec-title em { color: var(--violet-mid); }
+    .about .sec-body { color: #4a3060; }
+
+    .about-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 88px; align-items: center; max-width: 1320px; margin: 0 auto; }
+    .about-img { position: relative; }
+    .about-img img { width: 100%; aspect-ratio: 4/5; object-fit: cover; display: block; }
+    .about-img::before { content: ''; position: absolute; inset: -12px -12px 12px 12px; border: 1px solid rgba(107,53,160,.25); z-index: -1; }
+    .about-badge { position: absolute; bottom: -20px; right: -20px; width: 110px; height: 110px; background: var(--byzantin); display: flex; flex-direction: column; align-items: center; justify-content: center; border: 2px solid var(--or); }
+    .about-badge .num { font-family: 'Cormorant Garamond', serif; font-size: 42px; font-weight: 300; color: var(--or); line-height: 1; }
+    .about-badge .lbl { font-family: 'Raleway', sans-serif; font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: rgba(254,252,248,.65); text-align: center; }
+
+    .about-feats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
+    .feat { display: flex; gap: 14px; align-items: flex-start; padding: 16px 18px; border-left: 2px solid var(--or); background: rgba(107,53,160,.05); transition: background .3s; }
+    .feat:hover { background: rgba(107,53,160,.10); }
+    .feat-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .feat strong { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--profond); display: block; margin-bottom: 3px; }
+    .feat span { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: #6a4580; }
+
+    /* ─── CHAMBRES — sombre ─── */
+    .chambres { background: var(--profond); }
+    .chambres-head { text-align: center; margin-bottom: 64px; max-width: 1320px; margin-left: auto; margin-right: auto; }
+    .chambres-head .sec-label { justify-content: center; }
+    .chambres-head .sec-label::before { content: ''; display: block; width: 44px; height: 1px; background: var(--or); opacity: .55; }
+    .chambres-head .sec-label::after { display: none; }
+    .chambres .sec-title { color: var(--blanc); }
+    .chambres .sec-title em { color: var(--or); }
+    .chambres .sec-body { color: rgba(254,252,248,.6); }
+
+    .rooms-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; max-width: 1320px; margin: 0 auto; }
+    .room-card { position: relative; overflow: hidden; aspect-ratio: 3/4; cursor: pointer; }
+    .room-card img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s cubic-bezier(.25,.46,.45,.94); }
+    .room-card:hover img { transform: scale(1.08); }
+    .room-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(15,6,24,.92) 0%, rgba(30,10,46,.3) 50%, transparent 100%); }
+    .room-orn { position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border: 1px solid rgba(212,168,67,.5); display: flex; align-items: center; justify-content: center; color: var(--or); font-size: 14px; opacity: 0; transition: opacity .4s; }
+    .room-card:hover .room-orn { opacity: 1; }
+    .room-info { position: absolute; bottom: 0; left: 0; right: 0; padding: 32px; transform: translateY(14px); transition: transform .4s; }
+    .room-card:hover .room-info { transform: translateY(0); }
+    .room-name { font-family: 'Cormorant Garamond', serif; font-size: 30px; font-weight: 300; color: var(--blanc); margin-bottom: 6px; }
+    .room-desc { font-family: 'Cormorant Garamond', serif; font-size: 15px; font-style: italic; color: rgba(254,252,248,.65); margin-bottom: 16px; opacity: 0; transition: opacity .4s .1s; }
+    .room-card:hover .room-desc { opacity: 1; }
+    .room-cta { font-family: 'Cinzel', serif; font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; color: var(--or); text-decoration: none; display: flex; align-items: center; gap: 8px; opacity: 0; transition: opacity .4s .15s; }
+    .room-cta::after { content: '→'; }
+    .room-card:hover .room-cta { opacity: 1; }
+
+    /* ─── LIEU — violet pâle ─── */
+    .lieu { background: var(--violet-pale); }
+    .lieu .sec-title { color: var(--profond); }
+    .lieu .sec-title em { color: var(--violet-mid); }
+    .lieu .sec-body { color: #4a3060; }
+    .lieu-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; max-width: 1320px; margin: 0 auto; }
+    .lieu-img { position: relative; }
+    .lieu-img img { width: 100%; aspect-ratio: 1; object-fit: cover; }
+    .lieu-tag { position: absolute; bottom: 24px; left: 24px; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; color: var(--blanc); background: var(--byzantin); border-left: 3px solid var(--or); padding: 12px 20px; }
+    .poi-list { display: flex; flex-direction: column; gap: 12px; margin-top: 36px; }
+    .poi { display: flex; gap: 14px; align-items: center; padding: 14px 18px; background: rgba(58,21,88,.08); border-left: 2px solid rgba(107,53,160,.3); transition: all .3s; }
+    .poi:hover { background: rgba(58,21,88,.15); border-left-color: var(--or); transform: translateX(4px); }
+    .poi-icon { font-size: 18px; }
+    .poi-name { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--profond); }
+    .poi-dist { margin-left: auto; font-family: 'Raleway', sans-serif; font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--violet-mid); }
+
+    /* ─── PETIT-DEJ — byzantin sombre ─── */
+    .petitdej { background: var(--byzantin); padding: 108px 52px; position: relative; overflow: hidden; text-align: center; }
+    .petitdej::before { content: ''; position: absolute; inset: 0; background: url('https://images.unsplash.com/photo-1504754524776-8f4f37790ca0?w=1400&q=50') center/cover; opacity: .08; }
+    .petitdej::after { content: ''; position: absolute; inset: 0; background-image: repeating-linear-gradient(45deg, var(--or) 0, var(--or) 1px, transparent 0, transparent 40px), repeating-linear-gradient(-45deg, var(--or) 0, var(--or) 1px, transparent 0, transparent 40px); opacity: .04; }
+    .petitdej-inner { position: relative; z-index: 1; max-width: 760px; margin: 0 auto; }
+    .petitdej .sec-label { justify-content: center; color: var(--or-pale); }
+    .petitdej .sec-label::before { content: ''; display: block; width: 44px; height: 1px; background: var(--or-pale); opacity: .4; }
+    .petitdej .sec-label::after { background: var(--or-pale); opacity: .4; }
+    .petitdej .sec-title { color: var(--blanc); }
+    .petitdej .sec-title em { color: var(--or); }
+    .petitdej .sec-body { color: rgba(254,252,248,.72); }
+    .pj-items { display: flex; justify-content: center; gap: 44px; margin-top: 56px; flex-wrap: wrap; }
+    .pj-item { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .pj-icon { font-size: 34px; }
+    .pj-label { font-family: 'Cormorant Garamond', serif; font-size: 16px; font-style: italic; color: rgba(254,252,248,.75); }
+
+    /* ─── AVIS — clair ─── */
+    .avis { background: var(--creme); }
+    .avis .sec-title { color: var(--profond); }
+    .avis .sec-title em { color: var(--violet-mid); }
+    .avis-head { text-align: center; margin-bottom: 64px; max-width: 1320px; margin-left: auto; margin-right: auto; }
+    .avis-head .sec-label { justify-content: center; }
+    .avis-head .sec-label::before { content: ''; display: block; width: 44px; height: 1px; background: var(--or); opacity: .55; }
+    .avis-head .sec-label::after { display: none; }
+    .avis-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 3px; max-width: 1320px; margin: 0 auto; }
+    .avis-card { background: var(--blanc); padding: 44px 36px; position: relative; border-top: 3px solid var(--byzantin); transition: transform .3s, box-shadow .3s; }
+    .avis-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(58,21,88,.15); }
+    .avis-card::before { content: '\201C'; font-family: 'Cormorant Garamond', serif; font-size: 90px; font-weight: 300; color: var(--violet-pale); position: absolute; top: 10px; left: 24px; line-height: 1; }
+    .avis-stars { color: var(--or); font-size: 15px; margin-bottom: 20px; margin-top: 36px; letter-spacing: 3px; }
+    .avis-text { font-family: 'Cormorant Garamond', serif; font-size: 18px; font-style: italic; line-height: 1.75; color: #4a3060; margin-bottom: 28px; }
+    .avis-author { display: flex; align-items: center; gap: 13px; }
+    .avis-av { width: 38px; height: 38px; border-radius: 50%; background: var(--byzantin); border: 2px solid var(--or); display: flex; align-items: center; justify-content: center; font-family: 'Cinzel', serif; font-size: 15px; color: var(--or); }
+    .avis-name { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--profond); }
+    .avis-date { font-family: 'Raleway', sans-serif; font-size: 10px; color: var(--violet-mid); margin-top: 2px; }
+
+    /* ─── GALERIE — noir violet ─── */
+    .galerie { background: var(--noir-violet); }
+    .galerie-head { padding: 72px 52px 48px; text-align: center; }
+    .galerie-head .sec-label { justify-content: center; }
+    .galerie-head .sec-label::before { content: ''; display: block; width: 44px; height: 1px; background: var(--or); opacity: .55; }
+    .galerie-head .sec-label::after { display: none; }
+    .galerie-head .sec-title { color: var(--blanc); }
+    .galerie-head .sec-title em { color: var(--or); }
+    .galerie-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 320px 320px; gap: 3px; }
+    .g-item { overflow: hidden; position: relative; cursor: zoom-in; }
+    .g-item:first-child { grid-row: span 2; }
+    .g-item img { width: 100%; height: 100%; object-fit: cover; transition: transform .7s ease; filter: brightness(.85) saturate(.8); }
+    .g-item:hover img { transform: scale(1.06); filter: brightness(1) saturate(1.1); }
+    .g-item::after { content: ''; position: absolute; inset: 0; background: rgba(15,6,24,.3); transition: opacity .4s; }
+    .g-item:hover::after { opacity: 0; }
+
+    /* ─── CONTACT — violet pâle ─── */
+    .contact { background: var(--violet-pale); padding: 108px 52px; }
+    .contact .sec-title { color: var(--profond); }
+    .contact .sec-title em { color: var(--violet-mid); }
+    .contact .sec-body { color: #4a3060; }
+    .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; max-width: 1320px; margin: 0 auto; }
+    .contact-details { margin-top: 36px; display: flex; flex-direction: column; gap: 14px; }
+    .ci { display: flex; gap: 16px; align-items: flex-start; padding: 16px 20px; background: rgba(58,21,88,.08); border-left: 2px solid var(--or); transition: background .3s; }
+    .ci:hover { background: rgba(58,21,88,.15); }
+    .ci-icon { font-size: 18px; color: var(--or); margin-top: 2px; flex-shrink: 0; }
+    .ci-text { font-family: 'Cormorant Garamond', serif; font-size: 17px; color: var(--profond); line-height: 1.6; }
+    .ci-text a { color: var(--violet-mid); text-decoration: none; }
+    .ci-text a:hover { color: var(--byzantin); text-decoration: underline; }
+
+    .contact-form { background: var(--profond); padding: 44px; }
+    .contact-form h3 { font-family: 'Cinzel', serif; font-size: 13px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid rgba(212,168,67,.25); }
+    .fg { margin-bottom: 18px; }
+    .fg label { display: block; font-family: 'Raleway', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--violet-light); margin-bottom: 8px; }
+    .fg input, .fg textarea, .fg select { width: 100%; background: rgba(254,252,248,.06); border: 1px solid rgba(212,168,67,.2); padding: 13px 16px; font-family: 'Cormorant Garamond', serif; font-size: 16px; color: var(--blanc); outline: none; transition: border-color .3s; }
+    .fg input:focus, .fg textarea:focus, .fg select:focus { border-color: var(--or); }
+    .fg input::placeholder, .fg textarea::placeholder { color: rgba(254,252,248,.25); }
+    .fg textarea { resize: vertical; min-height: 100px; }
+    .fg select option { background: var(--profond); }
+    .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .btn-submit { width: 100%; font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--profond); background: var(--or); border: none; padding: 18px; cursor: pointer; transition: all .3s; margin-top: 6px; }
+    .btn-submit:hover { background: var(--or-clair); }
+
+    /* ─── FOOTER ─── */
+    footer { background: var(--noir-violet); padding: 64px 52px 32px; border-top: 1px solid rgba(212,168,67,.2); }
+    .footer-top { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 60px; padding-bottom: 52px; border-bottom: 1px solid rgba(254,252,248,.08); }
+    .fb-name { font-family: 'Cinzel', serif; font-size: 21px; letter-spacing: 3px; color: var(--blanc); margin-bottom: 4px; }
+    .fb-sub { font-family: 'Raleway', sans-serif; font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--or); margin-bottom: 20px; }
+    .fb-desc { font-family: 'Cormorant Garamond', serif; font-size: 15px; line-height: 1.75; color: rgba(254,252,248,.4); max-width: 280px; }
+    .footer-social { display: flex; gap: 10px; margin-top: 24px; }
+    .footer-social a { width: 34px; height: 34px; border: 1px solid rgba(212,168,67,.25); display: flex; align-items: center; justify-content: center; color: rgba(254,252,248,.4); text-decoration: none; font-size: 13px; transition: all .3s; }
+    .footer-social a:hover { border-color: var(--or); color: var(--or); }
+    .fc h4 { font-family: 'Cinzel', serif; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; color: var(--blanc); margin-bottom: 22px; }
+    .fc ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .fc ul li a { font-family: 'Cormorant Garamond', serif; font-size: 15px; color: rgba(254,252,248,.4); text-decoration: none; transition: color .3s; }
+    .fc ul li a:hover { color: var(--or); }
+    .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; font-family: 'Raleway', sans-serif; font-size: 10px; letter-spacing: 1.5px; color: rgba(254,252,248,.2); }
+    .footer-bottom a { color: rgba(254,252,248,.2); text-decoration: none; }
+    .footer-bottom a:hover { color: var(--or); }
+
+    /* ─── FADE IN ─── */
+    .fi { opacity: 0; transform: translateY(28px); transition: opacity .75s ease, transform .75s ease; }
+    .fi.d1 { transition-delay: .12s; } .fi.d2 { transition-delay: .24s; } .fi.d3 { transition-delay: .36s; }
+    .fi.show { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .about-inner, .lieu-inner, .contact-inner { grid-template-columns: 1fr; gap: 48px; }
+      .rooms-grid { grid-template-columns: 1fr 1fr; }
+      .avis-grid { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+      .galerie-grid { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, 220px); }
+      .galerie-grid .g-item:first-child { grid-row: span 1; }
+    }
+    @media (max-width: 768px) {
+      nav { padding: 0 20px; } .nav-links, .nav-cta { display: none; }
+      .booking-bar { flex-direction: column; padding: 24px; }
+      .bfield { border-right: none; border-bottom: 1px solid rgba(212,168,67,.2); padding: 0 0 16px; width: 100%; }
+      .bfield:last-of-type { border-bottom: none; }
+      .btn-book { margin-left: 0; width: 100%; margin-top: 8px; }
+      .sec { padding: 64px 24px; } .rooms-grid { grid-template-columns: 1fr; }
+      .galerie-grid { grid-template-columns: 1fr; grid-template-rows: repeat(5, 200px); }
+      .footer-top { grid-template-columns: 1fr; gap: 36px; }
+      .fg-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav id="nav">
+  <ul class="nav-links">
+    <li><a href="#chambres">Chambres</a></li>
+    <li><a href="#lieu">Le Lieu</a></li>
+    <li><a href="#petitdej">Petit-déjeuner</a></li>
+  </ul>
+  <div class="nav-logo">
+    <span class="sub">Chambres d'Hôtes · Provins</span>
+    <span class="name">Le Clos de Provins</span>
+    <span class="orn">✦ ✦ ✦</span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#galerie">Galerie</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-cta" onclick="document.getElementById('booking').scrollIntoView({behavior:'smooth'})">Réserver</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Cité Médiévale · Patrimoine UNESCO</p>
+    <h1 class="hero-title">Le Clos<br><em>de Provins</em></h1>
+    <p class="hero-sub">Chambres d'Hôtes · 3 Épis Gîte de France</p>
+    <div class="hero-divider"><span></span><i>❧</i><span></span></div>
+    <p class="hero-desc">Nichée au cœur de la cité médiévale, à l'ombre de la Collégiale Saint-Quiriace, une demeure d'exception où le temps s'arrête.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-gold">Réserver votre séjour</a>
+      <a href="#chambres" class="btn-ghost">Découvrir les chambres</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Découvrir</div>
+</section>
+
+<div class="unesco">
+  <p>Provins · <strong>Patrimoine Mondial de l'Humanité UNESCO</strong> · Ville-Haute historique · 80 km de Paris</p>
+</div>
+
+<div class="booking-bar" id="booking">
+  <div class="bfield"><label>Arrivée</label><input type="date" /></div>
+  <div class="bfield"><label>Départ</label><input type="date" /></div>
+  <div class="bfield"><label>Voyageurs</label><select><option>1 personne</option><option>2 personnes</option><option>3 personnes</option><option>4 personnes</option></select></div>
+  <div class="bfield"><label>Chambre</label><select><option>Toutes les chambres</option><option>La Roseraie</option><option>Saint-Quiriace</option><option>Les Jacobins</option></select></div>
+  <button class="btn-book">Vérifier les disponibilités</button>
+</div>
+
+<!-- ABOUT — clair crème -->
+<section class="sec about" id="about">
+  <div class="about-inner">
+    <div class="about-img fi">
+      <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&q=80" alt="Le Clos de Provins" />
+      <div class="about-badge"><span class="num">3</span><span class="lbl">Épis<br>Gîte de France</span></div>
+    </div>
+    <div class="fi d1">
+      <p class="sec-label">Notre histoire</p>
+      <h2 class="sec-title">Un refuge de <em>sérénité</em><br>au cœur du Moyen Âge</h2>
+      <p class="sec-body">Dans la cité médiévale de Provins, classée au Patrimoine Mondial de l'Humanité par l'UNESCO, nichée au creux de l'épaule de la Collégiale Saint-Quiriace, cette belle demeure vous séduira par son calme et sa sérénité, tout en vous faisant bénéficier de son emplacement privilégié.</p>
+      <p class="sec-body" style="margin-top:16px;">Ses jardins secrets et ses murs centenaires vous protègent des bruits du monde, tout en vous plaçant à deux pas du centre historique.</p>
+      <div class="about-feats">
+        <div class="feat fi d1"><span class="feat-icon">🌹</span><div><strong>Roseraie</strong><span>Jardins fleuris et terrasse paisible</span></div></div>
+        <div class="feat fi d2"><span class="feat-icon">🏰</span><div><strong>Centre historique</strong><span>À 250 m du cœur de la ville</span></div></div>
+        <div class="feat fi d1"><span class="feat-icon">🍳</span><div><strong>Petit-déjeuner</strong><span>Produits locaux chaque matin</span></div></div>
+        <div class="feat fi d2"><span class="feat-icon">🚗</span><div><strong>Parking privé</strong><span>Stationnement offert</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMBRES — profond violet sombre -->
+<section class="sec chambres" id="chambres">
+  <div class="chambres-head fi">
+    <p class="sec-label">Hébergement</p>
+    <h2 class="sec-title">Nos <em>chambres</em></h2>
+    <p class="sec-body" style="max-width:560px;margin:0 auto;">Chaque chambre porte le nom d'un lieu emblématique de Provins et a été décorée avec soin pour allier confort moderne et charme médiéval.</p>
+  </div>
+  <div class="rooms-grid">
+    <div class="room-card fi"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=700&q=80" alt="La Roseraie" /><div class="room-overlay"></div><div class="room-orn">✦</div><div class="room-info"><h3 class="room-name">La Roseraie</h3><p class="room-desc">Vue sur les jardins · Lit double · Salle de bain privative</p><a href="#contact" class="room-cta">En savoir plus</a></div></div>
+    <div class="room-card fi d1"><img src="https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=700&q=80" alt="Saint-Quiriace" /><div class="room-overlay"></div><div class="room-orn">✦</div><div class="room-info"><h3 class="room-name">Saint-Quiriace</h3><p class="room-desc">Vue sur la collégiale · Charme médiéval · Lit double</p><a href="#contact" class="room-cta">En savoir plus</a></div></div>
+    <div class="room-card fi d2"><img src="https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=700&q=80" alt="Les Jacobins" /><div class="room-overlay"></div><div class="room-orn">✦</div><div class="room-info"><h3 class="room-name">Les Jacobins</h3><p class="room-desc">Suite familiale · Espace lounge · Jardin privatif</p><a href="#contact" class="room-cta">En savoir plus</a></div></div>
+  </div>
+</section>
+
+<!-- LIEU — violet pâle -->
+<section class="sec lieu" id="lieu">
+  <div class="lieu-inner">
+    <div class="lieu-img fi"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800&q=80" alt="Vue de Provins" /><span class="lieu-tag">4 rue des Jacobins, Provins</span></div>
+    <div class="fi d1">
+      <p class="sec-label">Situation idéale</p>
+      <h2 class="sec-title">Au cœur de <em>Provins</em></h2>
+      <p class="sec-body">Posée sur la ville haute, notre maison vous offre un accès immédiat aux merveilles de la cité médiévale, tout en restant un havre de paix protégé de l'agitation touristique.</p>
+      <div class="poi-list">
+        <div class="poi fi d1"><span class="poi-icon">⛪</span><span class="poi-name">Collégiale Saint-Quiriace</span><span class="poi-dist">100 m</span></div>
+        <div class="poi fi d1"><span class="poi-icon">🌹</span><span class="poi-name">Roseraie et promenades d'Aligre</span><span class="poi-dist">200 m</span></div>
+        <div class="poi fi d2"><span class="poi-icon">🏛️</span><span class="poi-name">Centre historique</span><span class="poi-dist">250 m</span></div>
+        <div class="poi fi d2"><span class="poi-icon">🚂</span><span class="poi-name">Gare de Provins (ligne P)</span><span class="poi-dist">1,2 km</span></div>
+        <div class="poi fi d3"><span class="poi-icon">🗼</span><span class="poi-name">Paris Gare de l'Est</span><span class="poi-dist">80 km</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PETIT-DEJ — byzantin -->
+<section class="petitdej" id="petitdej">
+  <div class="petitdej-inner">
+    <p class="sec-label">Chaque matin</p>
+    <h2 class="sec-title">Le petit-déjeuner,<br>un moment <em>précieux</em></h2>
+    <p class="sec-body">Servi dans la salle à manger ou sur la terrasse selon la saison, notre petit-déjeuner fait la part belle aux produits locaux et faits maison.</p>
+    <div class="pj-items">
+      <div class="pj-item"><span class="pj-icon">🥐</span><span class="pj-label">Viennoiseries fraîches</span></div>
+      <div class="pj-item"><span class="pj-icon">🍓</span><span class="pj-label">Confitures maison</span></div>
+      <div class="pj-item"><span class="pj-icon">🥚</span><span class="pj-label">Œufs du jardin</span></div>
+      <div class="pj-item"><span class="pj-icon">🧀</span><span class="pj-label">Fromages régionaux</span></div>
+      <div class="pj-item"><span class="pj-icon">☕</span><span class="pj-label">Boissons chaudes</span></div>
+      <div class="pj-item"><span class="pj-icon">🍯</span><span class="pj-label">Miel de la région</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- AVIS — crème clair -->
+<section class="sec avis" id="avis">
+  <div class="avis-head fi">
+    <p class="sec-label">Ils nous font confiance</p>
+    <h2 class="sec-title">Vos <em>témoignages</em></h2>
+  </div>
+  <div class="avis-grid">
+    <div class="avis-card fi"><div class="avis-stars">★★★★★</div><p class="avis-text">Un séjour absolument merveilleux. La maison respire la quiétude et l'authenticité. Nous avons dormi les fenêtres ouvertes sur le jardin — un bonheur rare en pleine cité médiévale.</p><div class="avis-author"><div class="avis-av">M</div><div><div class="avis-name">Marie & François</div><div class="avis-date">Octobre 2024 · Booking.com</div></div></div></div>
+    <div class="avis-card fi d1"><div class="avis-stars">★★★★★</div><p class="avis-text">L'emplacement est exceptionnel — à deux pas des remparts mais dans une bulle de silence. Le petit-déjeuner en terrasse avec vue sur la collégiale est un souvenir inoubliable.</p><div class="avis-author"><div class="avis-av">T</div><div><div class="avis-name">Thomas & Léa</div><div class="avis-date">Août 2024 · TripAdvisor</div></div></div></div>
+    <div class="avis-card fi d2"><div class="avis-stars">★★★★★</div><p class="avis-text">L'accueil chaleureux, les chambres décorées avec goût, le jardin fleuri… Tout concourt à faire de ce Clos un lieu hors du temps. Nous reviendrons chaque année.</p><div class="avis-author"><div class="avis-av">S</div><div><div class="avis-name">Sophie D.</div><div class="avis-date">Juin 2024 · Google</div></div></div></div>
+  </div>
+</section>
+
+<!-- GALERIE — noir violet -->
+<section class="galerie" id="galerie">
+  <div class="galerie-head fi">
+    <p class="sec-label">Galerie</p>
+    <h2 class="sec-title">Le Clos en <em>images</em></h2>
+  </div>
+  <div class="galerie-grid">
+    <div class="g-item"><img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=900&q=80" alt="Façade" /></div>
+    <div class="g-item"><img src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="Chambre" /></div>
+    <div class="g-item"><img src="https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=600&q=80" alt="Petit-déjeuner" /></div>
+    <div class="g-item"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80" alt="Jardin" /></div>
+    <div class="g-item"><img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Provins" /></div>
+  </div>
+</section>
+
+<!-- CONTACT — violet pâle -->
+<section class="contact" id="contact">
+  <div class="contact-inner">
+    <div class="fi">
+      <p class="sec-label">Nous contacter</p>
+      <h2 class="sec-title">Réservez votre<br><em>escapade médiévale</em></h2>
+      <p class="sec-body">Pour toute question ou réservation directe, n'hésitez pas à nous contacter. Nous répondons dans les 24 heures.</p>
+      <div class="contact-details">
+        <div class="ci"><span class="ci-icon">📍</span><span class="ci-text">4 rue des Jacobins, Ville-Haute<br>77160 Provins, Seine-et-Marne</span></div>
+        <div class="ci"><span class="ci-icon">📞</span><span class="ci-text"><a href="tel:+33685808645">+33 (0)6 85 80 86 45</a></span></div>
+        <div class="ci"><span class="ci-icon">✉️</span><span class="ci-text"><a href="mailto:contact@leclosdeprovins.com">contact@leclosdeprovins.com</a></span></div>
+        <div class="ci"><span class="ci-icon">🕐</span><span class="ci-text">Accueil de 16h à 20h · Check-out avant 11h</span></div>
+      </div>
+    </div>
+    <div class="contact-form fi d1">
+      <h3>Demande de réservation</h3>
+      <div class="fg"><label>Votre nom</label><input type="text" placeholder="Prénom et nom" /></div>
+      <div class="fg"><label>Adresse email</label><input type="email" placeholder="votre@email.fr" /></div>
+      <div class="fg-row">
+        <div class="fg"><label>Arrivée</label><input type="date" /></div>
+        <div class="fg"><label>Départ</label><input type="date" /></div>
+      </div>
+      <div class="fg"><label>Chambre souhaitée</label><select><option value="">— Choisir une chambre —</option><option>La Roseraie</option><option>Saint-Quiriace</option><option>Les Jacobins</option></select></div>
+      <div class="fg"><label>Message</label><textarea placeholder="Vos questions, souhaits particuliers…"></textarea></div>
+      <button class="btn-submit">Envoyer ma demande</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="fb-name">Le Clos de Provins</div>
+      <div class="fb-sub">Chambres d'Hôtes · 3 Épis Gîte de France</div>
+      <p class="fb-desc">Une demeure d'exception au cœur de la cité médiévale de Provins, classée au Patrimoine Mondial de l'Humanité par l'UNESCO.</p>
+      <div class="footer-social"><a href="#">f</a><a href="#">◈</a><a href="#">✈</a></div>
+    </div>
+    <div class="fc"><h4>Navigation</h4><ul><li><a href="#chambres">Nos chambres</a></li><li><a href="#lieu">Le lieu</a></li><li><a href="#petitdej">Petit-déjeuner</a></li><li><a href="#galerie">Galerie photos</a></li><li><a href="#avis">Avis clients</a></li></ul></div>
+    <div class="fc"><h4>Infos pratiques</h4><ul><li><a href="#">Tarifs & disponibilités</a></li><li><a href="#">Conditions de réservation</a></li><li><a href="#">Accès & stationnement</a></li><li><a href="#">Activités à Provins</a></li><li><a href="#">Spectacles médiévaux</a></li></ul></div>
+    <div class="fc"><h4>Contact</h4><ul><li><a href="tel:+33685808645">+33 6 85 80 86 45</a></li><li><a href="mailto:contact@leclosdeprovins.com">contact@leclosdeprovins.com</a></li><li><a href="#">4 rue des Jacobins</a></li><li><a href="#">77160 Provins</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Le Clos de Provins · Tous droits réservés</span>
+    <div style="display:flex;gap:24px;"><a href="#">Mentions légales</a><a href="#">Confidentialité</a><a href="#">Gîtes de France</a></div>
+  </div>
+</footer>
+
+<script>
+  const nav = document.getElementById('nav');
+  window.addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 60));
+  const obs = new IntersectionObserver(e => e.forEach(el => { if (el.isIntersecting) el.target.classList.add('show'); }), { threshold: .1 });
+  document.querySelectorAll('.fi').forEach(el => obs.observe(el));
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => { const t = document.querySelector(a.getAttribute('href')); if (t) { e.preventDefault(); t.scrollIntoView({ behavior: 'smooth' }); } });
+  });
+</script>
+</body>
+</html>

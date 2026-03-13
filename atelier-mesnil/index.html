@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L'Atelier — Restaurant Traiteur · Mesnil-Amelot</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream:   #F5F0E8;
+      --warm:    #EAE0CC;
+      --gold:    #B8955A;
+      --gold-lt: #D4AF7A;
+      --dark:    #1A1612;
+      --mid:     #3A3028;
+      --muted:   #7A6A58;
+      --white:   #FDFBF7;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--dark);
+      color: var(--cream);
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ─── SCROLLBAR ─────────────────────────────── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--dark); }
+    ::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+    /* ─── HEADER ─────────────────────────────────── */
+    header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.5rem 3rem;
+      transition: background 0.4s ease, backdrop-filter 0.4s ease;
+    }
+    header.scrolled {
+      background: rgba(26,22,18,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(184,149,90,0.15);
+    }
+
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+      text-decoration: none;
+    }
+    .logo span { color: var(--gold); font-style: italic; }
+
+    .header-right { display: flex; align-items: center; gap: 2rem; }
+
+    .btn-reserver {
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      border: none;
+      padding: 0.75rem 1.8rem;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-reserver:hover { background: var(--gold-lt); transform: translateY(-1px); }
+
+    /* ─── HAMBURGER ──────────────────────────────── */
+    .hamburger {
+      width: 36px; height: 24px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+      cursor: pointer; background: none; border: none; padding: 0;
+    }
+    .hamburger span {
+      display: block; height: 1px;
+      background: var(--cream);
+      transition: all 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+      transform-origin: left center;
+    }
+    .hamburger.open span:nth-child(1) { transform: rotate(42deg) translateY(-1px); }
+    .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .hamburger.open span:nth-child(3) { transform: rotate(-42deg) translateY(1px); }
+
+    /* ─── FULLSCREEN NAV ─────────────────────────── */
+    .nav-overlay {
+      position: fixed; inset: 0; z-index: 99;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    .nav-overlay.open { opacity: 1; pointer-events: all; }
+
+    .nav-overlay::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 60% at 80% 20%, rgba(184,149,90,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .nav-content {
+      text-align: center;
+    }
+
+    .nav-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 3rem;
+      opacity: 0.7;
+    }
+
+    nav ul { list-style: none; }
+    nav ul li {
+      overflow: hidden;
+      margin: 0.3rem 0;
+    }
+
+    nav ul li a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: var(--cream);
+      text-decoration: none;
+      display: inline-block;
+      transform: translateY(100%);
+      transition: transform 0.6s cubic-bezier(0.77, 0, 0.18, 1), color 0.3s;
+    }
+    nav ul li a:hover { color: var(--gold); }
+    .nav-overlay.open nav ul li a {
+      transform: translateY(0);
+    }
+    nav ul li:nth-child(1) a { transition-delay: 0.05s; }
+    nav ul li:nth-child(2) a { transition-delay: 0.1s; }
+    nav ul li:nth-child(3) a { transition-delay: 0.15s; }
+    nav ul li:nth-child(4) a { transition-delay: 0.2s; }
+    nav ul li:nth-child(5) a { transition-delay: 0.25s; }
+    nav ul li:nth-child(6) a { transition-delay: 0.3s; }
+
+    .nav-footer {
+      margin-top: 4rem;
+      display: flex; gap: 3rem; justify-content: center;
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease 0.45s;
+    }
+    .nav-overlay.open .nav-footer { opacity: 1; transform: translateY(0); }
+    .nav-footer a { color: var(--muted); text-decoration: none; transition: color 0.2s; }
+    .nav-footer a:hover { color: var(--gold); }
+
+    /* ─── HERO ───────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh; min-height: 700px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(26,22,18,0.3) 0%, rgba(26,22,18,0.1) 40%, rgba(26,22,18,0.7) 80%, var(--dark) 100%),
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80') center/cover no-repeat;
+      transform: scale(1.05);
+      transition: transform 8s ease;
+    }
+    .hero-bg.loaded { transform: scale(1); }
+
+    .hero-content {
+      position: relative; z-index: 2;
+      padding: 0 3rem 6rem;
+      max-width: 800px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.3s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.5rem, 7vw, 6rem);
+      font-weight: 300;
+      line-height: 1.05;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--gold-lt); }
+
+    .hero-sub {
+      font-size: 1rem;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+      color: rgba(245,240,232,0.75);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.7s forwards;
+    }
+
+    .hero-actions {
+      display: flex; gap: 1.5rem; align-items: center;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+
+    .btn-primary {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--dark);
+      background: var(--gold);
+      padding: 1rem 2.5rem;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.2s;
+      display: inline-block;
+    }
+    .btn-primary:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+    .btn-outline {
+      font-size: 0.72rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--cream);
+      border-bottom: 1px solid rgba(245,240,232,0.4);
+      padding-bottom: 2px;
+      text-decoration: none;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .btn-outline:hover { color: var(--gold); border-color: var(--gold); }
+
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: 3rem;
+      writing-mode: vertical-rl;
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.4);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, rgba(245,240,232,0.4), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.4; transform: scaleY(1); }
+      50% { opacity: 0.8; transform: scaleY(1.3); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ─── DIVIDER ─────────────────────────────────── */
+    .divider {
+      display: flex; align-items: center; gap: 2rem;
+      padding: 0 3rem; margin: 4rem 0;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(to right, transparent, rgba(184,149,90,0.3), transparent);
+    }
+    .divider span {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      color: var(--gold);
+      font-size: 1.1rem;
+      white-space: nowrap;
+    }
+
+    /* ─── INTRO ───────────────────────────────────── */
+    .intro {
+      padding: 6rem 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: center;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .intro-text .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+
+    .intro-text h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.2;
+      letter-spacing: 0.02em;
+      margin-bottom: 2rem;
+    }
+    .intro-text h2 em { color: var(--gold-lt); font-style: italic; }
+
+    .intro-text p {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(245,240,232,0.7);
+      margin-bottom: 1.2rem;
+    }
+
+    .intro-visual {
+      position: relative;
+    }
+    .intro-visual::before {
+      content: '';
+      position: absolute;
+      inset: -20px -20px 20px 20px;
+      border: 1px solid rgba(184,149,90,0.2);
+      z-index: 0;
+    }
+    .intro-img {
+      position: relative; z-index: 1;
+      width: 100%; aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+    }
+    .intro-badge {
+      position: absolute; bottom: -2rem; left: -2rem; z-index: 2;
+      width: 130px; height: 130px;
+      background: var(--gold);
+      border-radius: 50%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+    }
+    .intro-badge strong { font-size: 2.2rem; font-weight: 400; color: var(--dark); line-height: 1; }
+    .intro-badge span { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--dark); opacity: 0.7; }
+
+    /* ─── SERVICES ─────────────────────────────────── */
+    .services {
+      padding: 4rem 3rem 6rem;
+      max-width: 1400px; margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 4rem;
+    }
+    .section-header .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      letter-spacing: 0.03em;
+    }
+    .section-header h2 em { color: var(--gold-lt); font-style: italic; }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+      group: true;
+    }
+    .service-card img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      display: block;
+    }
+    .service-card:hover img { transform: scale(1.07); }
+
+    .service-card-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(26,22,18,0.92) 0%, rgba(26,22,18,0.2) 60%, transparent 100%);
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 2.5rem 2rem;
+      transition: background 0.4s;
+    }
+    .service-card:hover .service-card-overlay {
+      background: linear-gradient(to top, rgba(26,22,18,0.98) 0%, rgba(26,22,18,0.5) 70%, rgba(26,22,18,0.1) 100%);
+    }
+
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      color: rgba(184,149,90,0.15);
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 0.75rem;
+    }
+
+    .service-card p {
+      font-size: 0.82rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.65);
+      line-height: 1.6;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.4s ease;
+    }
+    .service-card:hover p { max-height: 80px; }
+
+    .service-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-top: 1rem;
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .service-card:hover .service-link { opacity: 1; transform: translateY(0); }
+    .service-link::after { content: '→'; transition: transform 0.2s; }
+    .service-link:hover::after { transform: translateX(4px); }
+
+    /* ─── MENU HIGHLIGHT ────────────────────────────── */
+    .menu-section {
+      padding: 6rem 3rem;
+      background: var(--mid);
+      position: relative;
+      overflow: hidden;
+    }
+    .menu-section::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 50% 100%, rgba(184,149,90,0.06) 0%, transparent 70%);
+    }
+
+    .menu-inner {
+      max-width: 1400px; margin: 0 auto;
+      position: relative; z-index: 1;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: 1fr 2px 1fr 2px 1fr;
+      gap: 4rem;
+      margin-top: 4rem;
+    }
+    .menu-divider-v {
+      background: linear-gradient(to bottom, transparent, rgba(184,149,90,0.3), transparent);
+    }
+
+    .menu-category h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--gold-lt);
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(184,149,90,0.2);
+    }
+
+    .menu-item {
+      display: flex; justify-content: space-between; align-items: baseline;
+      margin-bottom: 1.2rem;
+      gap: 1rem;
+    }
+    .menu-item-left {}
+    .menu-item-name {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--cream);
+      margin-bottom: 0.2rem;
+    }
+    .menu-item-desc {
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--muted);
+      font-style: italic;
+    }
+    .menu-item-price {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--gold);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .menu-cta {
+      text-align: center; margin-top: 3.5rem;
+    }
+
+    /* ─── GALERIE ────────────────────────────────────── */
+    .gallery {
+      padding: 6rem 0;
+    }
+    .gallery-header {
+      padding: 0 3rem;
+      margin-bottom: 3rem;
+    }
+    .gallery-track {
+      display: flex; gap: 2px;
+      overflow: hidden;
+    }
+    .gallery-item {
+      flex: 0 0 calc(25% - 1.5px);
+      aspect-ratio: 3/4;
+      overflow: hidden;
+      position: relative;
+    }
+    .gallery-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+      display: block;
+      filter: grayscale(20%);
+    }
+    .gallery-item:hover img { transform: scale(1.05); filter: grayscale(0%); }
+
+    /* ─── CONTACT ─────────────────────────────────────── */
+    .contact {
+      padding: 7rem 3rem;
+      max-width: 1400px; margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8rem;
+      align-items: start;
+    }
+
+    .contact-info .eyebrow {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    .contact-info h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      margin-bottom: 2rem;
+    }
+    .contact-info h2 em { color: var(--gold-lt); font-style: italic; }
+
+    .contact-details { margin-top: 2.5rem; }
+    .contact-row {
+      display: flex; gap: 1.5rem; align-items: flex-start;
+      margin-bottom: 1.8rem;
+    }
+    .contact-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(184,149,90,0.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: var(--gold);
+      font-size: 0.85rem;
+    }
+    .contact-row-text { font-size: 0.88rem; font-weight: 300; line-height: 1.6; }
+    .contact-row-label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.25rem;
+      display: block;
+    }
+    .contact-row-text a { color: var(--cream); text-decoration: none; }
+    .contact-row-text a:hover { color: var(--gold); }
+
+    .contact-form { padding-top: 1rem; }
+    .form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      color: var(--cream);
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+    .form-group { display: flex; flex-direction: column; gap: 0.5rem; }
+    .form-group.full { grid-column: 1 / -1; }
+
+    .form-group label {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(184,149,90,0.2);
+      color: var(--cream);
+      padding: 0.9rem 1rem;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.88rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus { border-color: var(--gold); }
+    .form-group select option { background: var(--mid); }
+    .form-group textarea { min-height: 120px; }
+
+    .btn-submit {
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1.1rem;
+      background: var(--gold);
+      color: var(--dark);
+      border: none;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-submit:hover { background: var(--gold-lt); transform: translateY(-2px); }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    footer {
+      background: rgba(0,0,0,0.4);
+      border-top: 1px solid rgba(184,149,90,0.1);
+      padding: 3rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: var(--cream);
+    }
+    .footer-logo span { color: var(--gold); font-style: italic; }
+
+    .footer-links {
+      display: flex; gap: 2.5rem;
+      list-style: none;
+    }
+    .footer-links a {
+      font-size: 0.68rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+
+    .footer-copy {
+      font-size: 0.7rem;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ─── MODAL RÉSERVATION ──────────────────────────── */
+    .modal-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(26,22,18,0.95);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.4s ease;
+      backdrop-filter: blur(8px);
+    }
+    .modal-overlay.open { opacity: 1; pointer-events: all; }
+
+    .modal {
+      background: var(--mid);
+      border: 1px solid rgba(184,149,90,0.2);
+      padding: 4rem;
+      max-width: 560px; width: 90%;
+      position: relative;
+      transform: translateY(30px);
+      transition: transform 0.4s ease;
+    }
+    .modal-overlay.open .modal { transform: translateY(0); }
+
+    .modal-close {
+      position: absolute; top: 1.5rem; right: 1.5rem;
+      background: none; border: none;
+      color: var(--muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: color 0.2s;
+      line-height: 1;
+    }
+    .modal-close:hover { color: var(--gold); }
+
+    .modal-eyebrow {
+      font-size: 0.6rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1rem;
+      display: block;
+    }
+    .modal h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+    }
+
+    /* ─── SCROLL REVEAL ──────────────────────────────── */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ─── RESPONSIVE ─────────────────────────────────── */
+    @media (max-width: 900px) {
+      header { padding: 1.2rem 1.5rem; }
+      .intro { grid-template-columns: 1fr; gap: 3rem; }
+      .intro-visual { order: -1; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card { aspect-ratio: 16/9; }
+      .service-card p { max-height: 60px; }
+      .menu-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .menu-divider-v { display: none; }
+      .gallery-item { flex: 0 0 50%; }
+      .contact { grid-template-columns: 1fr; gap: 3rem; }
+      .hero-content { padding: 0 1.5rem 4rem; }
+      .hero-scroll { display: none; }
+      footer { flex-direction: column; align-items: flex-start; }
+    }
+
+    @media (max-width: 600px) {
+      .gallery-item { flex: 0 0 75%; }
+      .form-grid { grid-template-columns: 1fr; }
+      .modal { padding: 2.5rem 1.5rem; }
+      .services { padding: 2rem 1rem 4rem; }
+      .gallery-header, .contact, .intro { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .menu-section { padding: 4rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ───────────────────────────────────────── -->
+<header id="header">
+  <a class="logo" href="#accueil">L'<span>Atelier</span></a>
+  <div class="header-right">
+    <a class="btn-reserver" href="#" onclick="openModal(event)">Réserver</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleNav()">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ─── FULLSCREEN NAV ────────────────────────────────── -->
+<div class="nav-overlay" id="navOverlay">
+  <div class="nav-content">
+    <p class="nav-label">Navigation</p>
+    <nav>
+      <ul>
+        <li><a href="#accueil" onclick="closeNav()">Accueil</a></li>
+        <li><a href="#services" onclick="closeNav()">Nos Prestations</a></li>
+        <li><a href="#carte" onclick="closeNav()">La Carte</a></li>
+        <li><a href="#galerie" onclick="closeNav()">Galerie</a></li>
+        <li><a href="#contact" onclick="closeNav()">Contact</a></li>
+        <li><a href="#" onclick="closeNav(); openModal(event)">Réserver</a></li>
+      </ul>
+    </nav>
+    <div class="nav-footer">
+      <a href="tel:+33142345678">01 42 34 56 78</a>
+      <a href="mailto:contact@latelier-mesnil.fr">contact@latelier-mesnil.fr</a>
+      <a href="#">Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MODAL RÉSERVATION ─────────────────────────────── -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <span class="modal-eyebrow">Réservation</span>
+    <h2>Réserver une table</h2>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" placeholder="Votre nom" />
+      </div>
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" placeholder="Votre prénom" />
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" placeholder="+33 …" />
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" placeholder="votre@email.com" />
+      </div>
+      <div class="form-group">
+        <label>Date</label>
+        <input type="date" />
+      </div>
+      <div class="form-group">
+        <label>Couverts</label>
+        <select>
+          <option>1 personne</option>
+          <option>2 personnes</option>
+          <option>3 personnes</option>
+          <option>4 personnes</option>
+          <option>5 personnes</option>
+          <option>6 personnes</option>
+          <option>7–10 personnes</option>
+          <option>10+ personnes</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Occasion spéciale (optionnel)</label>
+        <input type="text" placeholder="Anniversaire, cocktail, événement…" />
+      </div>
+    </div>
+    <button class="btn-submit">Confirmer la réservation</button>
+  </div>
+</div>
+
+<!-- ─── HERO ──────────────────────────────────────────── -->
+<section class="hero" id="accueil">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Restaurant Traiteur · Mesnil-Amelot</p>
+    <h1 class="hero-title">Une cuisine <em>d'exception</em><br/>à votre service</h1>
+    <p class="hero-sub">Du repas en salle aux événements privés, L'Atelier met son savoir-faire gastronomique au cœur de chaque moment partagé.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary" onclick="openModal(event)">Réserver une table</a>
+      <a href="#services" class="btn-outline">Découvrir nos prestations</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- ─── DIVIDER ──────────────────────────────────────── -->
+<div class="divider"><span>L'Atelier</span></div>
+
+<!-- ─── INTRO ─────────────────────────────────────────── -->
+<section class="intro">
+  <div class="intro-text reveal">
+    <span class="eyebrow">Notre histoire</span>
+    <h2>La passion du goût,<br/>l'art du <em>partage</em></h2>
+    <p>Installé au cœur de Mesnil-Amelot, L'Atelier est né de la conviction que la gastronomie doit être accessible à tous les moments de la vie — du déjeuner d'affaires au grand banquet, du brunch dominical aux plateaux traiteur livrés.</p>
+    <p>Notre chef et son équipe façonnent chaque assiette avec des produits soigneusement sélectionnés auprès de producteurs locaux, dans le respect des saisons et des terroirs.</p>
+    <a href="#services" class="btn-outline" style="margin-top:1.5rem; display:inline-block;">Nos prestations →</a>
+  </div>
+  <div class="intro-visual reveal" style="transition-delay:0.2s">
+    <img class="intro-img" src="https://images.unsplash.com/photo-1600803907087-f56d462fd26b?w=800&q=80" alt="Chef en cuisine" />
+    <div class="intro-badge">
+      <strong>15</strong>
+      <span>ans<br/>d'expérience</span>
+    </div>
+  </div>
+</section>
+
+<!-- ─── SERVICES ──────────────────────────────────────── -->
+<section class="services" id="services">
+  <div class="section-header reveal">
+    <span class="eyebrow">Nos prestations</span>
+    <h2>Ce que nous <em>créons</em> pour vous</h2>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&q=80" alt="Restaurant" />
+      <div class="service-card-overlay">
+        <div class="service-num">01</div>
+        <h3>Restaurant</h3>
+        <p>Venez savourer notre carte du déjeuner et du dîner dans un cadre chaleureux et raffiné.</p>
+        <a href="#contact" class="service-link">Réserver</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1555244162-803834f70033?w=800&q=80" alt="Traiteur événementiel" />
+      <div class="service-card-overlay">
+        <div class="service-num">02</div>
+        <h3>Traiteur Événementiel</h3>
+        <p>Cocktails, réceptions, mariages — nous orchestrons votre événement de A à Z avec élégance.</p>
+        <a href="#contact" class="service-link">Nous contacter</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="https://images.unsplash.com/photo-1481931098730-318b6f776db0?w=800&q=80" alt="Plateaux traiteur" />
+      <div class="service-card-overlay">
+        <div class="service-num">03</div>
+        <h3>Plateaux Traiteur</h3>
+        <p>Commandez vos plateaux repas, buffets froids ou salés pour vos équipes ou réunions.</p>
+        <a href="#contact" class="service-link">Commander</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CARTE ──────────────────────────────────────────── -->
+<section class="menu-section" id="carte">
+  <div class="menu-inner">
+    <div class="section-header reveal">
+      <span class="eyebrow">La Carte</span>
+      <h2>Quelques <em>suggestions</em></h2>
+    </div>
+    <div class="menu-grid reveal" style="transition-delay:0.2s">
+      <div class="menu-category">
+        <h3>Entrées</h3>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Tartare de saumon</div>
+            <div class="menu-item-desc">avocat, citron vert, aneth frais</div>
+          </div>
+          <div class="menu-item-price">14 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Velouté de saison</div>
+            <div class="menu-item-desc">crème fouettée, huile de truffe</div>
+          </div>
+          <div class="menu-item-price">11 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Terrine maison</div>
+            <div class="menu-item-desc">chutney de figues, brioche grillée</div>
+          </div>
+          <div class="menu-item-price">13 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Burrata du moment</div>
+            <div class="menu-item-desc">tomates confites, basilic, fleur de sel</div>
+          </div>
+          <div class="menu-item-price">15 €</div>
+        </div>
+      </div>
+      <div class="menu-divider-v"></div>
+      <div class="menu-category">
+        <h3>Plats</h3>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Filet de bar</div>
+            <div class="menu-item-desc">beurre blanc, légumes de saison</div>
+          </div>
+          <div class="menu-item-price">28 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Carré d'agneau</div>
+            <div class="menu-item-desc">jus au romarin, gratin dauphinois</div>
+          </div>
+          <div class="menu-item-price">34 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Risotto champignons</div>
+            <div class="menu-item-desc">truffe noire râpée, parmesan 24 mois</div>
+          </div>
+          <div class="menu-item-price">24 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Volaille fermière</div>
+            <div class="menu-item-desc">jus corsé, purée maison, morilles</div>
+          </div>
+          <div class="menu-item-price">26 €</div>
+        </div>
+      </div>
+      <div class="menu-divider-v"></div>
+      <div class="menu-category">
+        <h3>Desserts</h3>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Tarte citron meringuée</div>
+            <div class="menu-item-desc">façon chef, curd maison</div>
+          </div>
+          <div class="menu-item-price">10 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Fondant chocolat</div>
+            <div class="menu-item-desc">cœur coulant, glace vanille</div>
+          </div>
+          <div class="menu-item-price">11 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Panna cotta</div>
+            <div class="menu-item-desc">coulis de fruits rouges</div>
+          </div>
+          <div class="menu-item-price">9 €</div>
+        </div>
+        <div class="menu-item">
+          <div class="menu-item-left">
+            <div class="menu-item-name">Assiette de fromages</div>
+            <div class="menu-item-desc">sélection affineur, miel, noix</div>
+          </div>
+          <div class="menu-item-price">13 €</div>
+        </div>
+      </div>
+    </div>
+    <div class="menu-cta reveal">
+      <a href="#contact" class="btn-primary" style="display:inline-block">Voir la carte complète</a>
+    </div>
+  </div>
+</section>
+
+<!-- ─── GALERIE ───────────────────────────────────────── -->
+<section class="gallery" id="galerie">
+  <div class="gallery-header reveal">
+    <span class="eyebrow" style="font-size:0.65rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--gold); display:block; margin-bottom:0.75rem">Galerie</span>
+    <h2 style="font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,4vw,3rem); font-weight:300;">Quelques <em style="color:var(--gold-lt); font-style:italic">instants</em></h2>
+  </div>
+  <div class="gallery-track">
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Assiette gastronomique" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=80" alt="Plat du chef" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&q=80" alt="Cocktail" />
+    </div>
+    <div class="gallery-item">
+      <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Salle de restaurant" />
+    </div>
+  </div>
+</section>
+
+<!-- ─── CONTACT ───────────────────────────────────────── -->
+<section class="contact" id="contact">
+  <div class="contact-info reveal">
+    <span class="eyebrow">Nous trouver</span>
+    <h2>Venez nous <em>rendre visite</em></h2>
+    <p style="font-size:0.9rem; font-weight:300; line-height:1.7; color:rgba(245,240,232,0.65); max-width:420px">
+      À deux pas de l'aéroport CDG, L'Atelier accueille particuliers et professionnels dans un cadre intimiste. Disponible également pour tous vos événements sur devis.
+    </p>
+    <div class="contact-details">
+      <div class="contact-row">
+        <div class="contact-icon">📍</div>
+        <div class="contact-row-text">
+          <span class="contact-row-label">Adresse</span>
+          1 Place du Marché, 77990 Mesnil-Amelot<br/>
+          <span style="font-size:0.78rem; color:var(--muted)">À 5 min de l'aéroport CDG</span>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🕐</div>
+        <div class="contact-row-text">
+          <span class="contact-row-label">Horaires</span>
+          Lun–Ven : 12h–14h30 · 19h–22h30<br/>
+          Sam : 19h–23h · Dim : 12h–15h
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">📞</div>
+        <div class="contact-row-text">
+          <span class="contact-row-label">Téléphone</span>
+          <a href="tel:+33142345678">01 42 34 56 78</a>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">✉</div>
+        <div class="contact-row-text">
+          <span class="contact-row-label">Email</span>
+          <a href="mailto:contact@latelier-mesnil.fr">contact@latelier-mesnil.fr</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-form reveal" style="transition-delay:0.2s">
+    <p class="form-title">Envoyer un message</p>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" placeholder="Votre nom" />
+      </div>
+      <div class="form-group">
+        <label>Téléphone</label>
+        <input type="tel" placeholder="+33 …" />
+      </div>
+      <div class="form-group full">
+        <label>Email</label>
+        <input type="email" placeholder="votre@email.com" />
+      </div>
+      <div class="form-group full">
+        <label>Objet</label>
+        <select>
+          <option>Réservation table</option>
+          <option>Devis traiteur événementiel</option>
+          <option>Commande plateaux repas</option>
+          <option>Renseignement général</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Message</label>
+        <textarea placeholder="Votre message…"></textarea>
+      </div>
+    </div>
+    <button class="btn-submit">Envoyer le message</button>
+  </div>
+</section>
+
+<!-- ─── FOOTER ────────────────────────────────────────── -->
+<footer>
+  <div class="footer-logo">L'<span>Atelier</span></div>
+  <ul class="footer-links">
+    <li><a href="#accueil">Accueil</a></li>
+    <li><a href="#services">Prestations</a></li>
+    <li><a href="#carte">Carte</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#">Mentions légales</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 L'Atelier — Mesnil-Amelot</p>
+</footer>
+
+<script>
+  // ─── NAV ───────────────────────────────────────────
+  function toggleNav() {
+    const nav = document.getElementById('navOverlay');
+    const btn = document.getElementById('hamburger');
+    const isOpen = nav.classList.toggle('open');
+    btn.classList.toggle('open', isOpen);
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  }
+  function closeNav() {
+    document.getElementById('navOverlay').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ─── MODAL ─────────────────────────────────────────
+  function openModal(e) {
+    e && e.preventDefault();
+    closeNav();
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modalOverlay').addEventListener('click', function(e) {
+    if (e.target === this) closeModal();
+  });
+
+  // ─── HEADER SCROLL ─────────────────────────────────
+  window.addEventListener('scroll', () => {
+    document.getElementById('header').classList.toggle('scrolled', window.scrollY > 80);
+  });
+
+  // ─── HERO PARALLAX ─────────────────────────────────
+  window.addEventListener('scroll', () => {
+    const hero = document.querySelector('.hero-bg');
+    if (hero) hero.style.transform = `scale(1) translateY(${window.scrollY * 0.3}px)`;
+  });
+
+  // ─── HERO LOAD ─────────────────────────────────────
+  setTimeout(() => document.getElementById('heroBg').classList.add('loaded'), 100);
+
+  // ─── SCROLL REVEAL ─────────────────────────────────
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ─── CLOSE NAV ON ESC ──────────────────────────────
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeNav(); closeModal(); }
+  });
+</script>
+</body>
+</html>

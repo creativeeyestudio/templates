@@ -1,0 +1,1426 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hôtel des Bains — Maisons-Alfort</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Josefin+Sans:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ivory: #f5f0e8;
+      --sand: #e8dcc8;
+      --bronze: #9a7b4f;
+      --deep: #1a1610;
+      --olive: #6b7355;
+      --water: #4a7c8a;
+      --water-light: #7fb3bf;
+      --cream: #faf7f2;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cormorant Garamond', serif;
+      background: var(--cream);
+      color: var(--deep);
+      overflow-x: hidden;
+    }
+
+    /* ─── NAVIGATION ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      padding: 1.5rem 4rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      transition: background 0.5s, backdrop-filter 0.5s;
+    }
+    nav.scrolled {
+      background: rgba(250,247,242,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(154,123,79,0.15);
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      letter-spacing: 0.05em;
+      color: var(--ivory);
+      transition: color 0.5s;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    nav.scrolled .logo { color: var(--deep); }
+    .logo span { font-style: italic; color: var(--water-light); }
+    nav.scrolled .logo span { color: var(--water); }
+
+    .nav-right-group {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .nav-cta {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0.65rem 1.6rem;
+      border: 1px solid rgba(245,240,232,0.5);
+      color: var(--ivory);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    nav.scrolled .nav-cta {
+      border-color: var(--bronze);
+      color: var(--bronze);
+    }
+    .nav-cta:hover {
+      background: var(--bronze);
+      border-color: var(--bronze);
+      color: var(--ivory) !important;
+    }
+
+    /* Hamburger */
+    .nav-burger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+      background: none;
+      border: none;
+      z-index: 300;
+      position: relative;
+    }
+    .nav-burger span {
+      display: block;
+      height: 1px;
+      background: var(--ivory);
+      transition: all 0.4s ease;
+    }
+    .nav-burger span:nth-child(1) { width: 28px; }
+    .nav-burger span:nth-child(2) { width: 20px; }
+    .nav-burger span:nth-child(3) { width: 28px; }
+    nav.scrolled .nav-burger span { background: var(--deep); }
+    .nav-burger.open span { background: var(--ivory) !important; }
+    .nav-burger.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); width: 28px; }
+    .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); width: 28px; }
+
+    /* ─── FULLSCREEN MENU ─── */
+    .fs-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 250;
+      display: grid;
+      grid-template-columns: 52% 48%;
+      pointer-events: none;
+      clip-path: inset(0 0 100% 0);
+      transition: clip-path 0.7s cubic-bezier(0.77,0,0.18,1);
+    }
+    .fs-menu.open {
+      clip-path: inset(0 0 0% 0);
+      pointer-events: all;
+    }
+
+    .fs-left {
+      background: var(--cream);
+      padding: 0 5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+      position: relative;
+    }
+    .fs-left::after {
+      content: '';
+      position: absolute;
+      top: 15%; right: 0; bottom: 15%;
+      width: 1px;
+      background: rgba(26,22,16,0.08);
+    }
+
+    .fs-brand {
+      position: absolute;
+      top: 2.5rem; left: 5rem;
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(26,22,16,0.35);
+    }
+
+    .fs-links { list-style: none; }
+    .fs-links li { overflow: hidden; }
+
+    .fs-links a {
+      display: flex;
+      align-items: baseline;
+      gap: 1.2rem;
+      text-decoration: none;
+      padding: 0.5rem 0;
+      cursor: pointer;
+      transition: padding-left 0.4s ease;
+    }
+    .fs-links a:hover { padding-left: 0.7rem; }
+
+    .fs-num {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 0.75rem;
+      color: var(--water);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.3s, transform 0.3s;
+      min-width: 22px;
+    }
+    .fs-links a:hover .fs-num { opacity: 1; transform: translateY(0); }
+
+    .fs-link-text {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.8vw, 3rem);
+      font-weight: 400;
+      color: rgba(26,22,16,0.55);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      transition: color 0.35s, letter-spacing 0.35s;
+      position: relative;
+    }
+    .fs-link-text::after {
+      content: '';
+      position: absolute;
+      bottom: -2px; left: 0;
+      width: 0; height: 1px;
+      background: var(--bronze);
+      transition: width 0.5s ease;
+    }
+    .fs-links a:hover .fs-link-text { color: var(--deep); letter-spacing: 0.03em; }
+    .fs-links a:hover .fs-link-text::after { width: 100%; }
+
+    .fs-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--water);
+      opacity: 0;
+      margin-left: 0.3rem;
+      transform: translateX(-8px);
+      transition: opacity 0.35s 0.08s, transform 0.35s 0.08s;
+    }
+    .fs-links a:hover .fs-sub { opacity: 1; transform: translateX(0); }
+
+    .fs-footer {
+      position: absolute;
+      bottom: 2.5rem; left: 5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+    .fs-footer p {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(26,22,16,0.3);
+    }
+    .fs-footer a {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      text-decoration: none;
+    }
+    .fs-footer a:hover { color: var(--deep); }
+
+    .fs-right {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .fs-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transform: scale(1.06);
+      transition: opacity 0.65s ease, transform 0.9s ease;
+    }
+    .fs-bg.active { opacity: 1; transform: scale(1.0); }
+
+    .fs-bg-default {
+      background-image: url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=900&q=80');
+    }
+    .fs-bg-0 { background-image: url('https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=900&q=80'); }
+    .fs-bg-1 { background-image: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=900&q=80'); }
+    .fs-bg-2 { background-image: url('https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=900&q=80'); }
+    .fs-bg-3 { background-image: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=900&q=80'); }
+    .fs-bg-4 { background-image: url('https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=900&q=80'); }
+
+    .fs-right-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(26,22,16,0.5) 0%, rgba(26,22,16,0.1) 60%);
+      z-index: 1;
+    }
+
+    .fs-photo-caption {
+      position: absolute;
+      bottom: 2.5rem;
+      right: 2.5rem;
+      z-index: 2;
+      text-align: right;
+      opacity: 0;
+      transform: translateY(8px);
+      transition: opacity 0.4s, transform 0.4s;
+    }
+    .fs-photo-caption.show { opacity: 1; transform: translateY(0); }
+    .fs-caption-tag {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--water-light);
+      margin-bottom: 0.3rem;
+    }
+    .fs-caption-name {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--ivory);
+    }
+
+    .fs-progress {
+      position: absolute;
+      bottom: 0; left: 0;
+      height: 2px;
+      background: var(--bronze);
+      width: 0;
+      z-index: 3;
+      transition: width 0.4s ease;
+    }
+
+    .fs-corner-tr {
+      position: absolute;
+      top: 2rem; right: 2rem;
+      width: 32px; height: 32px;
+      border-top: 1px solid rgba(26,22,16,0.1);
+      border-right: 1px solid rgba(26,22,16,0.1);
+      z-index: 2;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(160deg, rgba(26,22,16,0.75) 0%, rgba(74,124,138,0.35) 60%, rgba(26,22,16,0.88) 100%),
+        url('https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1800&q=80') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 18s ease-out forwards;
+    }
+
+    @keyframes heroZoom {
+      from { transform: scale(1.08); }
+      to   { transform: scale(1.0); }
+    }
+
+    .hero-content {
+      position: relative;
+      padding: 0 8rem;
+      max-width: 720px;
+      animation: heroFade 1.5s ease-out both;
+      animation-delay: 0.3s;
+    }
+
+    @keyframes heroFade {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .hero-eyebrow {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.7rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--water-light);
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 1px;
+      background: var(--water-light);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 400;
+      color: var(--ivory);
+      line-height: 1.08;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--water-light);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.8);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+    }
+
+    .btn-primary {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2.4rem;
+      background: var(--bronze);
+      color: var(--ivory);
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: var(--water);
+    }
+
+    .btn-ghost {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 1rem 2rem;
+      border: 1px solid rgba(245,240,232,0.4);
+      color: var(--ivory);
+      text-decoration: none;
+      transition: all 0.3s;
+      display: inline-block;
+    }
+    .btn-ghost:hover {
+      border-color: var(--ivory);
+      background: rgba(245,240,232,0.08);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 2.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(245,240,232,0.5);
+      animation: bounce 2.5s ease-in-out infinite;
+    }
+    .hero-scroll span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+    }
+    .scroll-arrow {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(245,240,232,0.5), transparent);
+    }
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50%       { transform: translateX(-50%) translateY(6px); }
+    }
+
+    /* ─── SECTION BASE ─── */
+    section { padding: 7rem 8rem; }
+
+    .section-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 200;
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .section-label::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: var(--bronze);
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      color: var(--deep);
+      margin-bottom: 1.5rem;
+    }
+    .section-title em { font-style: italic; color: var(--water); }
+
+    /* ─── INTRO ─── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6rem;
+      align-items: center;
+      background: var(--cream);
+    }
+
+    .intro-text p {
+      font-size: 1.2rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(26,22,16,0.75);
+      margin-bottom: 1.2rem;
+    }
+
+    .intro-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 3rem;
+    }
+    .stat {
+      border-left: 2px solid var(--bronze);
+      padding-left: 1.2rem;
+    }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 400;
+      color: var(--bronze);
+      line-height: 1;
+    }
+    .stat-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(26,22,16,0.5);
+      margin-top: 0.3rem;
+    }
+
+    .intro-image {
+      position: relative;
+    }
+    .intro-image img {
+      width: 100%;
+      height: 520px;
+      object-fit: cover;
+      display: block;
+    }
+    .intro-image::before {
+      content: '';
+      position: absolute;
+      top: -20px;
+      right: -20px;
+      bottom: 20px;
+      left: 20px;
+      border: 1px solid var(--sand);
+      z-index: -1;
+    }
+
+    /* ─── ROOMS ─── */
+    .rooms {
+      background: var(--deep);
+      color: var(--ivory);
+    }
+    .rooms .section-title { color: var(--ivory); }
+    .rooms .section-label { color: var(--water-light); }
+    .rooms .section-label::before { background: var(--water-light); }
+
+    .rooms-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 3.5rem;
+    }
+    .rooms-header p {
+      max-width: 380px;
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.6);
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5px;
+      background: rgba(245,240,232,0.08);
+    }
+
+    .room-card {
+      background: #211d17;
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.4s;
+    }
+    .room-card:hover { transform: translateY(-4px); }
+    .room-card:hover .room-img { transform: scale(1.06); }
+
+    .room-img-wrap {
+      height: 260px;
+      overflow: hidden;
+    }
+    .room-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .room-info {
+      padding: 1.8rem;
+    }
+    .room-tag {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--water-light);
+      margin-bottom: 0.6rem;
+    }
+    .room-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--ivory);
+      margin-bottom: 0.5rem;
+    }
+    .room-desc {
+      font-size: 0.95rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.55);
+      line-height: 1.6;
+      margin-bottom: 1.2rem;
+    }
+    .room-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(245,240,232,0.1);
+    }
+    .room-price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--bronze);
+    }
+    .room-price span {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.6rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.4);
+      font-style: normal;
+    }
+    .room-btn {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ivory);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(245,240,232,0.3);
+      padding-bottom: 2px;
+      transition: border-color 0.3s, color 0.3s;
+    }
+    .room-btn:hover { color: var(--water-light); border-color: var(--water-light); }
+
+    /* ─── SERVICES ─── */
+    .services {
+      background: var(--sand);
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      margin-top: 3.5rem;
+    }
+
+    .service-card {
+      padding: 2rem;
+      background: var(--cream);
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .service-card:hover {
+      border-color: var(--bronze);
+      transform: translateY(-4px);
+    }
+
+    .service-icon {
+      font-size: 2.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      margin-bottom: 0.6rem;
+      color: var(--deep);
+    }
+
+    .service-desc {
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(26,22,16,0.6);
+    }
+
+    /* ─── LOCATION ─── */
+    .location {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+    }
+
+    .location-content {
+      padding: 7rem 6rem;
+      background: var(--ivory);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .location-content p {
+      font-size: 1.1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(26,22,16,0.7);
+      margin-bottom: 1.2rem;
+    }
+
+    .transport-list {
+      list-style: none;
+      margin-top: 2rem;
+    }
+    .transport-list li {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--sand);
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(26,22,16,0.7);
+    }
+    .transport-list li:last-child { border: none; }
+    .transport-list .icon {
+      font-size: 1.1rem;
+      width: 28px;
+      text-align: center;
+    }
+    .transport-label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      min-width: 70px;
+    }
+
+    .location-map {
+      background:
+        linear-gradient(rgba(26,22,16,0.3), rgba(26,22,16,0.3)),
+        url('https://images.unsplash.com/photo-1499856871958-5b9627545d1a?w=900&q=80') center/cover no-repeat;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .map-pin {
+      background: var(--bronze);
+      color: var(--ivory);
+      padding: 1.2rem 2rem;
+      text-align: center;
+      font-family: 'Playfair Display', serif;
+    }
+    .map-pin-name { font-size: 1.2rem; margin-bottom: 0.3rem; }
+    .map-pin-addr {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      font-style: normal;
+      color: rgba(245,240,232,0.75);
+    }
+
+    /* ─── RESERVATION ─── */
+    .reservation {
+      background: var(--water);
+      color: var(--ivory);
+      text-align: center;
+      padding: 6rem 8rem;
+    }
+    .reservation .section-label { justify-content: center; color: rgba(245,240,232,0.7); }
+    .reservation .section-label::before { background: rgba(245,240,232,0.5); }
+    .reservation .section-title { color: var(--ivory); text-align: center; }
+
+    .booking-form {
+      display: flex;
+      gap: 1px;
+      max-width: 900px;
+      margin: 3rem auto 0;
+      background: rgba(245,240,232,0.15);
+    }
+
+    .form-field {
+      flex: 1;
+      background: rgba(250,247,242,0.12);
+      padding: 1.2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+    }
+    .form-field label {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.6);
+      margin-bottom: 0.4rem;
+    }
+    .form-field input, .form-field select {
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--ivory);
+      width: 100%;
+    }
+    .form-field select option { background: var(--water); color: var(--deep); }
+    .form-field input::placeholder { color: rgba(245,240,232,0.5); }
+
+    .booking-submit {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 0 2.5rem;
+      background: var(--bronze);
+      color: var(--ivory);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s;
+      min-width: 160px;
+    }
+    .booking-submit:hover { background: var(--deep); }
+
+    /* ─── GALLERY STRIP ─── */
+    .gallery-strip {
+      display: flex;
+      height: 280px;
+      overflow: hidden;
+    }
+    .gallery-strip img {
+      flex: 1;
+      object-fit: cover;
+      filter: grayscale(20%);
+      transition: flex 0.5s ease, filter 0.5s;
+      cursor: pointer;
+    }
+    .gallery-strip img:hover {
+      flex: 2.5;
+      filter: grayscale(0);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--deep);
+      color: var(--ivory);
+      padding: 5rem 8rem 2.5rem;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(245,240,232,0.1);
+    }
+
+    .footer-brand .logo { font-size: 1.6rem; color: var(--ivory); }
+    .footer-brand .logo span { color: var(--water-light); }
+    .footer-brand p {
+      margin-top: 1.2rem;
+      font-size: 0.95rem;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.5);
+      max-width: 280px;
+    }
+    .footer-social {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1.8rem;
+    }
+    .footer-social a {
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(245,240,232,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(245,240,232,0.5);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.3s;
+    }
+    .footer-social a:hover {
+      border-color: var(--water-light);
+      color: var(--water-light);
+    }
+
+    .footer-col h4 {
+      font-family: 'Josefin Sans', sans-serif;
+      font-weight: 300;
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--bronze);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li {
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 0.6rem;
+      cursor: pointer;
+      transition: color 0.3s;
+    }
+    .footer-col li:hover { color: var(--ivory); }
+
+    .footer-bottom {
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-bottom p {
+      font-family: 'Josefin Sans', sans-serif;
+      font-size: 0.62rem;
+      letter-spacing: 0.15em;
+      color: rgba(245,240,232,0.3);
+    }
+
+    /* ─── SCROLL REVEAL ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      nav { padding: 1.5rem 2rem; }
+      section { padding: 5rem 2.5rem; }
+      .intro { grid-template-columns: 1fr; gap: 3rem; }
+      .rooms-grid { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .location { grid-template-columns: 1fr; }
+      .location-content { padding: 4rem 2.5rem; }
+      .booking-form { flex-direction: column; }
+      .booking-submit { padding: 1.2rem; }
+      .footer-top { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
+      .hero-content { padding: 0 2.5rem; }
+      .rooms-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+      .fs-menu { grid-template-columns: 1fr; }
+      .fs-right { display: none; }
+      .fs-left { padding: 0 2.5rem; }
+      .fs-brand { left: 2.5rem; }
+      .fs-footer { left: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="mainNav">
+    <div class="logo">Hôtel <span>des Bains</span></div>
+    <div class="nav-right-group">
+      <a href="#reservation" class="nav-cta">Réserver</a>
+      <button class="nav-burger" id="navBurger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- FULLSCREEN MENU -->
+  <div class="fs-menu" id="fsMenu">
+    <div class="fs-left">
+      <div class="fs-brand">Hôtel des Bains · Maisons-Alfort</div>
+
+      <ul class="fs-links">
+        <li>
+          <a href="#chambres" data-bg="0" data-label="Simple, Double, Familiale" data-pct="25" class="fs-link">
+            <span class="fs-num">01</span>
+            <span class="fs-link-text">Chambres</span>
+            <span class="fs-sub">dès 55€ / nuit</span>
+          </a>
+        </li>
+        <li>
+          <a href="#services" data-bg="1" data-label="WiFi, petit-déj, clim..." data-pct="50" class="fs-link">
+            <span class="fs-num">02</span>
+            <span class="fs-link-text">Équipements</span>
+            <span class="fs-sub">Ce qu'on propose</span>
+          </a>
+        </li>
+        <li>
+          <a href="#localisation" data-bg="2" data-label="Métro ligne 8 · 5 min à pied" data-pct="75" class="fs-link">
+            <span class="fs-num">03</span>
+            <span class="fs-link-text">Localisation</span>
+            <span class="fs-sub">Maisons-Alfort</span>
+          </a>
+        </li>
+        <li>
+          <a href="#reservation" data-bg="3" data-label="Vérifier les disponibilités" data-pct="100" class="fs-link">
+            <span class="fs-num">04</span>
+            <span class="fs-link-text">Réserver</span>
+            <span class="fs-sub">Disponibilités en ligne</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="fs-footer">
+        <p>12 Quai Victor Hugo · 94700 Maisons-Alfort</p>
+        <a href="tel:0143000000">01 43 XX XX XX</a>
+      </div>
+    </div>
+
+    <div class="fs-right">
+      <div class="fs-bg fs-bg-default active" id="fsBgDefault"></div>
+      <div class="fs-bg fs-bg-0" id="fsBg0"></div>
+      <div class="fs-bg fs-bg-1" id="fsBg1"></div>
+      <div class="fs-bg fs-bg-2" id="fsBg2"></div>
+      <div class="fs-bg fs-bg-3" id="fsBg3"></div>
+      <div class="fs-right-overlay"></div>
+      <div class="fs-corner-tr"></div>
+      <div class="fs-photo-caption" id="fsCaption">
+        <div class="fs-caption-tag">Découvrir</div>
+        <div class="fs-caption-name" id="fsCaptionText"></div>
+      </div>
+      <div class="fs-progress" id="fsProgress"></div>
+    </div>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Maisons-Alfort · Val-de-Marne</div>
+      <h1>Hôtel 2 étoiles<br><em>Maisons-Alfort</em></h1>
+      <p>À 10 minutes de Paris en métro, l'Hôtel des Bains vous offre l'essentiel à petit prix : une chambre confortable, le petit-déjeuner, et un accueil sympa.</p>
+      <div class="hero-actions">
+        <a href="#reservation" class="btn-primary">Voir les disponibilités</a>
+        <a href="#chambres" class="btn-ghost">Nos chambres</a>
+      </div>
+    </div>
+    <div class="hero-scroll">
+      <span>Défiler</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <!-- GALLERY STRIP -->
+  <div class="gallery-strip">
+    <img src="https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=600&q=80" alt="Lobby">
+    <img src="https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?w=600&q=80" alt="Chambre">
+    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Restaurant">
+    <img src="https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600&q=80" alt="Spa">
+    <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=600&q=80" alt="Extérieur">
+  </div>
+
+  <!-- INTRO -->
+  <section class="intro" id="apropos">
+    <div class="intro-text reveal">
+      <div class="section-label">L'hôtel</div>
+      <h2 class="section-title">L'hôtel <em>pratique</em><br>de Maisons-Alfort</h2>
+      <p>Pas de chichis, mais tout ce qu'il faut. L'Hôtel des Bains est un 2 étoiles bien tenu, idéal pour les déplacements pro, les courts séjours parisiens ou les familles qui cherchent un bon rapport qualité-prix.</p>
+      <p>Chambres climatisées, WiFi gratuit, petit-déjeuner continental chaque matin. Le métro ligne 8 est à 5 minutes à pied — Paris est à deux arrêts.</p>
+      <div class="intro-stats">
+        <div class="stat">
+          <div class="stat-number">28</div>
+          <div class="stat-label">Chambres</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">10'</div>
+          <div class="stat-label">De Paris en métro</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">2★</div>
+          <div class="stat-label">Étoiles Tourisme</div>
+        </div>
+        <div class="stat">
+          <div class="stat-number">dès 55€</div>
+          <div class="stat-label">La nuit</div>
+        </div>
+      </div>
+    </div>
+    <div class="intro-image reveal">
+      <img src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=700&q=80" alt="Chambre de l'hôtel">
+    </div>
+  </section>
+
+  <!-- ROOMS -->
+  <section class="rooms" id="chambres">
+    <div class="rooms-header">
+      <div>
+        <div class="section-label">Hébergement</div>
+        <h2 class="section-title">Nos <em>Chambres</em></h2>
+      </div>
+      <p>Fonctionnelles et bien entretenues. Literie changée à chaque séjour, salle de bain privative, TV écran plat et climatisation dans toutes les chambres.</p>
+    </div>
+    <div class="rooms-grid reveal">
+      <div class="room-card">
+        <div class="room-img-wrap">
+          <img class="room-img" src="https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600&q=80" alt="Chambre Simple">
+        </div>
+        <div class="room-info">
+          <div class="room-tag">1 personne</div>
+          <div class="room-name">Chambre Simple</div>
+          <div class="room-desc">Lit une place (90 cm), bureau, TV, douche. Idéale pour un déplacement pro ou un court séjour solo.</div>
+          <div class="room-footer">
+            <div class="room-price">55€ <span>/ nuit</span></div>
+            <a href="#reservation" class="room-btn">Réserver →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-img-wrap">
+          <img class="room-img" src="https://images.unsplash.com/photo-1618773928121-c32242e63f39?w=600&q=80" alt="Chambre Double">
+        </div>
+        <div class="room-info">
+          <div class="room-tag">2 personnes</div>
+          <div class="room-name">Chambre Double</div>
+          <div class="room-desc">Grand lit (140 cm), TV, douche ou baignoire selon disponibilité. Notre chambre la plus demandée.</div>
+          <div class="room-footer">
+            <div class="room-price">72€ <span>/ nuit</span></div>
+            <a href="#reservation" class="room-btn">Réserver →</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="room-card">
+        <div class="room-img-wrap">
+          <img class="room-img" src="https://images.unsplash.com/photo-1578683010236-d716f9a3f461?w=600&q=80" alt="Chambre Familiale">
+        </div>
+        <div class="room-info">
+          <div class="room-tag">Famille</div>
+          <div class="room-name">Chambre Familiale</div>
+          <div class="room-desc">1 lit double + 2 lits simples, idéale pour une famille avec enfants. Baignoire, grand placard.</div>
+          <div class="room-footer">
+            <div class="room-price">95€ <span>/ nuit</span></div>
+            <a href="#reservation" class="room-btn">Réserver →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="section-label">Ce qu'on propose</div>
+    <h2 class="section-title">Les <em>équipements</em></h2>
+    <div class="services-grid reveal">
+      <div class="service-card">
+        <div class="service-icon">☕</div>
+        <div class="service-title">Petit-déjeuner</div>
+        <div class="service-desc">Buffet continental de 7h à 10h : viennoiseries, pain, confiture, jus d'orange, café ou thé. 9€/pers.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📶</div>
+        <div class="service-title">WiFi Gratuit</div>
+        <div class="service-desc">WiFi dans toutes les chambres et les espaces communs. Connexion rapide et sans limite.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🅿️</div>
+        <div class="service-title">Parking</div>
+        <div class="service-desc">Parking public payant à 50m de l'hôtel. Tarif préférentiel négocié pour nos clients : 8€/jour.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">📺</div>
+        <div class="service-title">TV Écran Plat</div>
+        <div class="service-desc">Télévision dans chaque chambre avec les chaînes françaises et quelques chaînes internationales.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">❄️</div>
+        <div class="service-title">Climatisation</div>
+        <div class="service-desc">Toutes les chambres sont climatisées, réversibles. Pratique en été comme en hiver.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🧺</div>
+        <div class="service-title">Ménage quotidien</div>
+        <div class="service-desc">Chambre refaite chaque jour, serviettes et draps changés régulièrement.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">🧳</div>
+        <div class="service-title">Consigne bagages</div>
+        <div class="service-desc">Déposez vos bagages à la réception avant l'arrivée ou après le départ. Gratuit.</div>
+      </div>
+      <div class="service-card">
+        <div class="service-icon">♿</div>
+        <div class="service-title">Accès PMR</div>
+        <div class="service-desc">1 chambre adaptée PMR disponible sur demande. Accès plain-pied depuis l'entrée.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location" id="localisation">
+    <div class="location-content reveal">
+      <div class="section-label">Où on est</div>
+      <h2 class="section-title">Bien placé à<br><em>Maisons-Alfort</em></h2>
+      <p>Maisons-Alfort, c'est la banlieue proche comme on l'aime : calme, bien desservi, et nettement moins cher qu'à Paris. L'hôtel est à deux pas du métro.</p>
+      <p>Autour : supérette, boulangerie, kebab, restaurants. Tout ce qu'il faut pour ne pas se prendre la tête.</p>
+      <ul class="transport-list">
+        <li>
+          <span class="icon">🚇</span>
+          <span class="transport-label">Métro 8</span>
+          Maisons-Alfort – Alfort-École · 5 min à pied
+        </li>
+        <li>
+          <span class="icon">🚊</span>
+          <span class="transport-label">RER D</span>
+          Gare de Maisons-Alfort · 10 min pour Paris
+        </li>
+        <li>
+          <span class="icon">🚗</span>
+          <span class="transport-label">Voiture</span>
+          Paris Porte de Charenton · 8 min
+        </li>
+        <li>
+          <span class="icon">✈️</span>
+          <span class="transport-label">Orly</span>
+          Aéroport d'Orly · 20 min
+        </li>
+      </ul>
+    </div>
+    <div class="location-map">
+      <div class="map-pin">
+        <div class="map-pin-name">Hôtel des Bains</div>
+        <div class="map-pin-addr">12 Quai Victor Hugo<br>94700 Maisons-Alfort</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESERVATION -->
+  <section class="reservation" id="reservation">
+    <div class="section-label">Disponibilités</div>
+    <h2 class="section-title">Réserver une chambre</h2>
+    <form class="booking-form" onsubmit="handleBook(event)">
+      <div class="form-field">
+        <label>Arrivée</label>
+        <input type="date" name="checkin">
+      </div>
+      <div class="form-field">
+        <label>Départ</label>
+        <input type="date" name="checkout">
+      </div>
+      <div class="form-field">
+        <label>Voyageurs</label>
+        <select name="guests">
+          <option>1 adulte</option>
+          <option>2 adultes</option>
+          <option>2 adultes + 1 enfant</option>
+          <option>2 adultes + 2 enfants</option>
+        </select>
+      </div>
+      <div class="form-field">
+        <label>Type de chambre</label>
+        <select name="room">
+          <option>Chambre Simple</option>
+          <option>Chambre Double</option>
+          <option>Chambre Familiale</option>
+        </select>
+      </div>
+      <button type="submit" class="booking-submit">Vérifier<br>les disponibilités</button>
+    </form>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="contact">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="logo">Hôtel <span>des Bains</span></div>
+        <p>Hôtel 2 étoiles simple et bien tenu à Maisons-Alfort. Le bon plan pour visiter Paris sans se ruiner.</p>
+        <div class="footer-social">
+          <a href="#" title="Facebook">f</a>
+          <a href="#" title="Instagram">in</a>
+          <a href="#" title="TripAdvisor">★</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>L'Hôtel</h4>
+        <ul>
+          <li>Présentation</li>
+          <li>Nos chambres</li>
+          <li>Équipements</li>
+          <li>Avis clients</li>
+          <li>Photos</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Pratique</h4>
+        <ul>
+          <li>Check-in : dès 14h</li>
+          <li>Check-out : avant 11h</li>
+          <li>Annulation : 24h avant</li>
+          <li>Animaux non admis</li>
+          <li>Pas de restaurant</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li>📞 01 43 XX XX XX</li>
+          <li>✉ contact@hotel-des-bains.fr</li>
+          <li>📍 12 Rue des Bains</li>
+          <li>94700 Maisons-Alfort</li>
+          <li>Réception 7h–22h</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Hôtel des Bains — Maisons-Alfort. Tous droits réservés.</p>
+      <p>Mentions légales · Politique de confidentialité · CGV</p>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // Fullscreen menu
+    const burger = document.getElementById('navBurger');
+    const fsMenu = document.getElementById('fsMenu');
+    const fsLinks = document.querySelectorAll('.fs-link');
+    const fsBgDefault = document.getElementById('fsBgDefault');
+    const fsProgress = document.getElementById('fsProgress');
+    const fsCaption = document.getElementById('fsCaption');
+    const fsCaptionText = document.getElementById('fsCaptionText');
+    let menuOpen = false;
+    let leaveTimer = null;
+
+    burger.addEventListener('click', () => {
+      menuOpen = !menuOpen;
+      burger.classList.toggle('open', menuOpen);
+      fsMenu.classList.toggle('open', menuOpen);
+      document.body.style.overflow = menuOpen ? 'hidden' : '';
+    });
+
+    fsLinks.forEach(link => {
+      link.addEventListener('mouseenter', () => {
+        clearTimeout(leaveTimer);
+        const idx = link.dataset.bg;
+        document.querySelectorAll('.fs-bg').forEach(b => b.classList.remove('active'));
+        document.getElementById('fsBg' + idx).classList.add('active');
+        fsProgress.style.width = link.dataset.pct + '%';
+        fsCaptionText.textContent = link.dataset.label;
+        fsCaption.classList.add('show');
+      });
+      link.addEventListener('mouseleave', () => {
+        leaveTimer = setTimeout(() => {
+          document.querySelectorAll('.fs-bg').forEach(b => b.classList.remove('active'));
+          fsBgDefault.classList.add('active');
+          fsProgress.style.width = '0%';
+          fsCaption.classList.remove('show');
+        }, 220);
+      });
+      link.addEventListener('click', () => {
+        menuOpen = false;
+        burger.classList.remove('open');
+        fsMenu.classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          setTimeout(() => e.target.classList.add('visible'), i * 120);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+
+    // Booking form
+    function handleBook(e) {
+      e.preventDefault();
+      const data = new FormData(e.target);
+      alert(`✓ Demande envoyée !\n\nArrivée : ${data.get('checkin') || 'non renseignée'}\nDépart : ${data.get('checkout') || 'non renseigné'}\nVoyageurs : ${data.get('guests')}\nChambre : ${data.get('room')}\n\nNous vous confirmons votre réservation sous 24h.`);
+    }
+
+    // Set default dates
+    const today = new Date();
+    const tomorrow = new Date(today);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const dayAfter = new Date(today);
+    dayAfter.setDate(dayAfter.getDate() + 2);
+
+    const fmt = d => d.toISOString().split('T')[0];
+    const checkin = document.querySelector('[name="checkin"]');
+    const checkout = document.querySelector('[name="checkout"]');
+    if (checkin) checkin.value = fmt(tomorrow);
+    if (checkout) checkout.value = fmt(dayAfter);
+  </script>
+</body>
+</html>

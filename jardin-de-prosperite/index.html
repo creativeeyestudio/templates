@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jardin de Prospérité — Restaurant Asiatique · Dammartin-en-Goële</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&family=Abril+Fatface&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --stone: #F7F3EE;
+  --paper: #FBF8F3;
+  --cream: #EDE6DA;
+  --moss: #4A6741;
+  --moss-light: #6B8F60;
+  --moss-pale: #DCE8D5;
+  --bamboo: #8B7355;
+  --bamboo-light: #C4A97A;
+  --water: #3D6E7A;
+  --water-light: #7DB3BE;
+  --blossom: #C4727A;
+  --ink: #2C2419;
+  --ink-soft: #4A3D2E;
+  --text: #3D3022;
+  --muted: #8A7A68;
+  --border: rgba(74,103,65,.15);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--paper);
+  color: var(--text);
+  font-family: 'Jost', sans-serif;
+  overflow-x: hidden;
+}
+
+/* ─── SVG BACKGROUND PATTERNS ─── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(107,143,96,.06) 0%, transparent 40%),
+    radial-gradient(circle at 85% 70%, rgba(61,110,122,.05) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(196,169,122,.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+/* ─── FULLSCREEN MENU ─── */
+#nav-overlay {
+  position: fixed; inset: 0; z-index: 1000;
+  display: grid; grid-template-columns: 1fr 1fr;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s cubic-bezier(.4,0,.2,1);
+  overflow: hidden;
+}
+#nav-overlay.open { opacity: 1; pointer-events: all; }
+
+.nav-panel-left {
+  background: var(--paper);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 3rem 4rem; position: relative; overflow: hidden;
+  transform: translateX(-100%);
+  transition: transform .6s cubic-bezier(.77,0,.18,1);
+}
+#nav-overlay.open .nav-panel-left { transform: translateX(0); }
+
+.nav-panel-right {
+  background: var(--moss);
+  display: flex; flex-direction: column; justify-content: center; align-items: flex-start;
+  padding: 3rem 4rem; position: relative; overflow: hidden;
+  transform: translateX(100%);
+  transition: transform .6s cubic-bezier(.77,0,.18,1);
+}
+#nav-overlay.open .nav-panel-right { transform: translateX(0); }
+
+/* botanical bg on left panel */
+.nav-panel-left::before {
+  content: '花';
+  position: absolute; bottom: -2rem; right: -1rem;
+  font-family: 'Noto Serif SC', serif; font-size: 22rem;
+  color: rgba(74,103,65,.05); line-height: 1; pointer-events: none;
+}
+/* bamboo pattern on right */
+.nav-panel-right::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(
+    to right, transparent, transparent 38px,
+    rgba(255,255,255,.04) 38px, rgba(255,255,255,.04) 42px
+  );
+  pointer-events: none;
+}
+.nav-panel-right::after {
+  content: '繁';
+  position: absolute; bottom: -2rem; right: -1rem;
+  font-family: 'Noto Serif SC', serif; font-size: 22rem;
+  color: rgba(255,255,255,.04); line-height: 1; pointer-events: none;
+}
+
+/* left: logo + botanical SVG */
+.nav-top { position: relative; z-index: 1; }
+.nav-logo {
+  font-family: 'Abril Fatface', cursive; font-size: 1.6rem;
+  color: var(--ink); letter-spacing: .02em; line-height: 1.1;
+}
+.nav-logo em { font-style: italic; color: var(--moss); }
+.nav-logo-sub {
+  font-family: 'Jost', sans-serif; font-weight: 200; font-size: .65rem;
+  letter-spacing: .35em; color: var(--muted); margin-top: .5rem; text-transform: uppercase;
+}
+.nav-botanical {
+  margin-top: 2.5rem; opacity: .55;
+  transform: translateY(20px); opacity: 0;
+  transition: transform .7s .3s cubic-bezier(.4,0,.2,1), opacity .7s .3s;
+}
+#nav-overlay.open .nav-botanical { transform: translateY(0); opacity: .5; }
+
+.nav-bottom { position: relative; z-index: 1; }
+.nav-bottom-label { font-size: .6rem; font-weight: 400; letter-spacing: .3em; text-transform: uppercase; color: var(--muted); margin-bottom: .8rem; }
+.nav-bottom-info { font-size: .9rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; }
+.nav-bottom-info a { color: var(--bamboo); text-decoration: none; }
+
+/* right: nav links */
+.nav-links {
+  list-style: none; width: 100%; position: relative; z-index: 1;
+  margin-bottom: 3rem;
+}
+.nav-links li { overflow: hidden; margin-bottom: .3rem; }
+.nav-links a {
+  display: flex; align-items: baseline; gap: 1.2rem;
+  text-decoration: none; padding: .6rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  opacity: 0; transform: translateY(30px);
+  transition: transform .55s cubic-bezier(.4,0,.2,1), opacity .55s, color .2s;
+}
+#nav-overlay.open .nav-links a { opacity: 1; transform: translateY(0); }
+.nav-links li:nth-child(1) a { transition-delay: .15s; }
+.nav-links li:nth-child(2) a { transition-delay: .22s; }
+.nav-links li:nth-child(3) a { transition-delay: .29s; }
+.nav-links li:nth-child(4) a { transition-delay: .36s; }
+.nav-links li:nth-child(5) a { transition-delay: .43s; }
+
+.nav-link-num {
+  font-family: 'Jost', sans-serif; font-size: .6rem; font-weight: 300;
+  letter-spacing: .15em; color: rgba(255,255,255,.3); min-width: 1.5rem;
+}
+.nav-link-text {
+  font-family: 'Abril Fatface', cursive; font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  color: rgba(255,255,255,.85); line-height: 1;
+  transition: color .2s, letter-spacing .3s;
+}
+.nav-links a:hover .nav-link-text { color: #fff; letter-spacing: .03em; }
+.nav-link-arrow {
+  margin-left: auto; font-size: .8rem; color: rgba(255,255,255,.2);
+  transition: transform .3s, color .2s;
+}
+.nav-links a:hover .nav-link-arrow { transform: translate(4px,-2px); color: rgba(255,255,255,.6); }
+
+.nav-reserve-btn {
+  display: inline-flex; align-items: center; gap: .8rem;
+  font-family: 'Jost', sans-serif; font-weight: 400; font-size: .72rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--moss); background: rgba(255,255,255,.92); padding: .9rem 2rem;
+  border-radius: 3rem; text-decoration: none; position: relative; z-index: 1;
+  opacity: 0; transform: translateY(12px);
+  transition: transform .5s .52s, opacity .5s .52s, background .3s;
+}
+#nav-overlay.open .nav-reserve-btn { opacity: 1; transform: translateY(0); }
+.nav-reserve-btn:hover { background: #fff; }
+
+#nav-scrim { display: none; }
+
+/* ─── HAMBURGER ─── */
+#menu-btn {
+  position: fixed; top: 1.8rem; right: 2rem; z-index: 1001;
+  width: 48px; height: 48px;
+  background: var(--paper); border: 1px solid var(--border);
+  box-shadow: 0 2px 12px rgba(74,103,65,.12);
+  cursor: pointer; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; gap: 5px;
+  border-radius: 50%; transition: all .3s;
+}
+#menu-btn:hover { background: var(--moss-pale); border-color: rgba(74,103,65,.3); }
+#menu-btn span {
+  display: block; background: var(--moss); height: 1.5px;
+  transition: transform .35s cubic-bezier(.4,0,.2,1), opacity .25s, width .25s;
+}
+#menu-btn span:nth-child(1) { width: 18px; }
+#menu-btn span:nth-child(2) { width: 14px; }
+#menu-btn span:nth-child(3) { width: 18px; }
+#menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); width: 18px; }
+#menu-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+#menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); width: 18px; }
+
+/* ─── HEADER ─── */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.2rem 2.5rem;
+  background: rgba(251,248,243,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+.logo { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; color: var(--ink); text-decoration: none; letter-spacing: .02em; }
+.logo em { font-style: italic; color: var(--moss); }
+.logo span { font-family: 'Jost', sans-serif; font-weight: 200; font-size: .65rem; letter-spacing: .3em; color: var(--muted); display: block; text-transform: uppercase; margin-top: .1rem; }
+.header-right { display: flex; align-items: center; gap: 1.5rem; margin-right: 4.5rem; }
+.btn-reserve-sm {
+  font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+  color: #fff; background: var(--moss); padding: .55rem 1.4rem; text-decoration: none;
+  border-radius: 2rem; transition: all .3s;
+}
+.btn-reserve-sm:hover { background: var(--moss-light); }
+.header-tel { font-size: .8rem; font-weight: 300; color: var(--muted); }
+.header-tel a { color: var(--bamboo); text-decoration: none; }
+
+/* ─── HERO ─── */
+#hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  display: flex; align-items: center;
+  background: linear-gradient(150deg, #EFF6E8 0%, #F5EFE4 45%, #E8F0EC 100%);
+}
+
+.hero-garden {
+  position: absolute; inset: 0; pointer-events: none;
+  overflow: hidden;
+}
+/* Bamboo stems */
+.hero-garden::before {
+  content: '';
+  position: absolute; right: 8%; top: 0; bottom: 0; width: 340px;
+  background:
+    linear-gradient(to bottom, transparent 0%, rgba(139,115,85,.08) 100%),
+    repeating-linear-gradient(
+      to right,
+      transparent,
+      transparent 28px,
+      rgba(107,143,96,.12) 28px,
+      rgba(107,143,96,.12) 32px
+    );
+}
+.hero-garden::after {
+  content: '';
+  position: absolute; left: -2%; top: 10%; width: 220px; height: 220px;
+  background: radial-gradient(ellipse, rgba(107,143,96,.08) 30%, transparent 70%);
+  border-radius: 50%;
+}
+
+.hero-content {
+  position: relative; z-index: 2;
+  padding: 8rem 2.5rem 5rem;
+  max-width: 1200px; margin: 0 auto; width: 100%;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;
+}
+.hero-left {}
+.hero-tag {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-family: 'Jost', sans-serif; font-size: .65rem; font-weight: 400; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--moss); background: var(--moss-pale); padding: .4rem 1rem;
+  border-radius: 2rem; margin-bottom: 2rem;
+  opacity: 0; animation: riseIn .6s .3s forwards;
+}
+.tag-dot { width: 5px; height: 5px; background: var(--moss); border-radius: 50%; }
+.hero-title {
+  font-family: 'Abril Fatface', cursive;
+  font-size: clamp(2.6rem, 5.5vw, 4.6rem);
+  line-height: 1.1; color: var(--ink);
+  opacity: 0; animation: riseIn .8s .5s forwards;
+}
+.hero-title em { font-style: italic; color: var(--moss); display: block; }
+.hero-title .sub { font-family: 'Jost', sans-serif; font-weight: 200; font-size: .3em; letter-spacing: .4em; color: var(--muted); text-transform: uppercase; display: block; margin-top: .4rem; }
+.hero-desc {
+  margin-top: 1.8rem; font-size: 1.05rem; font-weight: 300; line-height: 1.85; color: var(--muted);
+  max-width: 440px;
+  opacity: 0; animation: riseIn .7s .75s forwards;
+}
+.hero-ctas {
+  display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap;
+  opacity: 0; animation: riseIn .7s .95s forwards;
+}
+.btn-primary {
+  font-family: 'Jost', sans-serif; font-size: .75rem; font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+  color: #fff; background: var(--moss); padding: .85rem 2rem;
+  text-decoration: none; border-radius: 2rem; transition: all .3s;
+}
+.btn-primary:hover { background: var(--moss-light); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(74,103,65,.25); }
+.btn-outline {
+  font-family: 'Jost', sans-serif; font-size: .75rem; font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--moss); border: 1.5px solid rgba(74,103,65,.3); padding: .85rem 2rem;
+  text-decoration: none; border-radius: 2rem; transition: all .3s;
+}
+.btn-outline:hover { border-color: var(--moss); background: var(--moss-pale); }
+
+.hero-right {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+  opacity: 0; animation: riseIn .8s .6s forwards;
+}
+.hero-card {
+  background: rgba(255,255,255,.7); backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,.8);
+  border-radius: 1.2rem; padding: 1.5rem;
+  box-shadow: 0 4px 20px rgba(74,103,65,.08);
+}
+.hero-card:first-child { grid-column: span 2; }
+.hero-card-label { font-size: .6rem; font-weight: 500; letter-spacing: .3em; text-transform: uppercase; color: var(--moss); margin-bottom: .5rem; }
+.hero-card-value { font-family: 'Libre Baskerville', serif; font-size: 1.6rem; color: var(--ink); line-height: 1.2; }
+.hero-card-sub { font-size: .8rem; font-weight: 300; color: var(--muted); margin-top: .3rem; line-height: 1.5; }
+.hero-badge {
+  display: flex; align-items: center; gap: .5rem; margin-top: .8rem;
+  font-size: .7rem; color: var(--moss-light);
+}
+.badge-leaf { width: 8px; height: 8px; background: var(--moss-light); border-radius: 50% 0; transform: rotate(45deg); }
+
+.hero-scroll-cue {
+  position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  opacity: 0; animation: riseIn .6s 1.3s forwards;
+}
+.scroll-cue-line { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--moss-light), transparent); animation: drip 2.2s ease-in-out infinite; }
+.scroll-cue-text { font-size: .6rem; letter-spacing: .3em; font-weight: 300; color: var(--muted); text-transform: uppercase; }
+@keyframes drip { 0%,100%{opacity:.3;transform:scaleY(.8);transform-origin:top;} 50%{opacity:1;transform:scaleY(1);} }
+@keyframes riseIn { from{opacity:0;transform:translateY(18px);} to{opacity:1;transform:translateY(0);} }
+
+/* ─── SECTIONS ─── */
+section { position: relative; }
+.container { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
+
+.sec-label { font-size: .6rem; font-weight: 500; letter-spacing: .4em; text-transform: uppercase; color: var(--moss); margin-bottom: 1rem; display: flex; align-items: center; gap: .8rem; }
+.sec-label::before { content: ''; display: inline-block; width: 24px; height: 1px; background: var(--moss-light); }
+.sec-title { font-family: 'Abril Fatface', cursive; font-size: clamp(2rem, 4vw, 3rem); color: var(--ink); line-height: 1.2; margin-bottom: 1.2rem; }
+.sec-title em { font-style: italic; color: var(--moss); }
+.sec-body { font-size: 1rem; font-weight: 300; line-height: 1.9; color: var(--muted); max-width: 560px; }
+
+/* DIVIDER */
+.section-divider { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem 2.5rem; max-width: 1100px; margin: 0 auto; }
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-motif { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; color: var(--moss-light); opacity: .5; }
+
+/* ─── PRÉSENTATION ─── */
+#presentation { padding: 6rem 0; background: var(--paper); }
+.pres-layout { display: grid; grid-template-columns: 1fr 1.1fr; gap: 5rem; align-items: center; }
+.pres-visual-wrap { position: relative; }
+.pres-img {
+  width: 100%; aspect-ratio: 3/4;
+  background: linear-gradient(135deg, #D8E8CF 0%, #C4D9BB 30%, #E8E0D0 70%, #D4C9A8 100%);
+  border-radius: 1.5rem; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 20px 60px rgba(74,103,65,.12);
+}
+.garden-illustration { width: 80%; height: 80%; position: relative; }
+.pres-accent {
+  position: absolute; bottom: -1.5rem; right: -1.5rem;
+  background: var(--paper); border: 1px solid var(--border);
+  border-radius: 1rem; padding: 1.2rem 1.5rem;
+  box-shadow: 0 8px 30px rgba(44,36,25,.08);
+  min-width: 160px;
+}
+.pres-accent-num { font-family: 'Libre Baskerville', serif; font-size: 2.5rem; color: var(--moss); line-height: 1; }
+.pres-accent-label { font-size: .7rem; font-weight: 300; color: var(--muted); margin-top: .2rem; }
+.pres-accent-2 {
+  position: absolute; top: 1.5rem; left: -1.5rem;
+  background: var(--moss); border-radius: 1rem; padding: 1rem 1.3rem;
+  box-shadow: 0 8px 30px rgba(74,103,65,.2);
+}
+.pres-accent-2 span { font-size: .65rem; font-weight: 300; letter-spacing: .15em; color: rgba(255,255,255,.7); text-transform: uppercase; }
+.pres-accent-2 p { font-family: 'Libre Baskerville', serif; font-size: 1rem; color: #fff; margin-top: .2rem; }
+.pres-pills { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 2rem; }
+.pill {
+  font-size: .7rem; font-weight: 400; letter-spacing: .1em;
+  padding: .4rem 1rem; border-radius: 2rem;
+  border: 1px solid var(--border); color: var(--ink-soft);
+  background: rgba(255,255,255,.6); transition: all .3s;
+}
+.pill:hover { background: var(--moss-pale); border-color: rgba(74,103,65,.25); color: var(--moss); }
+.pill.green { background: var(--moss-pale); border-color: rgba(74,103,65,.2); color: var(--moss); }
+
+/* ─── CARTE ─── */
+#carte { padding: 6rem 0; background: var(--stone); }
+.carte-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; gap: 2rem; flex-wrap: wrap; }
+.menu-tabs { display: flex; gap: .4rem; flex-wrap: wrap; }
+.menu-tab {
+  font-family: 'Jost', sans-serif; font-size: .7rem; font-weight: 400; letter-spacing: .15em; text-transform: uppercase;
+  padding: .55rem 1.2rem; border-radius: 2rem; border: 1px solid var(--border);
+  background: rgba(255,255,255,.6); cursor: pointer; color: var(--muted);
+  transition: all .25s;
+}
+.menu-tab:hover { border-color: rgba(74,103,65,.25); color: var(--moss); }
+.menu-tab.active { background: var(--moss); border-color: var(--moss); color: #fff; }
+.menu-panel { display: none; }
+.menu-panel.active { display: block; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
+.menu-card {
+  background: rgba(255,255,255,.75); backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,.9); border-radius: 1rem; padding: 1.3rem 1.5rem;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+  transition: all .25s;
+}
+.menu-card:hover { background: #fff; box-shadow: 0 6px 24px rgba(74,103,65,.1); transform: translateY(-2px); }
+.menu-card-body {}
+.menu-card-name { font-family: 'Libre Baskerville', serif; font-size: 1rem; color: var(--ink); margin-bottom: .3rem; }
+.menu-card-desc { font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.6; font-style: italic; }
+.menu-card-badge { margin-top: .5rem; font-size: .6rem; font-weight: 500; letter-spacing: .15em; text-transform: uppercase; color: var(--moss-light); }
+.menu-card-price { font-family: 'Libre Baskerville', serif; font-size: 1.2rem; color: var(--bamboo); white-space: nowrap; flex-shrink: 0; }
+
+.formule-card {
+  background: linear-gradient(135deg, rgba(74,103,65,.08), rgba(61,110,122,.06));
+  border: 1.5px solid rgba(74,103,65,.2); border-radius: 1.2rem; padding: 2rem;
+  margin-bottom: 1rem;
+}
+.formule-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: .8rem; flex-wrap: wrap; }
+.formule-card-name { font-family: 'Libre Baskerville', serif; font-size: 1.3rem; color: var(--ink); }
+.formule-card-price { font-family: 'Libre Baskerville', serif; font-size: 1.5rem; color: var(--moss); }
+.formule-card-desc { font-size: .95rem; font-weight: 300; color: var(--muted); line-height: 1.8; }
+
+/* ─── AMBIANCE ─── */
+#ambiance { padding: 6rem 0; background: var(--paper); }
+.ambiance-grid { display: grid; grid-template-columns: 1.5fr 1fr; grid-template-rows: 1fr 1fr; gap: 1.2rem; aspect-ratio: 16/9; margin-bottom: 3.5rem; }
+.amb-cell {
+  background: linear-gradient(135deg, var(--moss-pale), #D0DEC8);
+  border-radius: 1.2rem; overflow: hidden; position: relative;
+  display: flex; align-items: flex-end;
+  transition: transform .4s; cursor: default;
+}
+.amb-cell:first-child { grid-row: span 2; background: linear-gradient(160deg, #C8DEC0, #A8C89A); }
+.amb-cell:hover { transform: scale(1.015); z-index: 2; }
+.amb-cell.water { background: linear-gradient(135deg, #C0D8DE, #92B8C4); }
+.amb-cell.blossom { background: linear-gradient(135deg, #EDD8D0, #DFB8AE); }
+.amb-cell-inner {
+  position: relative; z-index: 1; padding: 1.2rem 1.5rem; width: 100%;
+  background: linear-gradient(to top, rgba(44,36,25,.25), transparent);
+}
+.amb-cell-label { font-family: 'Libre Baskerville', serif; font-size: 1rem; color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.2); }
+.amb-cell-sub { font-size: .7rem; font-weight: 300; color: rgba(255,255,255,.75); margin-top: .2rem; text-shadow: 0 1px 4px rgba(0,0,0,.15); }
+
+/* Garden SVG in cells */
+.amb-illustration { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: .35; }
+.amb-illustration svg { width: 60%; height: 60%; }
+
+.ambiance-features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+.amb-feat { padding: 1.5rem; border: 1px solid var(--border); border-radius: 1rem; background: rgba(255,255,255,.5); }
+.amb-feat-icon { font-size: 1.5rem; margin-bottom: .8rem; }
+.amb-feat-title { font-family: 'Libre Baskerville', serif; font-size: 1rem; color: var(--ink); margin-bottom: .4rem; }
+.amb-feat-text { font-size: .85rem; font-weight: 300; color: var(--muted); line-height: 1.65; }
+
+/* ─── ACCÈS ─── */
+#acces { padding: 6rem 0; background: var(--stone); }
+.acces-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+.info-row { display: flex; gap: 1rem; margin-bottom: 2rem; align-items: flex-start; }
+.info-icon { width: 36px; height: 36px; background: var(--moss-pale); border-radius: .6rem; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; }
+.info-label { font-size: .6rem; font-weight: 500; letter-spacing: .25em; text-transform: uppercase; color: var(--moss); margin-bottom: .3rem; }
+.info-value { font-size: .95rem; font-weight: 300; color: var(--ink-soft); line-height: 1.8; }
+.info-value a { color: var(--bamboo); text-decoration: none; }
+.info-value strong { font-weight: 500; color: var(--ink); }
+
+.map-wrap {
+  background: linear-gradient(135deg, #D0DFC8, #C4D4BC);
+  border-radius: 1.5rem; overflow: hidden; aspect-ratio: 4/3;
+  position: relative; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 12px 40px rgba(74,103,65,.12);
+}
+.map-wrap::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 20 L40 20 M20 0 L20 40' stroke='rgba(74,103,65,0.08)' stroke-width='1'/%3E%3C/svg%3E") repeat; }
+.map-pin-wrap { position: relative; z-index: 1; text-align: center; }
+.map-pin-circle { width: 48px; height: 48px; background: var(--moss); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); margin: 0 auto 1rem; box-shadow: 0 4px 16px rgba(74,103,65,.3); }
+.map-pin-circle::after { content: ''; position: absolute; inset: 6px; background: #fff; border-radius: 50%; }
+.map-city { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; color: var(--ink); }
+.map-region { font-size: .75rem; font-weight: 300; color: var(--muted); margin-top: .3rem; }
+.map-link-btn {
+  display: inline-block; margin-top: 1rem; font-size: .7rem; font-weight: 400; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--moss); border: 1px solid rgba(74,103,65,.25); padding: .5rem 1.2rem; border-radius: 2rem;
+  text-decoration: none; background: rgba(255,255,255,.6); transition: all .3s;
+}
+.map-link-btn:hover { background: #fff; }
+
+/* ─── RÉSERVATION ─── */
+#reservation {
+  padding: 7rem 2.5rem; text-align: center;
+  background: linear-gradient(160deg, #3D5E36 0%, #2D4E56 100%);
+  position: relative; overflow: hidden;
+}
+#reservation::before {
+  content: '花'; position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  font-family: 'Noto Serif SC', serif; font-size: 28rem; color: rgba(255,255,255,.025);
+  line-height: 1; pointer-events: none;
+}
+.res-tag { display: inline-block; font-size: .6rem; font-weight: 400; letter-spacing: .4em; text-transform: uppercase; color: rgba(255,255,255,.5); margin-bottom: 1.5rem; border: 1px solid rgba(255,255,255,.15); padding: .4rem 1.2rem; border-radius: 2rem; }
+.res-title { font-family: 'Abril Fatface', cursive; font-size: clamp(2rem, 5vw, 3.8rem); color: #fff; line-height: 1.2; margin-bottom: .8rem; }
+.res-title em { font-style: italic; color: rgba(220,232,213,1); }
+.res-sub { font-size: 1rem; font-weight: 300; color: rgba(255,255,255,.55); margin-bottom: 3rem; }
+.btn-res-main {
+  display: inline-block; font-family: 'Jost', sans-serif; font-size: .8rem; font-weight: 400; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--moss); background: #fff; padding: 1.1rem 3rem; border-radius: 3rem;
+  text-decoration: none; transition: all .3s;
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
+}
+.btn-res-main:hover { background: var(--moss-pale); transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,.2); }
+.res-phone { margin-top: 2rem; font-size: .9rem; font-weight: 300; color: rgba(255,255,255,.4); }
+.res-phone a { color: rgba(220,232,213,.8); text-decoration: none; }
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--ink); padding: 3rem 2.5rem; text-align: center;
+}
+.foot-logo { font-family: 'Libre Baskerville', serif; font-size: 1.1rem; color: rgba(255,255,255,.75); }
+.foot-sub { font-size: .75rem; font-weight: 300; color: rgba(255,255,255,.3); margin-top: .4rem; letter-spacing: .1em; }
+.foot-links { display: flex; gap: 2rem; justify-content: center; margin-top: 1.5rem; flex-wrap: wrap; }
+.foot-links a { font-size: .65rem; font-weight: 400; letter-spacing: .2em; text-transform: uppercase; color: rgba(255,255,255,.3); text-decoration: none; transition: color .3s; }
+.foot-links a:hover { color: rgba(255,255,255,.7); }
+.foot-copyright { margin-top: 2rem; font-size: .7rem; font-weight: 300; color: rgba(255,255,255,.15); }
+
+/* ─── REVEAL ─── */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .65s, transform .65s; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.reveal-left { opacity:0; transform:translateX(-20px); transition:opacity .65s, transform .65s; }
+.reveal-left.visible { opacity:1; transform:translateX(0); }
+.reveal-right { opacity:0; transform:translateX(20px); transition:opacity .65s, transform .65s; }
+.reveal-right.visible { opacity:1; transform:translateX(0); }
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:768px){
+  .hero-content { grid-template-columns:1fr; padding:6rem 1.5rem 4rem; }
+  .hero-right { display: none; }
+  .pres-layout,.acces-layout { grid-template-columns:1fr; gap:2.5rem; }
+  .ambiance-grid { grid-template-columns:1fr; grid-template-rows:auto; aspect-ratio:auto; }
+  .amb-cell:first-child { grid-row:auto; aspect-ratio:16/9; }
+  .ambiance-features { grid-template-columns:1fr; }
+  header { padding:1rem 1.5rem; }
+  .btn-reserve-sm,.header-tel { display:none; }
+  .carte-header { flex-direction:column; align-items:flex-start; }
+  #nav-overlay { grid-template-columns: 1fr; }
+  .nav-panel-left { display: none; }
+  .nav-panel-right { padding: 4rem 2.5rem; }
+  .nav-link-text { font-size: 2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- FULLSCREEN NAV -->
+<div id="nav-scrim"></div>
+<nav id="nav-overlay" role="navigation" aria-label="Menu principal">
+
+  <!-- LEFT: logo + botanical + contact -->
+  <div class="nav-panel-left">
+    <div class="nav-top">
+      <div class="nav-logo">Jardin de<br><em>Prospérité</em></div>
+      <div class="nav-logo-sub">Restaurant Asiatique · Dammartin-en-Goële</div>
+      <!-- Botanical SVG illustration -->
+      <div class="nav-botanical">
+        <svg viewBox="0 0 260 220" xmlns="http://www.w3.org/2000/svg" width="260">
+          <rect x="28" y="10" width="7" height="200" rx="3.5" fill="#4A6741"/>
+          <rect x="24" y="45" width="16" height="3.5" rx="1.75" fill="#3D5534"/>
+          <rect x="22" y="90" width="20" height="3.5" rx="1.75" fill="#3D5534"/>
+          <rect x="25" y="138" width="14" height="3.5" rx="1.75" fill="#3D5534"/>
+          <rect x="55" y="25" width="5.5" height="185" rx="2.75" fill="#6B8F60"/>
+          <rect x="52" y="65" width="12" height="3" rx="1.5" fill="#5A7A50"/>
+          <rect x="51" y="115" width="14" height="3" rx="1.5" fill="#5A7A50"/>
+          <rect x="53" y="162" width="10" height="3" rx="1.5" fill="#5A7A50"/>
+          <!-- lotus pond -->
+          <ellipse cx="160" cy="185" rx="75" ry="20" fill="#7DB3BE" opacity=".25"/>
+          <ellipse cx="160" cy="183" rx="58" ry="14" fill="#7DB3BE" opacity=".18"/>
+          <!-- stem -->
+          <rect x="157" y="130" width="4" height="52" fill="#4A6741" opacity=".6"/>
+          <!-- petals -->
+          <ellipse cx="159" cy="126" rx="13" ry="19" fill="#E8C0C4" opacity=".8" transform="rotate(-12,159,126)"/>
+          <ellipse cx="173" cy="129" rx="11" ry="17" fill="#DDB0B5" opacity=".7" transform="rotate(14,173,129)"/>
+          <ellipse cx="146" cy="129" rx="11" ry="17" fill="#DDB0B5" opacity=".7" transform="rotate(-18,146,129)"/>
+          <ellipse cx="159" cy="121" rx="9" ry="15" fill="#F0CACF" opacity=".85"/>
+          <!-- leaves -->
+          <path d="M200 80 Q225 52 248 70 Q225 90 200 80Z" fill="#6B8F60" opacity=".5"/>
+          <path d="M215 115 Q244 90 260 112 Q238 130 215 115Z" fill="#7DA870" opacity=".4"/>
+          <!-- stones -->
+          <ellipse cx="215" cy="192" rx="22" ry="12" fill="#B8A890" opacity=".55"/>
+          <ellipse cx="232" cy="183" rx="14" ry="9" fill="#C4B49A" opacity=".5"/>
+        </svg>
+      </div>
+    </div>
+    <div class="nav-bottom">
+      <div class="nav-bottom-label">Contact & Réservation</div>
+      <div class="nav-bottom-info">
+        <a href="tel:+33160031234">01 60 03 12 34</a><br>
+        contact@jardin-prosperite.fr<br>
+        12 Rue de la République · 77230 Dammartin-en-Goële
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT: nav links -->
+  <div class="nav-panel-right">
+    <ul class="nav-links">
+      <li><a href="#presentation" onclick="closeMenu()"><span class="nav-link-num">01</span><span class="nav-link-text">Notre histoire</span><span class="nav-link-arrow">↗</span></a></li>
+      <li><a href="#carte" onclick="closeMenu()"><span class="nav-link-num">02</span><span class="nav-link-text">Carte & menus</span><span class="nav-link-arrow">↗</span></a></li>
+      <li><a href="#ambiance" onclick="closeMenu()"><span class="nav-link-num">03</span><span class="nav-link-text">L'ambiance</span><span class="nav-link-arrow">↗</span></a></li>
+      <li><a href="#acces" onclick="closeMenu()"><span class="nav-link-num">04</span><span class="nav-link-text">Situation & accès</span><span class="nav-link-arrow">↗</span></a></li>
+      <li><a href="#reservation" onclick="closeMenu()"><span class="nav-link-num">05</span><span class="nav-link-text">Réservation</span><span class="nav-link-arrow">↗</span></a></li>
+    </ul>
+    <a href="#reservation" class="nav-reserve-btn" onclick="closeMenu()">
+      Réserver une table →
+    </a>
+  </div>
+
+</nav>
+
+<!-- HAMBURGER -->
+<button id="menu-btn" onclick="toggleMenu()" aria-label="Ouvrir le menu" aria-expanded="false">
+  <span></span><span></span><span></span>
+</button>
+
+<!-- HEADER -->
+<header>
+  <a href="#hero" class="logo">
+    Jardin de <em>Prospérité</em>
+    <span>Restaurant Asiatique</span>
+  </a>
+  <div class="header-right">
+    <div class="header-tel">Rés. : <a href="tel:+33160031234">01 60 03 12 34</a></div>
+    <a href="#reservation" class="btn-reserve-sm">Réserver</a>
+  </div>
+</header>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-garden"></div>
+  <div class="hero-content">
+    <div class="hero-left">
+      <div class="hero-tag"><span class="tag-dot"></span>Dammartin-en-Goële · Seine-et-Marne</div>
+      <h1 class="hero-title">
+        <em>Jardin de</em>
+        Prospérité
+        <span class="sub">花園繁栄</span>
+      </h1>
+      <p class="hero-desc">Une cuisine asiatique d'exception, née du jardin, portée par les saisons. Depuis 2008, nous vous invitons à un voyage sensoriel entre Chine, Thaïlande, Viêt Nam et Japon.</p>
+      <div class="hero-ctas">
+        <a href="#reservation" class="btn-primary">Réserver une table</a>
+        <a href="#carte" class="btn-outline">Voir la carte</a>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-card">
+        <div class="hero-card-label">Ce soir au jardin</div>
+        <div class="hero-card-value">Menu Dégustation</div>
+        <div class="hero-card-sub">6 services composés par notre chef · Accord thés & sakés disponible</div>
+        <div class="hero-badge"><span class="badge-leaf"></span>Ouvert ce soir · 19h00</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">Formule midi</div>
+        <div class="hero-card-value">14,90 €</div>
+        <div class="hero-card-sub">Entrée + Plat ou Plat + Dessert</div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-label">Capacité</div>
+        <div class="hero-card-value">60 cvts</div>
+        <div class="hero-card-sub">Salon privatif disponible</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scroll-cue">
+    <div class="scroll-cue-line"></div>
+    <span class="scroll-cue-text">Découvrir</span>
+  </div>
+</section>
+
+<div class="section-divider"><div class="divider-line"></div><span class="divider-motif">❧</span><div class="divider-line"></div></div>
+
+<!-- PRÉSENTATION -->
+<section id="presentation">
+  <div class="container">
+    <div class="pres-layout">
+      <div class="pres-visual-wrap reveal-left">
+        <div class="pres-img">
+          <!-- SVG garden illustration -->
+          <svg viewBox="0 0 280 350" xmlns="http://www.w3.org/2000/svg" style="width:85%;height:85%;opacity:.75">
+            <!-- Bamboo stems -->
+            <rect x="30" y="20" width="8" height="310" rx="4" fill="#6B8F60" opacity=".6"/>
+            <rect x="25" y="60" width="18" height="4" rx="2" fill="#5A7A50" opacity=".5"/>
+            <rect x="22" y="120" width="22" height="4" rx="2" fill="#5A7A50" opacity=".5"/>
+            <rect x="26" y="180" width="16" height="4" rx="2" fill="#5A7A50" opacity=".5"/>
+            <rect x="24" y="240" width="20" height="4" rx="2" fill="#5A7A50" opacity=".4"/>
+            <rect x="60" y="40" width="7" height="290" rx="3.5" fill="#7DA870" opacity=".45"/>
+            <rect x="56" y="90" width="15" height="3" rx="1.5" fill="#6B9660" opacity=".4"/>
+            <rect x="57" y="155" width="13" height="3" rx="1.5" fill="#6B9660" opacity=".4"/>
+            <rect x="55" y="215" width="17" height="3" rx="1.5" fill="#6B9660" opacity=".35"/>
+            <!-- Lotus flowers -->
+            <ellipse cx="160" cy="280" rx="50" ry="15" fill="#4A8870" opacity=".3"/>
+            <ellipse cx="160" cy="278" rx="40" ry="10" fill="#5A9880" opacity=".25"/>
+            <ellipse cx="160" cy="230" rx="12" ry="3" fill="#4A8870" opacity=".4"/>
+            <rect x="158" y="233" width="4" height="45" fill="#4A6741" opacity=".5"/>
+            <!-- Lotus petals -->
+            <ellipse cx="160" cy="225" rx="14" ry="20" fill="#E8C0C4" opacity=".7" transform="rotate(-15,160,225)"/>
+            <ellipse cx="175" cy="228" rx="12" ry="18" fill="#E0B4B8" opacity=".65" transform="rotate(15,175,228)"/>
+            <ellipse cx="145" cy="228" rx="12" ry="18" fill="#E0B4B8" opacity=".65" transform="rotate(-20,145,228)"/>
+            <ellipse cx="160" cy="220" rx="10" ry="16" fill="#F0C8CC" opacity=".8"/>
+            <!-- Rocks / stones -->
+            <ellipse cx="200" cy="310" rx="28" ry="16" fill="#B8A890" opacity=".6"/>
+            <ellipse cx="220" cy="300" rx="18" ry="12" fill="#C4B49A" opacity=".55"/>
+            <ellipse cx="185" cy="315" rx="14" ry="9" fill="#A89880" opacity=".6"/>
+            <!-- Water ripples -->
+            <ellipse cx="160" cy="295" rx="70" ry="18" fill="none" stroke="#7DB3BE" stroke-width="1.5" opacity=".3"/>
+            <ellipse cx="160" cy="295" rx="55" ry="13" fill="none" stroke="#7DB3BE" stroke-width="1" opacity=".25"/>
+            <!-- Small leaves -->
+            <path d="M210 150 Q230 120 250 140 Q230 160 210 150Z" fill="#6B8F60" opacity=".4"/>
+            <path d="M220 180 Q245 155 260 175 Q240 195 220 180Z" fill="#7DA870" opacity=".35"/>
+            <path d="M200 100 Q215 75 235 90 Q218 108 200 100Z" fill="#5A7A50" opacity=".45"/>
+          </svg>
+        </div>
+        <div class="pres-accent-2">
+          <span>Depuis</span>
+          <p>2008 · Dammartin</p>
+        </div>
+        <div class="pres-accent">
+          <div class="pres-accent-num">60+</div>
+          <div class="pres-accent-label">Couverts · Salle & Terrasse</div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <span class="sec-label">Notre Maison</span>
+        <h2 class="sec-title">L'art du jardin <em>dans l'assiette</em></h2>
+        <p class="sec-body">Au cœur de Dammartin-en-Goële, le Jardin de Prospérité vous accueille dans un cadre inspiré des jardins zen, où chaque détail invite à la sérénité. Nos chefs composent une carte vivante qui célèbre les grandes traditions culinaires d'Asie — Chine, Thaïlande, Viêt Nam, Japon.</p>
+        <p class="sec-body" style="margin-top:1rem;">Ingrédients frais, épices soigneusement sélectionnées, dressages inspirés de l'esthétique orientale : chaque repas est un voyage.</p>
+        <div class="pres-pills">
+          <span class="pill green">🌿 Cuisine maison</span>
+          <span class="pill">Produits frais</span>
+          <span class="pill">Thés rares</span>
+          <span class="pill">Salle privatisable</span>
+          <span class="pill">Terrasse</span>
+          <span class="pill">Traiteur</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="divider-line"></div><span class="divider-motif">✦</span><div class="divider-line"></div></div>
+
+<!-- CARTE & MENUS -->
+<section id="carte">
+  <div class="container">
+    <div class="carte-header reveal">
+      <div>
+        <span class="sec-label">Notre Carte</span>
+        <h2 class="sec-title" style="margin-bottom:0">Carte & <em>Menus</em></h2>
+      </div>
+      <div class="menu-tabs">
+        <button class="menu-tab active" onclick="switchTab('entrees',this)">Entrées</button>
+        <button class="menu-tab" onclick="switchTab('plats',this)">Plats</button>
+        <button class="menu-tab" onclick="switchTab('sushis',this)">Sushis</button>
+        <button class="menu-tab" onclick="switchTab('desserts',this)">Desserts</button>
+        <button class="menu-tab" onclick="switchTab('formules',this)">Formules</button>
+      </div>
+    </div>
+
+    <div id="tab-entrees" class="menu-panel active reveal">
+      <div class="menu-grid">
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Nems au Porc & Crevettes</div><div class="menu-card-desc">Rouleaux croustillants, sauce nuoc-mâm maison</div></div><div class="menu-card-price">7,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Raviolis Gyoza</div><div class="menu-card-desc">Porc & ciboulette, sauce ponzu, sésame grillé</div></div><div class="menu-card-price">8,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Salade de Papaye Verte</div><div class="menu-card-desc">Som tam thaï, cacahuètes, piment, citron vert</div><div class="menu-card-badge">🌿 Végétarien</div></div><div class="menu-card-price">9,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Soupe Phở Bo</div><div class="menu-card-desc">Bouillon de bœuf mijoté 12h, vermicelles, herbes fraîches</div></div><div class="menu-card-price">11,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Brioches Banh Bao</div><div class="menu-card-desc">Vapeur, farce porc laqué & shiitake</div></div><div class="menu-card-price">7,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Tartare de Saumon</div><div class="menu-card-desc">Avocat, sésame noir, huile toastée, gingembre</div></div><div class="menu-card-price">13,50 €</div></div>
+      </div>
+    </div>
+
+    <div id="tab-plats" class="menu-panel">
+      <div class="menu-grid">
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Canard Laqué Pékinois</div><div class="menu-card-desc">Demi-canard, crêpes maison, sauce hoisin, julienne de poireau</div></div><div class="menu-card-price">24,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Bœuf au Wok Black Pepper</div><div class="menu-card-desc">Filet de bœuf, poivrons, sauce poivre noir de Kampot</div></div><div class="menu-card-price">19,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Curry Vert Crevettes</div><div class="menu-card-desc">Crevettes royales, lait de coco, aubergines thaï, basilic</div></div><div class="menu-card-price">21,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Poulet à la Citronnelle</div><div class="menu-card-desc">Poulet fermier, citronnelle, galangal, riz jasmin</div></div><div class="menu-card-price">17,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Bar Vapeur du Jardin</div><div class="menu-card-desc">Bar entier, gingembre, sauce soja légère, huile de sésame</div></div><div class="menu-card-price">26,00 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Tofu Mapo Dòufu</div><div class="menu-card-desc">Tofu soyeux, doubanjiang, poivre du Sichuan</div><div class="menu-card-badge">🌿 Végétarien</div></div><div class="menu-card-price">15,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Ramen Tonkotsu</div><div class="menu-card-desc">Bouillon de porc 18h, chashu, œuf mollet, nori, maïs</div></div><div class="menu-card-price">18,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Bò Bún Impérial</div><div class="menu-card-desc">Vermicelles froides, bœuf grillé, nems, crudités, sauce</div></div><div class="menu-card-price">16,90 €</div></div>
+      </div>
+    </div>
+
+    <div id="tab-sushis" class="menu-panel">
+      <div class="menu-grid">
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Plateau Découverte (12 pcs)</div><div class="menu-card-desc">4 sushis, 4 makis, 4 california rolls au choix</div></div><div class="menu-card-price">18,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Plateau Prestige (20 pcs)</div><div class="menu-card-desc">Assortiment sushis, makis, temakis & sashimis</div></div><div class="menu-card-price">32,00 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Sashimis de Thon Rouge</div><div class="menu-card-desc">5 tranches, sauce ponzu, daïkon, gingembre confit</div></div><div class="menu-card-price">16,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Dragon Roll (8 pcs)</div><div class="menu-card-desc">Crevettes tempura, avocat, sauce anguille, tobiko</div></div><div class="menu-card-price">14,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Rainbow Roll (8 pcs)</div><div class="menu-card-desc">California, assortiment de poissons frais en couverture</div></div><div class="menu-card-price">15,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Chirashi Saumon</div><div class="menu-card-desc">Bol de riz vinaigré, saumon, avocat, sésame</div></div><div class="menu-card-price">17,90 €</div></div>
+      </div>
+    </div>
+
+    <div id="tab-desserts" class="menu-panel">
+      <div class="menu-grid">
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Mochi Glacés (3 pcs)</div><div class="menu-card-desc">Matcha, fraise, sésame noir</div><div class="menu-card-badge">🌿 Végétarien</div></div><div class="menu-card-price">7,50 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Crème Brûlée au Matcha</div><div class="menu-card-desc">Thé vert Uji, crème onctueuse, tuile de sésame</div><div class="menu-card-badge">🌿 Végétarien</div></div><div class="menu-card-price">8,90 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Soupe de Mangue</div><div class="menu-card-desc">Mangue Alphonso, perles de coco, glace coco</div><div class="menu-card-badge">🌿 Végétalien</div></div><div class="menu-card-price">8,00 €</div></div>
+        <div class="menu-card"><div class="menu-card-body"><div class="menu-card-name">Banana Tempura</div><div class="menu-card-desc">Beignet de banane, caramel au miso, glace vanille</div></div><div class="menu-card-price">7,90 €</div></div>
+      </div>
+    </div>
+
+    <div id="tab-formules" class="menu-panel">
+      <div class="formule-card">
+        <div class="formule-card-header">
+          <div class="formule-card-name">🍱 Formule Midi — Lun. au Ven.</div>
+          <div class="formule-card-price">14,90 €</div>
+        </div>
+        <div class="formule-card-desc">Entrée + Plat <em>ou</em> Plat + Dessert · Café offert · Sélection du jour</div>
+      </div>
+      <div class="formule-card">
+        <div class="formule-card-header">
+          <div class="formule-card-name">🌸 Formule Jardin — Tous les jours</div>
+          <div class="formule-card-price">26,90 €</div>
+        </div>
+        <div class="formule-card-desc">Entrée + Plat + Dessert · Thé vert offert · Accès à la carte complète</div>
+      </div>
+      <div class="formule-card" style="background:linear-gradient(135deg,rgba(61,110,122,.07),rgba(74,103,65,.06));border-color:rgba(61,110,122,.25);">
+        <div class="formule-card-header">
+          <div class="formule-card-name">🎋 Menu Dégustation — En soirée</div>
+          <div class="formule-card-price">58,00 €/pers.</div>
+        </div>
+        <div class="formule-card-desc">6 services composés par notre chef · Amuse-bouche · Entrée froide · Entrée chaude · Sorbet palais · Plat principal · Dessert<br><em>Accord thés & sakés disponible en supplément · +18 € · Minimum 2 personnes</em></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="divider-line"></div><span class="divider-motif">❧</span><div class="divider-line"></div></div>
+
+<!-- AMBIANCE -->
+<section id="ambiance">
+  <div class="container">
+    <span class="sec-label reveal">Notre Espace</span>
+    <h2 class="sec-title reveal">L'ambiance du <em>Jardin</em></h2>
+    <div class="ambiance-grid reveal">
+      <div class="amb-cell">
+        <div class="amb-illustration">
+          <svg viewBox="0 0 100 120" xmlns="http://www.w3.org/2000/svg">
+            <rect x="46" y="10" width="8" height="100" rx="4" fill="#4A6741" opacity=".8"/>
+            <rect x="42" y="30" width="18" height="4" rx="2" fill="#3D5534" opacity=".7"/>
+            <rect x="40" y="55" width="22" height="4" rx="2" fill="#3D5534" opacity=".7"/>
+            <rect x="44" y="78" width="14" height="4" rx="2" fill="#3D5534" opacity=".6"/>
+            <rect x="62" y="20" width="6" height="90" rx="3" fill="#5A7A50" opacity=".6"/>
+            <rect x="59" y="45" width="12" height="3" rx="1.5" fill="#4A6741" opacity=".55"/>
+            <rect x="58" y="68" width="14" height="3" rx="1.5" fill="#4A6741" opacity=".5"/>
+          </svg>
+        </div>
+        <div class="amb-cell-inner">
+          <div class="amb-cell-label">Salle Principale</div>
+          <div class="amb-cell-sub">60 couverts · Décor zen</div>
+        </div>
+      </div>
+      <div class="amb-cell water">
+        <div class="amb-cell-inner">
+          <div class="amb-cell-label">Fontaine & Bassin</div>
+          <div class="amb-cell-sub">Espace de détente</div>
+        </div>
+      </div>
+      <div class="amb-cell blossom">
+        <div class="amb-cell-inner">
+          <div class="amb-cell-label">Terrasse Fleurie</div>
+          <div class="amb-cell-sub">Ouverte en saison</div>
+        </div>
+      </div>
+      <div class="amb-cell" style="background:linear-gradient(135deg,#D8CEC0,#C4B8A0);">
+        <div class="amb-cell-inner">
+          <div class="amb-cell-label">Salon Privé</div>
+          <div class="amb-cell-sub">Jusqu'à 20 personnes</div>
+        </div>
+      </div>
+      <div class="amb-cell" style="background:linear-gradient(135deg,#C8D8C0,#B4C8A8);">
+        <div class="amb-cell-inner">
+          <div class="amb-cell-label">Bar à Thés & Sakés</div>
+          <div class="amb-cell-sub">Sélection rare</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ambiance-features reveal">
+      <div class="amb-feat">
+        <div class="amb-feat-icon">🏮</div>
+        <div class="amb-feat-title">Décor Inspiré</div>
+        <div class="amb-feat-text">Lanternes de soie, paravent laqué, bambous vivants et touches de jade composent une atmosphère sereine et enveloppante.</div>
+      </div>
+      <div class="amb-feat">
+        <div class="amb-feat-icon">🎋</div>
+        <div class="amb-feat-title">Jardin Intérieur</div>
+        <div class="amb-feat-text">Un mini-jardin zen au cœur de la salle invite à la contemplation. Pierres, eau et plantes créent une oasis de calme.</div>
+      </div>
+      <div class="amb-feat">
+        <div class="amb-feat-icon">🌸</div>
+        <div class="amb-feat-title">Événements Privés</div>
+        <div class="amb-feat-text">Anniversaires, séminaires, repas d'affaires : nos espaces privatisables s'adaptent à vos célébrations et projets professionnels.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><div class="divider-line"></div><span class="divider-motif">✦</span><div class="divider-line"></div></div>
+
+<!-- ACCÈS -->
+<section id="acces">
+  <div class="container">
+    <span class="sec-label reveal">Nous Trouver</span>
+    <h2 class="sec-title reveal">Situation & <em>Accès</em></h2>
+    <div class="acces-layout">
+      <div class="reveal-left">
+        <div class="info-row">
+          <div class="info-icon">📍</div>
+          <div><div class="info-label">Adresse</div><div class="info-value"><strong>12 Rue de la République</strong><br>77230 Dammartin-en-Goële<br>Seine-et-Marne (77) · Île-de-France</div></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🕐</div>
+          <div>
+            <div class="info-label">Horaires</div>
+            <div class="info-value">
+              <strong>Lun–Ven :</strong> 11h30–14h30 · 19h–22h30<br>
+              <strong>Samedi :</strong> 12h–15h · 19h–23h<br>
+              <strong>Dimanche :</strong> 12h–15h30 · 19h–22h<br>
+              <em style="color:var(--muted);font-size:.85rem">Fermé le mardi soir</em>
+            </div>
+          </div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">📞</div>
+          <div><div class="info-label">Contact</div><div class="info-value"><a href="tel:+33160031234">01 60 03 12 34</a><br><a href="mailto:contact@jardin-prosperite.fr">contact@jardin-prosperite.fr</a></div></div>
+        </div>
+        <div class="info-row">
+          <div class="info-icon">🚗</div>
+          <div>
+            <div class="info-label">Accès & Transport</div>
+            <div class="info-value">
+              A1 · Sortie 6 Dammartin (10 min)<br>
+              RER D · Gare Dammartin-Juilly (5 min à pied)<br>
+              ✈️ CDG · 15 min en voiture<br>
+              🅿️ Parking gratuit place du marché
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="reveal-right">
+        <div class="map-wrap">
+          <div class="map-pin-wrap">
+            <div style="position:relative;width:48px;margin:0 auto 1rem;">
+              <div class="map-pin-circle"></div>
+            </div>
+            <div class="map-city">Dammartin-en-Goële</div>
+            <div class="map-region">Seine-et-Marne · Île-de-France</div>
+            <a href="https://maps.google.com/?q=Dammartin-en-Goele,77230" target="_blank" class="map-link-btn">Ouvrir dans Google Maps →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RÉSERVATION -->
+<section id="reservation">
+  <div class="res-tag">Réservation</div>
+  <h2 class="res-title">Votre table au<br><em>Jardin</em> vous attend</h2>
+  <p class="res-sub">Disponibilités en temps réel · Confirmation immédiate par téléphone</p>
+  <a href="tel:+33160031234" class="btn-res-main">Réserver une table</a>
+  <div class="res-phone">Ou par téléphone · <a href="tel:+33160031234">01 60 03 12 34</a></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-logo">Jardin de Prospérité</div>
+  <div class="foot-sub">Restaurant Asiatique · 12 Rue de la République · 77230 Dammartin-en-Goële</div>
+  <div class="foot-links">
+    <a href="#presentation">Présentation</a>
+    <a href="#carte">Carte</a>
+    <a href="#ambiance">Ambiance</a>
+    <a href="#acces">Accès</a>
+    <a href="#reservation">Réserver</a>
+  </div>
+  <div class="foot-copyright">花園繁栄 · Jardin de Prospérité © 2024 · Tous droits réservés</div>
+</footer>
+
+<script>
+function toggleMenu(){
+  const o=document.getElementById('nav-overlay'),b=document.getElementById('menu-btn');
+  const open=o.classList.toggle('open');
+  b.classList.toggle('open',open);
+  b.setAttribute('aria-expanded',open);
+  document.body.style.overflow=open?'hidden':'';
+}
+function closeMenu(){
+  document.getElementById('nav-overlay').classList.remove('open');
+  document.getElementById('menu-btn').classList.remove('open');
+  document.getElementById('menu-btn').setAttribute('aria-expanded','false');
+  document.body.style.overflow='';
+}
+function switchTab(id,btn){
+  document.querySelectorAll('.menu-panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.menu-tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')});},{threshold:.1});
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>

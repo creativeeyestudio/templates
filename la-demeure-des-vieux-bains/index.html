@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>La Demeure des Vieux Bains — Provins</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --stone: #2a2420;
+    --parchment: #f5f0e8;
+    --warm-white: #faf8f3;
+    --gold: #9c7c3a;
+    --gold-light: #c9a84c;
+    --dust: #e8e0d0;
+    --text: #1e1a16;
+    --muted: #7a6f64;
+    --border: rgba(156,124,58,0.2);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--text);
+    overflow-x: hidden;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 200;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.8rem 3rem;
+    background: transparent;
+    transition: background 0.5s, padding 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(250,248,243,0.97);
+    backdrop-filter: blur(10px);
+    padding: 1.1rem 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Left: hamburger */
+  .nav-hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    background: none;
+    border: none;
+    z-index: 210;
+    width: 36px;
+    height: 30px;
+  }
+  .nav-hamburger span {
+    display: block;
+    height: 1px;
+    background: rgba(255,255,255,0.9);
+    transition: background 0.4s, transform 0.4s cubic-bezier(.77,0,.175,1), opacity 0.3s, width 0.3s;
+    transform-origin: center;
+  }
+  .nav-hamburger span:nth-child(1) { width: 100%; }
+  .nav-hamburger span:nth-child(2) { width: 65%; }
+  .nav-hamburger span:nth-child(3) { width: 100%; }
+  nav.scrolled .nav-hamburger span { background: var(--stone); }
+
+  /* open state → X */
+  .nav-hamburger.open span:nth-child(1) {
+    transform: translateY(6px) rotate(45deg);
+    width: 100%;
+    background: var(--parchment) !important;
+  }
+  .nav-hamburger.open span:nth-child(2) {
+    opacity: 0; width: 0;
+  }
+  .nav-hamburger.open span:nth-child(3) {
+    transform: translateY(-6px) rotate(-45deg);
+    width: 100%;
+    background: var(--parchment) !important;
+  }
+
+  /* Center: logo */
+  .nav-logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Playfair Display', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--parchment);
+    text-decoration: none;
+    transition: color 0.4s;
+    line-height: 1.4;
+    text-align: center;
+    white-space: nowrap;
+  }
+  nav.scrolled .nav-logo { color: var(--stone); }
+
+  /* Right: actions */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.8rem;
+  }
+  .nav-action-link {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 400;
+  }
+  nav.scrolled .nav-action-link { color: var(--muted); }
+  .nav-action-link:hover { color: var(--gold-light); }
+  nav.scrolled .nav-action-link:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--parchment);
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 0.5rem 1.3rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 400;
+  }
+  nav.scrolled .nav-cta { color: var(--gold); border-color: var(--gold); }
+  .nav-cta:hover { background: var(--gold); color: var(--warm-white); border-color: var(--gold); }
+
+  /* ─── FULLSCREEN MENU OVERLAY ─── */
+  .menu-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 190;
+    background: var(--stone);
+    display: flex;
+    pointer-events: none;
+    clip-path: inset(0 0 100% 0);
+    transition: clip-path 0.7s cubic-bezier(.77,0,.175,1);
+  }
+  .menu-overlay.open {
+    clip-path: inset(0 0 0% 0);
+    pointer-events: all;
+  }
+
+  /* Left panel: nav links */
+  .menu-left {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8rem 8vw 5rem 8vw;
+  }
+  .menu-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 3rem;
+    display: block;
+  }
+  .menu-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .menu-nav li {
+    overflow: hidden;
+    border-bottom: 1px solid rgba(156,124,58,0.15);
+  }
+  .menu-nav li:first-child { border-top: 1px solid rgba(156,124,58,0.15); }
+  .menu-nav a {
+    display: flex;
+    align-items: baseline;
+    gap: 1.2rem;
+    padding: 1.3rem 0;
+    text-decoration: none;
+    transition: padding 0.3s;
+  }
+  .menu-nav a:hover { padding-left: 0.8rem; }
+  .menu-nav .item-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem;
+    color: var(--gold);
+    letter-spacing: 0.2em;
+    flex-shrink: 0;
+    width: 2rem;
+  }
+  .menu-nav .item-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    color: var(--parchment);
+    font-weight: 400;
+    line-height: 1;
+    transition: color 0.3s;
+  }
+  .menu-nav a:hover .item-name { color: var(--gold-light); }
+  .menu-nav .item-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: rgba(245,240,232,0.35);
+    font-style: italic;
+    margin-left: auto;
+    transition: color 0.3s;
+  }
+  .menu-nav a:hover .item-sub { color: rgba(245,240,232,0.6); }
+
+  /* Staggered entrance for each item */
+  .menu-nav li { transform: translateY(30px); opacity: 0; transition: transform 0.5s, opacity 0.5s; }
+  .menu-overlay.open .menu-nav li:nth-child(1) { transition-delay: 0.2s; transform: translateY(0); opacity: 1; }
+  .menu-overlay.open .menu-nav li:nth-child(2) { transition-delay: 0.27s; transform: translateY(0); opacity: 1; }
+  .menu-overlay.open .menu-nav li:nth-child(3) { transition-delay: 0.34s; transform: translateY(0); opacity: 1; }
+  .menu-overlay.open .menu-nav li:nth-child(4) { transition-delay: 0.41s; transform: translateY(0); opacity: 1; }
+  .menu-overlay.open .menu-nav li:nth-child(5) { transition-delay: 0.48s; transform: translateY(0); opacity: 1; }
+  .menu-overlay.open .menu-nav li:nth-child(6) { transition-delay: 0.55s; transform: translateY(0); opacity: 1; }
+
+  /* Right panel: crossfading images */
+  .menu-right {
+    width: 38%;
+    position: relative;
+    overflow: hidden;
+    display: none;
+  }
+  @media (min-width: 900px) { .menu-right { display: block; } }
+
+  .menu-right-slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    filter: brightness(0.52);
+    opacity: 0;
+    transform: scale(1.06);
+    transition: opacity 0.65s cubic-bezier(.4,0,.2,1), transform 0.9s cubic-bezier(.4,0,.2,1);
+  }
+  .menu-right-slide.active {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .menu-right-slide.leaving {
+    opacity: 0;
+    transform: scale(0.97);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .menu-right-gradient {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(42,36,32,0.75) 0%, transparent 55%);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .menu-right-content {
+    position: absolute;
+    bottom: 3rem;
+    left: 3rem;
+    right: 3rem;
+    z-index: 3;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s 0.5s, transform 0.5s 0.5s;
+  }
+  .menu-overlay.open .menu-right-content { opacity: 1; transform: translateY(0); }
+  .menu-right-content .caption-bar {
+    width: 30px; height: 1px;
+    background: var(--gold);
+    margin-bottom: 1rem;
+    transition: width 0.4s;
+  }
+  .menu-right-content .place {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+    display: block;
+    transition: opacity 0.35s;
+  }
+  .menu-right-content .quote {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    color: var(--parchment);
+    font-style: italic;
+    line-height: 1.5;
+    transition: opacity 0.35s;
+  }
+
+  /* Bottom of left panel */
+  .menu-bottom {
+    margin-top: 3.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.4s 0.55s;
+  }
+  .menu-overlay.open .menu-bottom { opacity: 1; }
+  .menu-contact {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.45);
+    font-style: italic;
+  }
+  .menu-contact a { color: var(--gold); text-decoration: none; }
+  .menu-social {
+    display: flex;
+    gap: 1.5rem;
+  }
+  .menu-social a {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.35);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .menu-social a:hover { color: var(--gold-light); }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 700px;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      linear-gradient(to bottom, rgba(30,22,14,0.2) 0%, rgba(30,22,14,0.05) 40%, rgba(30,22,14,0.65) 100%),
+      url('https://static.wixstatic.com/media/441824_567ed71d16f44472a66ae56ff0c404a1~mv2.jpeg') center/cover no-repeat;
+    transform-origin: center;
+    animation: slowZoom 20s ease-in-out infinite alternate;
+  }
+  @keyframes slowZoom {
+    from { transform: scale(1); }
+    to { transform: scale(1.04); }
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 0 8vw 7vw;
+    width: 100%;
+  }
+  .hero-tagline {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 1.2rem;
+    display: block;
+    animation: fadeUp 1.2s ease both;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 6vw, 6rem);
+    color: var(--parchment);
+    font-weight: 400;
+    line-height: 1.05;
+    margin-bottom: 0.4rem;
+    animation: fadeUp 1.2s 0.15s ease both;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 1.8vw, 1.4rem);
+    color: rgba(245,240,232,0.75);
+    font-weight: 300;
+    font-style: italic;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 1.2s 0.3s ease both;
+  }
+  .hero-cta-group {
+    display: flex;
+    gap: 1.2rem;
+    animation: fadeUp 1.2s 0.45s ease both;
+  }
+  .btn-primary {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--warm-white);
+    padding: 1rem 2.2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 400;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    font-size: 0.68rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--parchment);
+    border: 1px solid rgba(255,255,255,0.45);
+    padding: 1rem 2.2rem;
+    text-decoration: none;
+    transition: all 0.3s;
+    font-weight: 400;
+  }
+  .btn-ghost:hover { border-color: var(--gold-light); color: var(--gold-light); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 2;
+  }
+  .hero-scroll span {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { transform: scaleY(1); opacity: 0.6; }
+    50% { transform: scaleY(0.6); opacity: 1; }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ─── BAND ─── */
+  .info-band {
+    background: var(--stone);
+    padding: 1.5rem 8vw;
+    display: flex;
+    justify-content: center;
+    gap: 4rem;
+  }
+  .info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    color: rgba(245,240,232,0.7);
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .info-item .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--gold); flex-shrink: 0; }
+
+  /* ─── SECTIONS ─── */
+  section { padding: 7rem 8vw; }
+
+  .section-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    display: block;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 400;
+    line-height: 1.15;
+    color: var(--stone);
+    margin-bottom: 1.5rem;
+  }
+  .section-title em { font-style: italic; color: var(--gold); }
+  .section-body {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    line-height: 1.8;
+    color: var(--muted);
+    font-weight: 400;
+    max-width: 52ch;
+  }
+
+  /* ─── INTRO ─── */
+  .intro {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+    align-items: center;
+  }
+  .intro-img-wrap {
+    position: relative;
+    overflow: hidden;
+  }
+  .intro-img-wrap img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s ease;
+  }
+  .intro-img-wrap:hover img { transform: scale(1.03); }
+  .intro-img-caption {
+    position: absolute;
+    bottom: 1.5rem;
+    left: -1.5rem;
+    background: var(--stone);
+    color: var(--parchment);
+    padding: 1rem 1.5rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-style: italic;
+    letter-spacing: 0.05em;
+  }
+  .intro-text { padding: 2rem 0; }
+  .ornament {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem 0;
+  }
+
+  /* ─── FEATURES GRID ─── */
+  .features {
+    background: var(--parchment);
+    padding: 7rem 8vw;
+  }
+  .features-header {
+    text-align: center;
+    margin-bottom: 5rem;
+  }
+  .features-header .section-body { margin: 0 auto; }
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .feature-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    cursor: pointer;
+  }
+  .feature-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.8s ease;
+  }
+  .feature-card:hover img { transform: scale(1.06); }
+  .feature-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(30,22,14,0.8) 0%, transparent 55%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 2rem;
+    transition: background 0.4s;
+  }
+  .feature-card:hover .feature-overlay {
+    background: linear-gradient(to top, rgba(30,22,14,0.88) 0%, rgba(30,22,14,0.15) 100%);
+  }
+  .feature-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    color: var(--gold-light);
+    margin-bottom: 0.6rem;
+  }
+  .feature-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    color: var(--parchment);
+    margin-bottom: 0.6rem;
+    font-weight: 400;
+  }
+  .feature-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.75);
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease, opacity 0.4s;
+    opacity: 0;
+  }
+  .feature-card:hover .feature-desc { max-height: 80px; opacity: 1; }
+  .feature-arrow {
+    margin-top: 1rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    text-decoration: none;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: all 0.4s 0.1s;
+  }
+  .feature-card:hover .feature-arrow { opacity: 1; transform: translateY(0); }
+
+  /* ─── HISTOIRE ─── */
+  .histoire {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+  .histoire-text {
+    padding: 7rem 5vw 7rem 8vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .histoire-img {
+    position: relative;
+    overflow: hidden;
+  }
+  .histoire-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .histoire-quote {
+    position: absolute;
+    top: 50%;
+    left: -2rem;
+    transform: translateY(-50%);
+    background: var(--stone);
+    color: var(--parchment);
+    padding: 2rem 2rem 2rem 3rem;
+    max-width: 280px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.6;
+    box-shadow: -4px 4px 40px rgba(0,0,0,0.3);
+  }
+  .histoire-quote::before {
+    content: '"';
+    font-size: 4rem;
+    color: var(--gold);
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    line-height: 1;
+    font-family: 'Playfair Display', serif;
+  }
+
+  /* ─── ROOMS ─── */
+  .rooms { background: var(--stone); }
+  .rooms .section-title { color: var(--parchment); }
+  .rooms .section-label { color: var(--gold-light); }
+  .rooms .section-body { color: rgba(245,240,232,0.65); }
+  .rooms-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 4rem;
+  }
+  .rooms-scroll {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    scrollbar-width: none;
+    padding-bottom: 1rem;
+  }
+  .rooms-scroll::-webkit-scrollbar { display: none; }
+  .room-card {
+    flex: 0 0 340px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .room-card img {
+    width: 100%;
+    aspect-ratio: 3/4;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.8s ease;
+  }
+  .room-card:hover img { transform: scale(1.05); }
+  .room-info {
+    padding: 1.5rem 0;
+  }
+  .room-info .room-type {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    margin-bottom: 0.5rem;
+  }
+  .room-info .room-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--parchment);
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+  .room-info .room-detail {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    color: rgba(245,240,232,0.55);
+  }
+
+  /* ─── SITUATION ─── */
+  .situation {
+    background: var(--parchment);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    padding: 0;
+  }
+  .situation-map {
+    background: var(--dust);
+    min-height: 500px;
+    position: relative;
+    overflow: hidden;
+  }
+  .situation-map img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .situation-content {
+    padding: 7rem 5vw 7rem 6vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .situation-list {
+    list-style: none;
+    margin-top: 2rem;
+  }
+  .situation-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: var(--muted);
+  }
+  .situation-list li .icon {
+    color: var(--gold);
+    font-size: 1rem;
+    margin-top: 0.15rem;
+    flex-shrink: 0;
+  }
+
+  /* ─── TESTIMONIAL ─── */
+  .testimonial {
+    text-align: center;
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 8rem 8vw;
+  }
+  .testimonial blockquote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2rem);
+    font-style: italic;
+    color: var(--stone);
+    line-height: 1.5;
+    margin-bottom: 2rem;
+    font-weight: 400;
+  }
+  .testimonial cite {
+    font-size: 0.68rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-style: normal;
+  }
+
+  /* ─── CONTACT ─── */
+  .contact {
+    background: var(--stone);
+    padding: 7rem 8vw;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6vw;
+  }
+  .contact-info .section-title { color: var(--parchment); }
+  .contact-info .section-label { color: var(--gold-light); }
+  .contact-info .section-body { color: rgba(245,240,232,0.65); }
+  .contact-details {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  .contact-detail {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+  }
+  .contact-detail .label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    width: 80px;
+    flex-shrink: 0;
+    padding-top: 0.15rem;
+  }
+  .contact-detail .value {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    color: rgba(245,240,232,0.8);
+    line-height: 1.5;
+  }
+  .contact-detail .value a { color: inherit; text-decoration: none; }
+  .contact-detail .value a:hover { color: var(--gold-light); }
+  .contact-form { padding-top: 1rem; }
+  .form-group { margin-bottom: 1.5rem; }
+  .form-group label {
+    display: block;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(156,124,58,0.3);
+    color: var(--parchment);
+    padding: 0.9rem 1rem;
+    font-family: 'Jost', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 300;
+    letter-spacing: 0.03em;
+    outline: none;
+    transition: border 0.3s;
+  }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    border-color: var(--gold);
+  }
+  .form-group select option { background: var(--stone); color: var(--parchment); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #18100a;
+    padding: 4rem 8vw 2rem;
+    border-top: 1px solid rgba(156,124,58,0.15);
+  }
+  .footer-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid rgba(156,124,58,0.12);
+    margin-bottom: 2rem;
+  }
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.1em;
+    color: var(--parchment);
+    max-width: 220px;
+    line-height: 1.5;
+  }
+  .footer-nav {
+    display: flex;
+    gap: 4rem;
+  }
+  .footer-col h4 {
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .footer-col ul li a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: rgba(245,240,232,0.55);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-col ul li a:hover { color: var(--gold-light); }
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 0.68rem;
+    color: rgba(245,240,232,0.3);
+    letter-spacing: 0.05em;
+  }
+  .footer-social {
+    display: flex;
+    gap: 1.2rem;
+  }
+  .footer-social a {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.4);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .footer-social a:hover { color: var(--gold-light); }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    nav { padding: 1.2rem 1.5rem; }
+    section { padding: 5rem 6vw; }
+    .intro, .histoire, .contact { grid-template-columns: 1fr; }
+    .situation { grid-template-columns: 1fr; }
+    .features-grid { grid-template-columns: 1fr 1fr; }
+    .rooms-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+    .hero-content { padding: 0 6vw 12vw; }
+    .info-band { flex-wrap: wrap; gap: 1.5rem; padding: 1.5rem 6vw; }
+    .footer-nav { display: none; }
+    .histoire-quote { display: none; }
+  }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(32px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.3s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+</style>
+</head>
+<body>
+
+<!-- FULLSCREEN MENU OVERLAY -->
+<div class="menu-overlay" id="menu-overlay">
+  <div class="menu-left">
+    <span class="menu-label">Navigation</span>
+    <ul class="menu-nav">
+      <li>
+        <a href="#decouvrir" data-index="0" onclick="closeMenu()">
+          <span class="item-num">01</span>
+          <span class="item-name">La Demeure</span>
+          <span class="item-sub">Notre histoire</span>
+        </a>
+      </li>
+      <li>
+        <a href="#chambres" data-index="1" onclick="closeMenu()">
+          <span class="item-num">02</span>
+          <span class="item-name">Chambres</span>
+          <span class="item-sub">Hébergement</span>
+        </a>
+      </li>
+      <li>
+        <a href="#salles" data-index="2" onclick="closeMenu()">
+          <span class="item-num">03</span>
+          <span class="item-name">Location de salles</span>
+          <span class="item-sub">Événements</span>
+        </a>
+      </li>
+      <li>
+        <a href="#restaurant" data-index="3" onclick="closeMenu()">
+          <span class="item-num">04</span>
+          <span class="item-name">Restaurant d'hôte</span>
+          <span class="item-sub">Gastronomie</span>
+        </a>
+      </li>
+      <li>
+        <a href="#situation" data-index="4" onclick="closeMenu()">
+          <span class="item-num">05</span>
+          <span class="item-name">Provins</span>
+          <span class="item-sub">UNESCO · Médiéval</span>
+        </a>
+      </li>
+      <li>
+        <a href="#contact" data-index="5" onclick="closeMenu()">
+          <span class="item-num">06</span>
+          <span class="item-name">Contact & Réservation</span>
+          <span class="item-sub">Nous rejoindre</span>
+        </a>
+      </li>
+    </ul>
+    <div class="menu-bottom">
+      <div class="menu-contact">
+        <a href="tel:+33164004072">01 64 00 40 72</a> &nbsp;·&nbsp;
+        <a href="mailto:demeure.des.vieux.bains@gmail.com">demeure.des.vieux.bains@gmail.com</a>
+      </div>
+      <div class="menu-social">
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+      </div>
+    </div>
+  </div>
+  <div class="menu-right" id="menu-right">
+    <!-- Slide layers, one per nav item -->
+    <div class="menu-right-slide active" data-slide="0" style="background-image:url('https://static.wixstatic.com/media/441824_05cb63a806104c4e888fdd61dc4e03e4~mv2.jpg')"></div>
+    <div class="menu-right-slide" data-slide="1" style="background-image:url('https://static.wixstatic.com/media/441824_18b960c2623341b0a8e22e1df63c5f22~mv2.jpg')"></div>
+    <div class="menu-right-slide" data-slide="2" style="background-image:url('https://static.wixstatic.com/media/441824_e075720ac8284250861d14be96d053fe~mv2.jpg')"></div>
+    <div class="menu-right-slide" data-slide="3" style="background-image:url('https://static.wixstatic.com/media/441824_9c377ef27b1b46f7afeb9eb10952e47e~mv2.jpg')"></div>
+    <div class="menu-right-slide" data-slide="4" style="background-image:url('https://static.wixstatic.com/media/441824_567ed71d16f44472a66ae56ff0c404a1~mv2.jpeg')"></div>
+    <div class="menu-right-slide" data-slide="5" style="background-image:url('https://static.wixstatic.com/media/441824_d67aca5a1a19490f9909969ae51632b8~mv2.jpeg')"></div>
+    <div class="menu-right-gradient"></div>
+    <div class="menu-right-content">
+      <div class="caption-bar"></div>
+      <span class="place" id="slide-place">Provins · 77160</span>
+      <p class="quote" id="slide-quote">Un lieu hors du temps,<br>entre histoire et modernité</p>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav id="main-nav">
+  <button class="nav-hamburger" id="nav-hamburger" aria-label="Ouvrir le menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+  <a href="#" class="nav-logo">La Demeure des Vieux Bains</a>
+  <div class="nav-actions">
+    <a href="#situation" class="nav-action-link">Provins</a>
+    <a href="#contact" class="nav-cta">Réserver</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <span class="hero-tagline">Provins · Patrimoine Mondial UNESCO · Depuis 2004</span>
+    <h1 class="hero-title">La Demeure<br>des <em>Vieux Bains</em></h1>
+    <p class="hero-subtitle">Un lieu hors du temps, entre histoire et modernité, au cœur du village médiéval</p>
+    <div class="hero-cta-group">
+      <a href="#contact" class="btn-primary">Réserver un séjour</a>
+      <a href="#decouvrir" class="btn-ghost">Découvrir la demeure</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <span>Défiler</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- INFO BAND -->
+<div class="info-band">
+  <div class="info-item"><span class="dot"></span> Chambres d'hôtes</div>
+  <div class="info-item"><span class="dot"></span> Location de salles</div>
+  <div class="info-item"><span class="dot"></span> Restaurant d'hôte</div>
+  <div class="info-item"><span class="dot"></span> Parking clos & sécurisé</div>
+  <div class="info-item"><span class="dot"></span> XIIᵉ – XVIIIᵉ siècle</div>
+</div>
+
+<!-- INTRO -->
+<section id="decouvrir">
+  <div class="intro">
+    <div class="intro-img-wrap reveal">
+      <img src="https://static.wixstatic.com/media/441824_05cb63a806104c4e888fdd61dc4e03e4~mv2.jpg/v1/fill/w_687,h_515,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/441824_05cb63a806104c4e888fdd61dc4e03e4~mv2.jpg" alt="Jardin de la Demeure des Vieux Bains" />
+      <div class="intro-img-caption">Jardins paysagés de la Demeure</div>
+    </div>
+    <div class="intro-text">
+      <span class="section-label reveal">Bienvenue</span>
+      <h2 class="section-title reveal reveal-delay-1">Un écrin <em>médiéval</em>,<br>entre ville haute et basse</h2>
+      <div class="ornament reveal reveal-delay-1"></div>
+      <p class="section-body reveal reveal-delay-2">
+        Situé dans le village médiéval de Provins, classée au patrimoine mondial de l'UNESCO, la Demeure vous accueille en toutes saisons depuis 2004. Un lieu magique hors du temps, chargé d'histoire depuis le XII<sup>ème</sup> siècle.
+      </p>
+      <p class="section-body reveal reveal-delay-2" style="margin-top:1.2rem;">
+        Modernité et histoire font bon ménage dans des bâtiments du XII<sup>ème</sup> au XVIII<sup>ème</sup> siècle. Jardins paysagés, parking clos et sécurisé. Toutes les visites des monuments se font à pieds depuis la Demeure.
+      </p>
+      <div style="margin-top:2.5rem;" class="reveal reveal-delay-3">
+        <a href="#contact" class="btn-primary">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="offres">
+  <div class="features-header">
+    <span class="section-label reveal">Nos prestations</span>
+    <h2 class="section-title reveal reveal-delay-1">Tout pour un séjour <em>inoubliable</em></h2>
+    <p class="section-body reveal reveal-delay-2">Entre histoire, gastronomie et nature, la Demeure des Vieux Bains vous propose un art de vivre unique dans l'un des plus beaux villages médiévaux de France.</p>
+  </div>
+  <div class="features-grid reveal">
+    <div class="feature-card">
+      <img src="https://static.wixstatic.com/media/441824_18b960c2623341b0a8e22e1df63c5f22~mv2.jpg/v1/fill/w_980,h_1200,al_c,q_80,enc_avif,quality_auto/441824_18b960c2623341b0a8e22e1df63c5f22~mv2.jpg" alt="Chambres" />
+      <div class="feature-overlay">
+        <span class="feature-num">01 —</span>
+        <h3 class="feature-name">Chambres d'hôtes</h3>
+        <p class="feature-desc">Des chambres alliant modernité et authenticité, dans des bâtiments du XII<sup>ème</sup> au XVIII<sup>ème</sup> siècle.</p>
+        <a href="#chambres" class="feature-arrow">Découvrir →</a>
+      </div>
+    </div>
+    <div class="feature-card">
+      <img src="https://static.wixstatic.com/media/441824_567ed71d16f44472a66ae56ff0c404a1~mv2.jpeg/v1/fill/w_980,h_1200,al_c,q_85,enc_avif,quality_auto/441824_567ed71d16f44472a66ae56ff0c404a1~mv2.jpeg" alt="Salles" />
+      <div class="feature-overlay">
+        <span class="feature-num">02 —</span>
+        <h3 class="feature-name">Location de salles</h3>
+        <p class="feature-desc">Organisez vos événements professionnels ou privés dans un cadre historique exceptionnel.</p>
+        <a href="#salles" class="feature-arrow">Découvrir →</a>
+      </div>
+    </div>
+    <div class="feature-card">
+      <img src="https://static.wixstatic.com/media/441824_d67aca5a1a19490f9909969ae51632b8~mv2.jpeg/v1/fill/w_980,h_1200,al_c,q_85,enc_avif,quality_auto/441824_d67aca5a1a19490f9909969ae51632b8~mv2.jpeg" alt="Restaurant" />
+      <div class="feature-overlay">
+        <span class="feature-num">03 —</span>
+        <h3 class="feature-name">Restaurant d'hôte</h3>
+        <p class="feature-desc">Savourez une cuisine maison préparée avec des produits frais et locaux, dans un cadre médiéval.</p>
+        <a href="#restaurant" class="feature-arrow">Découvrir →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<section style="padding:0;" id="histoire">
+  <div class="histoire">
+    <div class="histoire-text">
+      <span class="section-label reveal">Notre histoire</span>
+      <h2 class="section-title reveal reveal-delay-1">Un lieu <em>chargé</em><br>d'histoire</h2>
+      <div class="ornament reveal reveal-delay-1"></div>
+      <p class="section-body reveal reveal-delay-2">
+        Depuis 2004, la Demeure des Vieux Bains vous accueille dans un espace alliant modernité et histoire. Les bâtiments traversent huit siècles d'architecture, des fondations médiévales du XII<sup>ème</sup> siècle aux élégantes constructions du XVIII<sup>ème</sup>.
+      </p>
+      <p class="section-body reveal reveal-delay-2" style="margin-top:1.2rem;">
+        Idéalement situés entre ville haute et ville basse de Provins, nos espaces sont à quelques pas à pied de la Tour César, de la Grange aux Dîmes, du musée, des souterrains et de la Roseraie.
+      </p>
+      <ul class="situation-list reveal reveal-delay-3" style="margin-top:2rem;">
+        <li><span class="icon">◆</span> XIIᵉ – XVIIIᵉ siècle d'architecture</li>
+        <li><span class="icon">◆</span> Jardins paysagés & parking sécurisé</li>
+        <li><span class="icon">◆</span> À pieds de tous les monuments</li>
+        <li><span class="icon">◆</span> Accueil personnalisé en toutes saisons</li>
+      </ul>
+    </div>
+    <div class="histoire-img reveal reveal-delay-1">
+      <img src="https://static.wixstatic.com/media/441824_90c8ed93da4b43fb8709dec3681f94cf~mv2.jpg/v1/fill/w_980,h_1100,al_c,q_85,enc_avif,quality_auto/441824_90c8ed93da4b43fb8709dec3681f94cf~mv2.jpg" alt="Cité médiévale de Provins" />
+      <div class="histoire-quote">
+        Un lieu magique hors du temps, chargé d'histoire depuis le XII<sup>ème</sup> siècle
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAMBRES -->
+<section class="rooms" id="chambres">
+  <div class="rooms-header">
+    <div>
+      <span class="section-label">Hébergement</span>
+      <h2 class="section-title">Nos <em>chambres</em></h2>
+    </div>
+    <a href="#contact" class="btn-ghost" style="color:rgba(245,240,232,0.7); border-color:rgba(245,240,232,0.25);">Réserver →</a>
+  </div>
+  <div class="rooms-scroll">
+    <div class="room-card reveal">
+      <img src="https://static.wixstatic.com/media/441824_e075720ac8284250861d14be96d053fe~mv2.jpg/v1/fill/w_600,h_800,al_c,q_80,enc_avif,quality_auto/441824_e075720ac8284250861d14be96d053fe~mv2.jpg" alt="Chambre" />
+      <div class="room-info">
+        <div class="room-type">Chambre double</div>
+        <div class="room-name">La Chambre des Comtes</div>
+        <div class="room-detail">Vue jardin · Bâtiment XIVᵉ siècle</div>
+      </div>
+    </div>
+    <div class="room-card reveal reveal-delay-1">
+      <img src="https://static.wixstatic.com/media/441824_9c377ef27b1b46f7afeb9eb10952e47e~mv2.jpg/v1/fill/w_600,h_800,al_c,q_80,enc_avif,quality_auto/441824_9c377ef27b1b46f7afeb9eb10952e47e~mv2.jpg" alt="Chambre" />
+      <div class="room-info">
+        <div class="room-type">Suite</div>
+        <div class="room-name">La Suite des Remparts</div>
+        <div class="room-detail">Vue remparts · Bâtiment XVIᵉ siècle</div>
+      </div>
+    </div>
+    <div class="room-card reveal reveal-delay-2">
+      <img src="https://static.wixstatic.com/media/441824_18b960c2623341b0a8e22e1df63c5f22~mv2.jpg/v1/fill/w_600,h_800,al_c,q_80,enc_avif,quality_auto/441824_18b960c2623341b0a8e22e1df63c5f22~mv2.jpg" alt="Chambre" />
+      <div class="room-info">
+        <div class="room-type">Chambre familiale</div>
+        <div class="room-name">La Chambre du Prieuré</div>
+        <div class="room-detail">Vue cour · Bâtiment XVIIIᵉ siècle</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SITUATION -->
+<section class="situation" id="situation">
+  <div class="situation-map">
+    <img src="https://static.wixstatic.com/media/441824_d67aca5a1a19490f9909969ae51632b8~mv2.jpeg/v1/fill/w_980,h_700,al_c,q_85,enc_avif,quality_auto/441824_d67aca5a1a19490f9909969ae51632b8~mv2.jpeg" alt="Provins médiéval" />
+  </div>
+  <div class="situation-content">
+    <span class="section-label reveal">Situation</span>
+    <h2 class="section-title reveal reveal-delay-1">Au cœur de <em>Provins</em></h2>
+    <p class="section-body reveal reveal-delay-2">
+      Classée au patrimoine mondial de l'UNESCO, Provins vous accueille dans son village médiéval exceptionnel. Animations et spectacles toute l'année à deux pas.
+    </p>
+    <ul class="situation-list reveal reveal-delay-3">
+      <li><span class="icon">◆</span> La Tour César & ses panoramas</li>
+      <li><span class="icon">◆</span> La Légende des Chevaliers</li>
+      <li><span class="icon">◆</span> Les Aigles des Remparts</li>
+      <li><span class="icon">◆</span> La Grange aux Dîmes</li>
+      <li><span class="icon">◆</span> Le Prieuré Saint-Ayoul & la Roseraie</li>
+    </ul>
+    <div style="margin-top:2.5rem;" class="reveal reveal-delay-3">
+      <a href="https://goo.gl/maps/1" target="_blank" class="btn-primary">Voir sur la carte</a>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIAL -->
+<div class="testimonial">
+  <blockquote class="reveal">
+    « Un lieu absolument unique, hors du temps, où l'histoire médiévale de Provins prend tout son sens. Un accueil chaleureux dans un écrin exceptionnel. »
+  </blockquote>
+  <cite class="reveal reveal-delay-1">Un hôte — Avis Google ★★★★★</cite>
+</div>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-info">
+    <span class="section-label">Contact & Réservations</span>
+    <h2 class="section-title">Nous <em>écrire</em></h2>
+    <p class="section-body">Pour toute demande de réservation ou renseignement, n'hésitez pas à nous contacter. Nous serons ravis de vous accueillir.</p>
+    <div class="contact-details">
+      <div class="contact-detail">
+        <span class="label">Adresse</span>
+        <span class="value">7 rue du Moulin de la Ruelle<br>77160 Provins, France</span>
+      </div>
+      <div class="contact-detail">
+        <span class="label">Téléphone</span>
+        <span class="value"><a href="tel:+33164004072">01 64 00 40 72</a></span>
+      </div>
+      <div class="contact-detail">
+        <span class="label">Email</span>
+        <span class="value"><a href="mailto:demeure.des.vieux.bains@gmail.com">demeure.des.vieux.bains@gmail.com</a></span>
+      </div>
+      <div class="contact-detail">
+        <span class="label">Horaires</span>
+        <span class="value">Arrivée à partir de 16h00<br>Départ avant 11h00</span>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label>Prénom</label>
+        <input type="text" placeholder="Marie" />
+      </div>
+      <div class="form-group">
+        <label>Nom</label>
+        <input type="text" placeholder="Dupont" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" placeholder="marie.dupont@email.fr" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Arrivée</label>
+        <input type="date" />
+      </div>
+      <div class="form-group">
+        <label>Départ</label>
+        <input type="date" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Type de demande</label>
+      <select>
+        <option value="">Sélectionner…</option>
+        <option>Chambre d'hôte</option>
+        <option>Location de salle</option>
+        <option>Restaurant d'hôte</option>
+        <option>Renseignements</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Message</label>
+      <textarea placeholder="Votre message…"></textarea>
+    </div>
+    <button class="btn-primary" type="submit" style="border:none; cursor:pointer; font-family:'Jost',sans-serif; font-size:0.68rem;">Envoyer la demande</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-logo">
+      La Demeure<br>des Vieux Bains<br>
+      <span style="font-family:'Cormorant Garamond',serif;font-weight:300;font-size:0.8rem;color:rgba(245,240,232,0.4);letter-spacing:0.08em;">Provins, depuis 2004</span>
+    </div>
+    <div class="footer-nav">
+      <div class="footer-col">
+        <h4>La Demeure</h4>
+        <ul>
+          <li><a href="#">Notre histoire</a></li>
+          <li><a href="#">Les espaces</a></li>
+          <li><a href="#">Le jardin</a></li>
+          <li><a href="#">Photos</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Prestations</h4>
+        <ul>
+          <li><a href="#chambres">Chambres d'hôtes</a></li>
+          <li><a href="#salles">Location de salles</a></li>
+          <li><a href="#restaurant">Restaurant d'hôte</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Explorer</h4>
+        <ul>
+          <li><a href="#situation">Provins UNESCO</a></li>
+          <li><a href="#">Spectacles médiévaux</a></li>
+          <li><a href="#">Comment venir</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 La Demeure des Vieux Bains · 7 rue du Moulin de la Ruelle, 77160 Provins · Mentions légales</p>
+    <div class="footer-social">
+      <a href="#">Instagram</a>
+      <a href="#">Facebook</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Nav scroll
+  const nav = document.getElementById('main-nav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Hamburger / fullscreen menu
+  const hamburger = document.getElementById('nav-hamburger');
+  const overlay   = document.getElementById('menu-overlay');
+  let menuOpen = false;
+
+  function openMenu() {
+    menuOpen = true;
+    overlay.classList.add('open');
+    hamburger.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMenu() {
+    menuOpen = false;
+    overlay.classList.remove('open');
+    hamburger.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function toggleMenu() { menuOpen ? closeMenu() : openMenu(); }
+
+  hamburger.addEventListener('click', toggleMenu);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) closeMenu(); });
+
+  // ── Hover image switcher ──────────────────────────────────
+  const slides     = document.querySelectorAll('.menu-right-slide');
+  const placeEl    = document.getElementById('slide-place');
+  const quoteEl    = document.getElementById('slide-quote');
+  let   activeIdx  = 0;
+
+  const captions = [
+    { place: 'La Demeure · XIIᵉ – XVIIIᵉ siècle', quote: 'Un lieu magique hors du temps' },
+    { place: 'Chambres d\'hôtes · Hébergement',     quote: 'Modernité et histoire font bon ménage' },
+    { place: 'Salles & Événements',                  quote: 'Vos événements dans un cadre exceptionnel' },
+    { place: 'Restaurant d\'hôte · Gastronomie',     quote: 'Produits frais et saveurs d\'antan' },
+    { place: 'Provins · Patrimoine UNESCO',           quote: 'Entre ville haute et ville basse' },
+    { place: 'Contact & Réservation',                 quote: 'Nous serons ravis de vous accueillir' },
+  ];
+
+  function setSlide(idx) {
+    if (idx === activeIdx) return;
+    // outgoing
+    slides[activeIdx].classList.remove('active');
+    slides[activeIdx].classList.add('leaving');
+    setTimeout(() => slides[activeIdx]?.classList.remove('leaving'), 700);
+    // incoming
+    activeIdx = idx;
+    slides[activeIdx].classList.add('active');
+    // caption crossfade
+    placeEl.style.opacity = '0';
+    quoteEl.style.opacity = '0';
+    setTimeout(() => {
+      placeEl.textContent   = captions[idx].place;
+      quoteEl.innerHTML     = captions[idx].quote;
+      placeEl.style.opacity = '1';
+      quoteEl.style.opacity = '1';
+    }, 220);
+  }
+
+  document.querySelectorAll('.menu-nav a[data-index]').forEach(link => {
+    link.addEventListener('mouseenter', () => {
+      setSlide(parseInt(link.dataset.index));
+    });
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>

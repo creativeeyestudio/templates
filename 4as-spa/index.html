@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>4AS Spa Paris — Le Luxe Privatif</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #b89b6e;
+      --gold-light: #d4bc96;
+      --dark: #0e0e0e;
+      --charcoal: #1c1c1c;
+      --warm-white: #f7f4ef;
+      --cream: #ede8e0;
+      --text-muted: #8a8178;
+      --serif: 'Cormorant Garamond', Georgia, serif;
+      --sans: 'Jost', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: var(--warm-white);
+      font-family: var(--sans);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ─── HEADER ─── */
+    header {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 24px 48px;
+      transition: background 0.4s, padding 0.4s;
+    }
+    header.scrolled {
+      background: rgba(14,14,14,0.95);
+      padding: 16px 48px;
+      border-bottom: 1px solid rgba(184,155,110,0.2);
+      backdrop-filter: blur(10px);
+    }
+    .logo {
+      font-family: var(--serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-decoration: none;
+    }
+    .logo span { font-style: italic; font-weight: 300; color: var(--warm-white); }
+    nav { display: flex; gap: 36px; align-items: center; }
+    nav a {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--warm-white);
+      text-decoration: none;
+      opacity: 0.85;
+      transition: opacity 0.2s, color 0.2s;
+    }
+    nav a:hover { opacity: 1; color: var(--gold-light); }
+    .btn-reserve {
+      background: var(--gold);
+      color: var(--dark) !important;
+      padding: 10px 24px;
+      opacity: 1 !important;
+      font-weight: 500;
+      transition: background 0.2s !important;
+    }
+    .btn-reserve:hover { background: var(--gold-light) !important; }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 700px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(160deg, rgba(14,14,14,0.55) 0%, rgba(14,14,14,0.3) 50%, rgba(14,14,14,0.7) 100%),
+        url('./hero-bg.jpg') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: heroZoom 18s ease-in-out infinite alternate;
+    }
+    @keyframes heroZoom {
+      from { transform: scale(1.05); }
+      to { transform: scale(1.0); }
+    }
+    .hero-content {
+      position: relative;
+      text-align: center;
+      max-width: 720px;
+      padding: 0 24px;
+      animation: fadeUp 1.2s ease both;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .hero-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 24px;
+      animation: fadeUp 1.2s 0.2s ease both;
+    }
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 24px;
+      animation: fadeUp 1.2s 0.4s ease both;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--gold-light);
+    }
+    .hero-sub {
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      opacity: 0.75;
+      margin-bottom: 48px;
+      animation: fadeUp 1.2s 0.6s ease both;
+    }
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 1.2s 0.8s ease both;
+    }
+    .cta-primary {
+      background: var(--gold);
+      color: var(--dark);
+      padding: 15px 36px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: background 0.25s, transform 0.25s;
+    }
+    .cta-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+    .cta-secondary {
+      border: 1px solid rgba(255,255,255,0.4);
+      color: var(--warm-white);
+      padding: 15px 36px;
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      font-weight: 400;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .cta-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
+    .hero-scroll {
+      position: absolute;
+      bottom: 36px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+      animation: fadeUp 1.2s 1.2s ease both;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: var(--gold);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(0.6); }
+    }
+
+    /* ─── PROMO BADGE ─── */
+    .promo-strip {
+      background: var(--gold);
+      color: var(--dark);
+      text-align: center;
+      padding: 14px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* ─── INTRO ─── */
+    .intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 70vh;
+    }
+    .intro-text {
+      background: var(--charcoal);
+      padding: 100px 72px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .section-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .intro-text h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: 28px;
+    }
+    .intro-text h2 em { font-style: italic; color: var(--gold-light); }
+    .intro-text p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: rgba(247,244,239,0.7);
+      margin-bottom: 20px;
+    }
+    .intro-text a {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 12px;
+      transition: gap 0.2s;
+    }
+    .intro-text a:hover { gap: 16px; }
+    .intro-text a::after { content: '→'; }
+    .intro-image {
+      position: relative;
+      overflow: hidden;
+    }
+    .intro-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.8s ease;
+    }
+    .intro-image:hover img { transform: scale(1.04); }
+
+    /* ─── STATS BAR ─── */
+    .stats-bar {
+      background: var(--dark);
+      border-top: 1px solid rgba(184,155,110,0.15);
+      border-bottom: 1px solid rgba(184,155,110,0.15);
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .stat {
+      padding: 48px 24px;
+      text-align: center;
+      border-right: 1px solid rgba(184,155,110,0.15);
+    }
+    .stat:last-child { border-right: none; }
+    .stat-number {
+      font-family: var(--serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--gold);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    /* ─── SERVICES ─── */
+    .services {
+      background: var(--warm-white);
+      color: var(--dark);
+      padding: 100px 64px;
+    }
+    .services-header {
+      text-align: center;
+      margin-bottom: 72px;
+    }
+    .services-header h2 {
+      font-family: var(--serif);
+      font-size: clamp(2.2rem, 4vw, 3.5rem);
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .services-header h2 em { font-style: italic; color: var(--gold); }
+    .services-header p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .service-card {
+      position: relative;
+      overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+    .service-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.7s ease;
+    }
+    .service-card:hover img { transform: scale(1.08); }
+    .service-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(14,14,14,0.85) 0%, transparent 60%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 36px 28px;
+    }
+    .service-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .service-name {
+      font-family: var(--serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: white;
+      line-height: 1.2;
+    }
+    .service-link {
+      margin-top: 16px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--gold-light);
+      text-decoration: none;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.3s, transform 0.3s;
+    }
+    .service-card:hover .service-link { opacity: 1; transform: translateY(0); }
+
+    /* ─── TARIFS ─── */
+    .tarifs {
+      background: var(--charcoal);
+      padding: 100px 64px;
+      text-align: center;
+    }
+    .tarifs h2 {
+      font-family: var(--serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .tarifs h2 em { font-style: italic; color: var(--gold-light); }
+    .tarifs-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 64px;
+    }
+    .tarifs-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 960px;
+      margin: 0 auto 48px;
+    }
+    .tarif-card {
+      border: 1px solid rgba(184,155,110,0.25);
+      padding: 44px 32px;
+      text-align: center;
+      position: relative;
+      transition: border-color 0.3s, transform 0.3s;
+    }
+    .tarif-card:hover { border-color: var(--gold); transform: translateY(-4px); }
+    .tarif-card.featured {
+      border-color: var(--gold);
+      background: rgba(184,155,110,0.05);
+    }
+    .featured-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--gold);
+      color: var(--dark);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 5px 14px;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    .tarif-name {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .tarif-price {
+      font-family: var(--serif);
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .tarif-unit { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 28px; }
+    .tarif-features {
+      list-style: none;
+      text-align: left;
+      margin-bottom: 32px;
+    }
+    .tarif-features li {
+      font-size: 0.82rem;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      color: rgba(247,244,239,0.7);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .tarif-features li::before {
+      content: '✦';
+      color: var(--gold);
+      font-size: 0.5rem;
+      flex-shrink: 0;
+    }
+    .tarif-cta {
+      display: block;
+      padding: 12px;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: background 0.25s, color 0.25s;
+    }
+    .tarif-cta:hover, .tarif-card.featured .tarif-cta {
+      background: var(--gold);
+      color: var(--dark);
+    }
+
+    /* ─── EXTRAS ─── */
+    .extras {
+      background: var(--dark);
+      padding: 80px 64px;
+      border-top: 1px solid rgba(184,155,110,0.12);
+    }
+    .extras-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .extras h3 {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: 300;
+      text-align: center;
+      margin-bottom: 48px;
+      color: var(--warm-white);
+    }
+    .extras h3 em { font-style: italic; color: var(--gold-light); }
+    .extras-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .extra-item {
+      background: var(--charcoal);
+      padding: 32px 24px;
+      text-align: center;
+      transition: background 0.25s;
+    }
+    .extra-item:hover { background: rgba(184,155,110,0.08); }
+    .extra-icon { font-size: 1.6rem; margin-bottom: 12px; }
+    .extra-title {
+      font-size: 0.8rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .extra-price {
+      font-family: var(--serif);
+      font-size: 1.1rem;
+      color: var(--gold);
+    }
+
+    /* ─── TESTIMONIALS ─── */
+    .testimonials {
+      background: var(--warm-white);
+      color: var(--dark);
+      padding: 100px 64px;
+    }
+    .testimonials-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+    .testimonials-header h2 {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+    }
+    .testimonials-header h2 em { font-style: italic; color: var(--gold); }
+    .rating-summary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 12px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .stars { color: #d4a017; font-size: 1rem; letter-spacing: 2px; }
+    .reviews-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .review-card {
+      background: white;
+      padding: 36px 28px;
+      border-left: 3px solid var(--gold);
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+    }
+    .review-quote {
+      font-family: var(--serif);
+      font-size: 3rem;
+      color: var(--gold-light);
+      line-height: 0.5;
+      margin-bottom: 16px;
+    }
+    .review-text {
+      font-size: 0.875rem;
+      line-height: 1.75;
+      color: #3a3530;
+      margin-bottom: 20px;
+    }
+    .review-author {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .review-platform {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* ─── GIFT BANNER ─── */
+    .gift-banner {
+      position: relative;
+      height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .gift-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to right, rgba(14,14,14,0.85) 40%, rgba(14,14,14,0.4)),
+        url('./gift-spa.jpg') center/cover;
+    }
+    .gift-content {
+      position: relative;
+      padding: 0 80px;
+      max-width: 600px;
+      margin-right: auto;
+      margin-left: 8%;
+    }
+    .gift-content h2 {
+      font-family: var(--serif);
+      font-size: 2.5rem;
+      font-weight: 300;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+    .gift-content h2 em { font-style: italic; color: var(--gold-light); }
+    .gift-content p {
+      font-size: 0.9rem;
+      color: rgba(247,244,239,0.7);
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    /* ─── CONTACT ─── */
+    .contact {
+      background: var(--charcoal);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .contact-info {
+      padding: 80px 64px;
+    }
+    .contact-info h2 {
+      font-family: var(--serif);
+      font-size: 2.2rem;
+      font-weight: 300;
+      margin-bottom: 40px;
+    }
+    .contact-info h2 em { font-style: italic; color: var(--gold-light); }
+    .contact-item {
+      margin-bottom: 28px;
+    }
+    .contact-item-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .contact-item-value {
+      font-size: 0.95rem;
+      color: rgba(247,244,239,0.8);
+      line-height: 1.6;
+    }
+    .contact-item-value a {
+      color: inherit;
+      text-decoration: none;
+    }
+    .contact-item-value a:hover { color: var(--gold-light); }
+    .social-links {
+      display: flex;
+      gap: 16px;
+      margin-top: 40px;
+    }
+    .social-link {
+      width: 40px; height: 40px;
+      border: 1px solid rgba(184,155,110,0.35);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      color: var(--gold);
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .social-link:hover { background: rgba(184,155,110,0.15); border-color: var(--gold); }
+    .contact-map {
+      background: #222;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .map-placeholder {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+    .map-placeholder .pin { font-size: 2.5rem; margin-bottom: 12px; }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: var(--dark);
+      border-top: 1px solid rgba(184,155,110,0.15);
+      padding: 56px 64px 32px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 56px;
+    }
+    .footer-brand .logo-footer {
+      font-family: var(--serif);
+      font-size: 1.3rem;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 16px;
+    }
+    .footer-brand p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: 10px; }
+    .footer-col ul li a {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-col ul li a:hover { color: var(--warm-white); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.25);
+    }
+
+    /* ─── MOBILE MENU ─── */
+    .hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .hamburger span {
+      display: block;
+      width: 24px;
+      height: 1px;
+      background: var(--warm-white);
+      transition: all 0.3s;
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 1024px) {
+      .intro, .contact { grid-template-columns: 1fr; }
+      .intro-image { height: 50vw; }
+      .services-grid { grid-template-columns: 1fr 1fr; }
+      .tarifs-grid { grid-template-columns: 1fr; max-width: 420px; }
+      .extras-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      header { padding: 20px 24px; }
+      header.scrolled { padding: 14px 24px; }
+      nav { display: none; }
+      .hamburger { display: flex; }
+      .intro-text { padding: 64px 28px; }
+      .services { padding: 64px 24px; }
+      .services-grid { grid-template-columns: 1fr; }
+      .tarifs { padding: 64px 24px; }
+      .testimonials { padding: 64px 24px; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .contact-info { padding: 64px 28px; }
+      footer { padding: 48px 24px 28px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; gap: 10px; text-align: center; }
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .gift-content { margin-left: 0; padding: 0 28px; }
+      .extras { padding: 64px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="site-header">
+  <a class="logo" href="#">4AS <span>Spa Paris</span></a>
+  <nav>
+    <a href="#le-spa">Le Gîte Spa</a>
+    <a href="#tarifs">Tarifs</a>
+    <a href="#avis">Avis</a>
+    <a href="#offrir">Offrir</a>
+    <a href="#contact">Contact</a>
+    <a href="https://booking.smoobu.com/9A710306" class="btn-reserve">Réserver</a>
+  </nav>
+  <div class="hamburger" onclick="this.classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Seine-et-Marne · Privatif · Luxe</p>
+    <h1>Une <em>expérience</em><br>inoubliable</h1>
+    <p class="hero-sub">Jacuzzi privatif · Douche sensorielle · Cocon de bien-être<br>À seulement 45 min de Paris</p>
+    <div class="hero-ctas">
+      <a href="https://booking.smoobu.com/9A710306" class="cta-primary">Réserver maintenant</a>
+      <a href="#le-spa" class="cta-secondary">Découvrir le lieu</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Découvrir
+  </div>
+</section>
+
+<!-- PROMO STRIP -->
+<div class="promo-strip">✦ &nbsp; Offre spéciale : −50% sur la seconde nuit &nbsp; ✦ &nbsp; Plus de 300 clients conquis &nbsp; ✦</div>
+
+<!-- INTRO -->
+<section class="intro" id="le-spa">
+  <div class="intro-text">
+    <p class="section-label">Le Gîte Spa</p>
+    <h2>Un <em>écrin</em> de<br>sérénité privatif</h2>
+    <p>Niché au cœur de la Seine-et-Marne, le 4AS Spa Paris vous invite à vivre une parenthèse de luxe entièrement privatisée. Un espace conçu pour deux, loin du quotidien.</p>
+    <p>Jacuzzi intérieur, douche sensorielle à effets multiples, literie haut de gamme, cuisine équipée… Chaque détail est pensé pour que votre séjour soit une expérience à part entière.</p>
+    <a href="#services">Explorer les équipements</a>
+  </div>
+  <div class="intro-image">
+    <img src="./intro-image.jpg" alt="Spa privatif 4AS" />
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-number">300+</div>
+    <div class="stat-label">Clients conquis</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">4.9</div>
+    <div class="stat-label">Note moyenne</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">100%</div>
+    <div class="stat-label">Privatif</div>
+  </div>
+  <div class="stat">
+    <div class="stat-number">45<small style="font-size:1.2rem"> min</small></div>
+    <div class="stat-label">De Paris</div>
+  </div>
+</div>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <p class="section-label" style="color:var(--gold)">Équipements & Expériences</p>
+    <h2>Tout pour votre <em>détente</em></h2>
+    <p>Un espace entièrement privatisé, pensé dans les moindres détails pour un séjour d'exception à deux.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card">
+      <img src="./jacuzzi.jpg" alt="Jacuzzi" />
+      <div class="service-overlay">
+        <span class="service-tag">Bien-être</span>
+        <div class="service-name">Jacuzzi<br>Privatif</div>
+        <a href="#" class="service-link">Découvrir →</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="./douche.jpg" alt="Douche sensorielle" />
+      <div class="service-overlay">
+        <span class="service-tag">Détente</span>
+        <div class="service-name">Douche<br>Sensorielle</div>
+        <a href="#" class="service-link">Découvrir →</a>
+      </div>
+    </div>
+    <div class="service-card">
+      <img src="./suite-luxueuse.jpg" alt="Suite" />
+      <div class="service-overlay">
+        <span class="service-tag">Nuit</span>
+        <div class="service-name">Suite<br>Luxueuse</div>
+        <a href="#" class="service-link">Découvrir →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TARIFS -->
+<section class="tarifs" id="tarifs">
+  <p class="section-label">Formules & Tarifs</p>
+  <h2>Choisissez votre <em>escapade</em></h2>
+  <p class="tarifs-sub">Tous nos séjours incluent l'accès privatif complet au gîte spa</p>
+
+  <div class="tarifs-grid">
+    <div class="tarif-card">
+      <div class="tarif-name">Nuit Romantique</div>
+      <div class="tarif-price">à partir de<br><span style="font-size:2.2rem">149€</span></div>
+      <div class="tarif-unit">la nuit · semaine</div>
+      <ul class="tarif-features">
+        <li>Jacuzzi privatif inclus</li>
+        <li>Douche sensorielle</li>
+        <li>Literie premium</li>
+        <li>Cuisine équipée</li>
+      </ul>
+      <a href="https://booking.smoobu.com/9A710306" class="tarif-cta">Réserver</a>
+    </div>
+
+    <div class="tarif-card featured">
+      <div class="featured-badge">✦ Meilleure offre</div>
+      <div class="tarif-name">Weekend Prestige</div>
+      <div class="tarif-price">à partir de<br><span style="font-size:2.2rem">280€</span></div>
+      <div class="tarif-unit">2 nuits · −50% 2e nuit</div>
+      <ul class="tarif-features">
+        <li>2 nuits privatif complet</li>
+        <li>Jacuzzi & douche inclus</li>
+        <li>Pétales de roses à l'arrivée</li>
+        <li>Petit déjeuner disponible</li>
+        <li>Check-out flexible 12h</li>
+      </ul>
+      <a href="https://booking.smoobu.com/9A710306" class="tarif-cta">Réserver</a>
+    </div>
+
+    <div class="tarif-card">
+      <div class="tarif-name">Séjour Prolongé</div>
+      <div class="tarif-price">à partir de<br><span style="font-size:2.2rem">420€</span></div>
+      <div class="tarif-unit">3+ nuits · tarif dégressif</div>
+      <ul class="tarif-features">
+        <li>Séjour complet privatif</li>
+        <li>Tous équipements inclus</li>
+        <li>Flexibilité horaires</li>
+        <li>Offres personnalisables</li>
+      </ul>
+      <a href="https://booking.smoobu.com/9A710306" class="tarif-cta">Réserver</a>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRAS -->
+<section class="extras">
+  <div class="extras-inner">
+    <h3>Les <em>petits plus</em> qui font la différence</h3>
+    <div class="extras-grid">
+      <div class="extra-item">
+        <div class="extra-icon">🌹</div>
+        <div class="extra-title">Pétales de roses</div>
+        <div class="extra-price">+15€</div>
+      </div>
+      <div class="extra-item">
+        <div class="extra-icon">🥂</div>
+        <div class="extra-title">Champagne & fruits</div>
+        <div class="extra-price">+35€</div>
+      </div>
+      <div class="extra-item">
+        <div class="extra-icon">🧁</div>
+        <div class="extra-title">Petit déjeuner</div>
+        <div class="extra-price">+20€</div>
+      </div>
+      <div class="extra-item">
+        <div class="extra-icon">🕯️</div>
+        <div class="extra-title">Décoration bougies</div>
+        <div class="extra-price">+20€</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="avis">
+  <div class="testimonials-header">
+    <p class="section-label" style="color:var(--gold)">Témoignages</p>
+    <h2>Ce que disent <em>nos clients</em></h2>
+    <div class="rating-summary">
+      <span class="stars">★★★★★</span>
+      <span>Excellent · 4.9/5 · Plus de 250 avis vérifiés</span>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <p class="review-text">Le lieu était magnifique, le personnel très réactif, et que de très bons équipements. Un séjour romantique à refaire sans hésitation !</p>
+      <div class="review-author">Lara</div>
+      <div class="review-platform">Airbnb · Vérifié</div>
+    </div>
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <p class="review-text">Le jacuzzi était énorme et magnifique. Grande TV avec canapé confortable, Netflix, douche incroyable, décoration au top. Je recommande à 100%.</p>
+      <div class="review-author">Patricia</div>
+      <div class="review-platform">Airbnb · Vérifié</div>
+    </div>
+    <div class="review-card">
+      <div class="review-quote">"</div>
+      <p class="review-text">Un paradis caché dans la verdure. Rien à redire : très propre, agréable, parfaitement équipé. Tout pour un moment parfait.</p>
+      <div class="review-author">Manon G.</div>
+      <div class="review-platform">Google · Vérifié</div>
+    </div>
+  </div>
+</section>
+
+<!-- GIFT BANNER -->
+<section class="gift-banner" id="offrir">
+  <div class="gift-bg"></div>
+  <div class="gift-content">
+    <p class="section-label">Cartes Cadeaux</p>
+    <h2>Offrir un moment <em>magique</em></h2>
+    <p>Faites plaisir à vos proches avec une carte cadeau 4AS Spa Paris. Un cadeau unique, élégant, et inoubliable pour toutes les occasions.</p>
+    <a href="#" class="cta-primary">Offrir une carte cadeau</a>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-info">
+    <p class="section-label">Nous contacter</p>
+    <h2>Votre <em>séjour</em><br>commence ici</h2>
+    <div class="contact-item">
+      <div class="contact-item-label">Adresse</div>
+      <div class="contact-item-value">Seine-et-Marne (77)<br>Île-de-France</div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Téléphone</div>
+      <div class="contact-item-value"><a href="tel:0979571624">09 79 57 16 24</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Email</div>
+      <div class="contact-item-value"><a href="mailto:contact@spa4as.fr">contact@spa4as.fr</a></div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-item-label">Réservation en ligne</div>
+      <div class="contact-item-value">
+        <a href="https://booking.smoobu.com/9A710306" style="color:var(--gold-light)">Via Smoobu →</a><br>
+        <a href="https://www.airbnb.com/h/spa4as" style="color:var(--gold-light)">Via Airbnb →</a>
+      </div>
+    </div>
+    <div class="social-links">
+      <a href="#" class="social-link">in</a>
+      <a href="#" class="social-link">f</a>
+      <a href="#" class="social-link">ig</a>
+    </div>
+  </div>
+  <div class="contact-map">
+    <div class="map-placeholder">
+      <div class="pin">📍</div>
+      <p style="color:rgba(255,255,255,0.4); font-size:0.8rem">Seine-et-Marne, Île-de-France<br><br>
+      <a href="https://www.google.com/maps/search/Seine-et-Marne+77" style="color:var(--gold); font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;">Voir sur Google Maps →</a></p>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-footer">4AS Spa Paris</span>
+      <p>Le luxe privatif à petit prix, à 45 minutes de Paris. Une expérience de bien-être unique et inoubliable en Seine-et-Marne.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#le-spa">Le Gîte Spa</a></li>
+        <li><a href="#services">Équipements</a></li>
+        <li><a href="#tarifs">Tarifs</a></li>
+        <li><a href="#avis">Avis clients</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#offrir">Cartes cadeaux</a></li>
+        <li><a href="https://booking.smoobu.com/9A710306">Réserver</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Légal</h4>
+      <ul>
+        <li><a href="#">Mentions légales</a></li>
+        <li><a href="#">CGV</a></li>
+        <li><a href="#">Politique de confidentialité</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 4AS Spa Paris. Tous droits réservés.</span>
+    <span>Fait avec ♥ — Luxe privatif en Île-de-France</span>
+  </div>
+</footer>
+
+<script>
+  // Sticky header
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Smooth scroll for anchors
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+
+  // Reveal on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.opacity = '1';
+        e.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.tarif-card, .review-card, .stat, .extra-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

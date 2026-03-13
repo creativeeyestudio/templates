@@ -1,0 +1,1126 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>C'est Là Que C'est Bon — Restaurant franco-portugais · Créteil</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --vert-fonce: #1a2e10;
+    --vert-mid: #2d4a1e;
+    --vert-vif: #3B6D11;
+    --vert-herbe: #639922;
+    --vert-clair: #97C459;
+    --vert-pale: #C0DD97;
+    --vert-pastel: #EAF3DE;
+    --beige: #f5f3ee;
+    --beige-mid: #ede9e1;
+    --brun: #2c2c2a;
+    --blanc: #ffffff;
+    --serif: 'Playfair Display', serif;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--sans);
+    background: var(--beige);
+    color: var(--brun);
+    overflow-x: hidden;
+  }
+
+  /* ===================== NAV ===================== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 500;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 3rem;
+    transition: background 0.4s, box-shadow 0.4s;
+  }
+  nav.scrolled {
+    background: rgba(245,243,238,0.96);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+  }
+  .nav-logo {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--blanc);
+    line-height: 1.2;
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo { color: var(--vert-fonce); }
+  .nav-logo span {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--vert-pale);
+    transition: color 0.4s;
+  }
+  nav.scrolled .nav-logo span { color: var(--vert-herbe); }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 2.2rem;
+  }
+  .nav-links a {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  nav.scrolled .nav-links a { color: var(--brun); }
+  .nav-links a:hover { color: var(--vert-clair); }
+  nav.scrolled .nav-links a:hover { color: var(--vert-vif); }
+  .nav-cta {
+    background: var(--vert-clair) !important;
+    color: var(--vert-fonce) !important;
+    padding: 9px 22px;
+    border-radius: 50px;
+    font-size: 0.72rem !important;
+    transition: background 0.2s, transform 0.15s !important;
+  }
+  .nav-cta:hover { background: var(--vert-pale) !important; transform: translateY(-1px); }
+  .burger {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+    padding: 4px;
+    margin-left: 1rem;
+  }
+  .burger div {
+    width: 26px;
+    height: 2px;
+    background: var(--blanc);
+    border-radius: 2px;
+    transition: all 0.35s;
+  }
+  nav.scrolled .burger div { background: var(--vert-fonce); }
+
+  /* ===================== FULLSCREEN MENU ===================== */
+  .fs-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 900;
+    background: var(--vert-fonce);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s cubic-bezier(.4,0,.2,1);
+  }
+  .fs-menu.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+  .fs-menu::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(99,153,34,0.12) 0%, transparent 70%);
+  }
+  .fs-close {
+    position: absolute;
+    top: 1.8rem;
+    right: 3rem;
+    background: none;
+    border: none;
+    color: var(--vert-pale);
+    font-size: 2.2rem;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s, transform 0.2s;
+  }
+  .fs-close:hover { color: var(--blanc); transform: rotate(90deg); }
+  .fs-menu nav {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    background: none;
+    box-shadow: none;
+  }
+  .fs-menu nav.scrolled { background: none; box-shadow: none; }
+  .fs-menu nav a {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 400;
+    color: rgba(192,221,151,0.7);
+    text-decoration: none;
+    letter-spacing: -0.01em;
+    padding: 0.3rem 1rem;
+    transition: color 0.25s, letter-spacing 0.25s;
+    color: rgba(192,221,151,0.7) !important;
+  }
+  .fs-menu nav a:hover {
+    color: var(--blanc) !important;
+    letter-spacing: 0.01em;
+  }
+  .fs-divider {
+    width: 50px;
+    height: 1px;
+    background: rgba(99,153,34,0.4);
+    margin: 1.5rem 0;
+    position: relative;
+  }
+  .fs-info {
+    display: flex;
+    gap: 3rem;
+    position: relative;
+  }
+  .fs-info-item {
+    text-align: center;
+  }
+  .fs-info-item p {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--vert-herbe);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+  }
+  .fs-info-item span {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+  }
+
+  /* ===================== HERO ===================== */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 3rem 4rem;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1600&q=80') center/cover no-repeat;
+  }
+  .hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(160deg, rgba(10,20,6,0.5) 0%, rgba(26,46,16,0.85) 100%);
+  }
+  .hero-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    background-size: 200px;
+  }
+  .hero-badge {
+    position: absolute;
+    top: 7rem;
+    right: 3rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 0.5px solid rgba(192,221,151,0.3);
+    color: var(--vert-pale);
+    font-size: 0.65rem;
+    padding: 8px 16px;
+    border-radius: 50px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    backdrop-filter: blur(4px);
+  }
+  .hero-badge::before {
+    content: '';
+    width: 7px; height: 7px;
+    background: var(--vert-clair);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 680px;
+    animation: fadeUp 1s ease both;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-eyebrow {
+    font-size: 0.68rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--vert-pale);
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+    animation: fadeUp 1s 0.1s ease both;
+  }
+  .hero-title {
+    font-family: var(--serif);
+    font-size: clamp(2.8rem, 6vw, 5rem);
+    font-weight: 600;
+    color: var(--blanc);
+    line-height: 1.1;
+    margin-bottom: 1.4rem;
+    animation: fadeUp 1s 0.2s ease both;
+  }
+  .hero-title em {
+    color: var(--vert-clair);
+    font-style: italic;
+  }
+  .hero-sub {
+    font-size: 1rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.75;
+    max-width: 460px;
+    margin-bottom: 2.2rem;
+    animation: fadeUp 1s 0.3s ease both;
+  }
+  .hero-btns {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 1s 0.4s ease both;
+  }
+  .btn-green {
+    background: var(--vert-clair);
+    color: var(--vert-fonce);
+    padding: 13px 30px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-green:hover { background: var(--vert-pale); transform: translateY(-2px); }
+  .btn-ghost {
+    background: transparent;
+    color: var(--blanc);
+    padding: 13px 30px;
+    border-radius: 50px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-decoration: none;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    border: 1.5px solid rgba(255,255,255,0.35);
+    transition: border-color 0.2s, background 0.2s;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--vert-pale); background: rgba(255,255,255,0.05); }
+  .hero-scroll {
+    position: absolute;
+    bottom: 2.5rem;
+    right: 3rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: rgba(255,255,255,0.4);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 700;
+    z-index: 2;
+    animation: fadeUp 1s 0.6s ease both;
+  }
+  .hero-scroll::after {
+    content: '';
+    display: block;
+    width: 1px;
+    height: 50px;
+    background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+    animation: scrollLine 2s infinite;
+  }
+  @keyframes scrollLine {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ===================== STRIP ===================== */
+  .strip {
+    background: var(--vert-fonce);
+    padding: 1.4rem 3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    overflow: hidden;
+  }
+  .strip-item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    white-space: nowrap;
+  }
+  .strip-dot {
+    width: 5px; height: 5px;
+    background: var(--vert-herbe);
+    border-radius: 50%;
+  }
+  .strip-item span {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(192,221,151,0.8);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ===================== SECTIONS ===================== */
+  section { padding: 5rem 3rem; }
+  .section-tag {
+    font-size: 0.62rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--vert-herbe);
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: block;
+  }
+  .section-title {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-weight: 600;
+    color: var(--vert-fonce);
+    line-height: 1.15;
+    margin-bottom: 1.2rem;
+  }
+
+  /* ===================== AMBIANCE ===================== */
+  .ambiance { background: var(--blanc); }
+  .ambiance-inner {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .ambiance-photos {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 260px 180px;
+    gap: 12px;
+    border-radius: 16px;
+    overflow: hidden;
+  }
+  .aph {
+    background-size: cover;
+    background-position: center;
+    border-radius: 10px;
+    transition: transform 0.4s;
+    overflow: hidden;
+  }
+  .aph:hover { transform: scale(1.02); }
+  .aph1 { background-image: url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=80'); grid-row: span 2; }
+  .aph2 { background-image: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600&q=80'); }
+  .aph3 { background-image: url('https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=600&q=80'); }
+  .ambiance-text p {
+    font-size: 0.95rem;
+    font-weight: 300;
+    color: #5a5a57;
+    line-height: 1.85;
+    margin-bottom: 1rem;
+  }
+  .tags-row {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-top: 1.5rem;
+  }
+  .tag {
+    background: var(--vert-pastel);
+    color: var(--vert-vif);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 6px 14px;
+    border-radius: 50px;
+  }
+
+  /* ===================== MENU PREVIEW ===================== */
+  .menu-section { background: var(--beige); }
+  .menu-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 2.8rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .menu-tabs {
+    display: flex;
+    gap: 0.5rem;
+    background: var(--beige-mid);
+    padding: 5px;
+    border-radius: 50px;
+  }
+  .tab {
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    color: #888;
+    transition: all 0.25s;
+    font-family: var(--sans);
+  }
+  .tab.active {
+    background: var(--vert-fonce);
+    color: var(--blanc);
+  }
+  .dishes {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .dish {
+    background: var(--blanc);
+    border-radius: 16px;
+    overflow: hidden;
+    border: 0.5px solid rgba(0,0,0,0.07);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .dish:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(26,46,16,0.12); }
+  .dish-img {
+    height: 185px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+  }
+  .dish-img.di1 { background-image: url('https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=80'); }
+  .dish-img.di2 { background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=80'); }
+  .dish-img.di3 { background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=80'); }
+  .dish-img.di4 { background-image: url('https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=80'); }
+  .dish-img.di5 { background-image: url('https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=500&q=80'); }
+  .dish-img.di6 { background-image: url('https://images.unsplash.com/photo-1588166524941-3bf61a9c41db?w=500&q=80'); }
+  .dish-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: rgba(26,46,16,0.88);
+    backdrop-filter: blur(4px);
+    color: var(--vert-pale);
+    font-size: 0.58rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 50px;
+  }
+  .dish-body {
+    padding: 1.1rem 1.2rem 1.3rem;
+  }
+  .dish-name {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--vert-fonce);
+    margin-bottom: 0.3rem;
+  }
+  .dish-desc {
+    font-size: 0.77rem;
+    font-weight: 300;
+    color: #888;
+    line-height: 1.55;
+    margin-bottom: 1rem;
+  }
+  .dish-foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dish-price {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--vert-vif);
+  }
+  .dish-btn {
+    background: var(--vert-pastel);
+    color: var(--vert-vif);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    font-size: 1.3rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    transition: background 0.2s;
+    line-height: 1;
+  }
+  .dish-btn:hover { background: var(--vert-pale); }
+  .menu-cta {
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  /* ===================== STORY ===================== */
+  .story {
+    background: var(--vert-fonce);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 500px;
+    padding: 0;
+    overflow: hidden;
+  }
+  .story-img {
+    background: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?w=900&q=80') center/cover no-repeat;
+    min-height: 400px;
+    position: relative;
+  }
+  .story-img::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to right, transparent 70%, var(--vert-fonce));
+  }
+  .story-text {
+    padding: 4.5rem 3.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .story-text .section-title { color: var(--vert-pale); }
+  .story-text p {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.85;
+    margin-top: 1rem;
+  }
+  .flags {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .flag-pill {
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(192,221,151,0.25);
+    color: var(--vert-pale);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 7px 16px;
+    border-radius: 50px;
+  }
+
+  /* ===================== INFOS ===================== */
+  .infos {
+    background: var(--blanc);
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    padding: 0;
+  }
+  .info-block {
+    padding: 3.5rem 2.5rem;
+    border-right: 0.5px solid rgba(0,0,0,0.07);
+    text-align: center;
+  }
+  .info-block:last-child { border-right: none; }
+  .info-icon-wrap {
+    width: 50px; height: 50px;
+    background: var(--vert-pastel);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.3rem;
+  }
+  .info-icon-wrap svg {
+    width: 22px; height: 22px;
+    fill: var(--vert-vif);
+  }
+  .info-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--vert-herbe);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+  .info-val {
+    font-size: 0.9rem;
+    color: var(--brun);
+    line-height: 1.7;
+  }
+  .info-val strong { color: var(--vert-fonce); font-weight: 700; }
+  .info-val small { color: var(--vert-herbe); font-size: 0.78rem; }
+
+  /* ===================== RESERVATION ===================== */
+  .reservation {
+    background: var(--vert-pastel);
+    text-align: center;
+    padding: 5rem 3rem;
+  }
+  .reservation .section-title { color: var(--vert-fonce); }
+  .reservation > p {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: #5a5a57;
+    margin-bottom: 2.5rem;
+    line-height: 1.7;
+  }
+  .res-form {
+    display: flex;
+    gap: 0.8rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    max-width: 750px;
+    margin: 0 auto;
+  }
+  .res-input {
+    padding: 13px 20px;
+    border-radius: 50px;
+    border: 1.5px solid rgba(59,109,17,0.2);
+    background: var(--blanc);
+    font-size: 0.82rem;
+    color: var(--brun);
+    font-family: var(--sans);
+    flex: 1;
+    min-width: 140px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .res-input:focus { border-color: var(--vert-vif); }
+  .res-btn {
+    background: var(--vert-fonce);
+    color: var(--blanc);
+    padding: 13px 32px;
+    border-radius: 50px;
+    border: none;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-family: var(--sans);
+    white-space: nowrap;
+    transition: background 0.2s, transform 0.15s;
+  }
+  .res-btn:hover { background: var(--vert-mid); transform: translateY(-2px); }
+
+  /* ===================== FOOTER ===================== */
+  footer {
+    background: #0a180a;
+    padding: 4rem 3rem 0;
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr 1fr;
+    gap: 3rem;
+  }
+  .footer-brand {
+    font-family: var(--serif);
+    font-size: 1.2rem;
+    color: var(--vert-clair);
+    margin-bottom: 1rem;
+  }
+  .footer-brand span {
+    display: block;
+    font-family: var(--sans);
+    font-size: 0.6rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--vert-herbe);
+    margin-top: 4px;
+  }
+  .footer-desc {
+    font-size: 0.82rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.35);
+    line-height: 1.75;
+    margin-top: 0.5rem;
+  }
+  .footer-col h4 {
+    font-size: 0.6rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--vert-herbe);
+    font-weight: 700;
+    margin-bottom: 1.2rem;
+  }
+  .footer-col a {
+    display: block;
+    font-size: 0.83rem;
+    font-weight: 300;
+    color: rgba(255,255,255,0.45);
+    text-decoration: none;
+    margin-bottom: 0.55rem;
+    transition: color 0.2s;
+  }
+  .footer-col a:hover { color: var(--vert-pale); }
+  .footer-bottom {
+    border-top: 0.5px solid rgba(255,255,255,0.06);
+    padding: 1.3rem 3rem;
+    margin-top: 3rem;
+    background: #0a180a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-bottom p {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.2);
+  }
+
+  /* ===================== SCROLL ANIMATIONS ===================== */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible {
+    opacity: 1;
+    transform: none;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header>
+  <nav id="navbar">
+    <div class="nav-logo">
+      C'est Là Que C'est Bon
+      <span>Créteil · cuisine franco-portugaise</span>
+    </div>
+    <div class="nav-links">
+      <a href="#ambiance">La salle</a>
+      <a href="#menu">La carte</a>
+      <a href="#histoire">Notre histoire</a>
+      <a href="#infos">Infos</a>
+      <a href="#reservation" class="nav-cta">Réserver</a>
+    </div>
+    <div class="burger" id="burgerBtn">
+      <div></div><div></div><div></div>
+    </div>
+  </nav>
+</header>
+
+<!-- FULLSCREEN MENU -->
+<div class="fs-menu" id="fsMenu">
+  <button class="fs-close" id="fsClose">✕</button>
+  <nav>
+    <a href="#ambiance" class="fs-link">La salle</a>
+    <a href="#menu" class="fs-link">La carte</a>
+    <a href="#histoire" class="fs-link">Notre histoire</a>
+    <a href="#infos" class="fs-link">Infos pratiques</a>
+    <a href="#reservation" class="fs-link">Réservation</a>
+    <a href="#infos" class="fs-link">Contact</a>
+  </nav>
+  <div class="fs-divider"></div>
+  <div class="fs-info">
+    <div class="fs-info-item">
+      <p>Téléphone</p>
+      <span>01 48 XX XX XX</span>
+    </div>
+    <div class="fs-info-item">
+      <p>Adresse</p>
+      <span>12 av. du Général de Gaulle, Créteil</span>
+    </div>
+    <div class="fs-info-item">
+      <p>Horaires</p>
+      <span>Mar–Sam 12h–14h30 · 19h–22h30</span>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-grain"></div>
+  <div class="hero-badge">Ouvert midi &amp; soir</div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Créteil · depuis 2008 · cuisine du cœur</p>
+    <h1 class="hero-title">Là où la France<br>rencontre le <em>Portugal</em></h1>
+    <p class="hero-sub">Une cuisine généreuse et sincère, entre bacalhau doré et bœuf bourguignon. Venez comme vous êtes, repartez rassasié.</p>
+    <div class="hero-btns">
+      <a href="#reservation" class="btn-green">Réserver une table</a>
+      <a href="#menu" class="btn-ghost">Voir la carte</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Découvrir</div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item"><div class="strip-dot"></div><span>100% fait maison</span></div>
+  <div class="strip-item"><div class="strip-dot"></div><span>Bacalhau · Confit de canard · Piri-piri</span></div>
+  <div class="strip-item"><div class="strip-dot"></div><span>Terrasse en été</span></div>
+  <div class="strip-item"><div class="strip-dot"></div><span>Groupes et événements</span></div>
+  <div class="strip-item"><div class="strip-dot"></div><span>Vins du Portugal & du Languedoc</span></div>
+</div>
+
+<!-- AMBIANCE -->
+<section class="ambiance" id="ambiance">
+  <div class="ambiance-inner">
+    <div class="ambiance-photos reveal">
+      <div class="aph aph1"></div>
+      <div class="aph aph2"></div>
+      <div class="aph aph3"></div>
+    </div>
+    <div class="ambiance-text reveal">
+      <span class="section-tag">Notre salle</span>
+      <h2 class="section-title">Un endroit pour<br>souffler et se régaler</h2>
+      <p>Une atmosphère détendue, chaleureuse et sans chichis. Bois brut, carrelage azulejo et lumière tamisée — l'âme de Lisbonne et de Lyon réunies dans un même bistrot au cœur de Créteil.</p>
+      <p>Que ce soit pour un déjeuner tranquille ou un dîner entre amis, on vous accueille toujours avec le sourire et une assiette bien remplie.</p>
+      <div class="tags-row">
+        <span class="tag">Salle conviviale</span>
+        <span class="tag">Terrasse estivale</span>
+        <span class="tag">Groupes bienvenus</span>
+        <span class="tag">Ambiance azulejo</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-top reveal">
+    <div>
+      <span class="section-tag">À la carte</span>
+      <h2 class="section-title">Nos incontournables</h2>
+    </div>
+    <div class="menu-tabs">
+      <button class="tab active">Plats</button>
+      <button class="tab">Entrées</button>
+      <button class="tab">Desserts</button>
+    </div>
+  </div>
+  <div class="dishes">
+    <div class="dish reveal">
+      <div class="dish-img di1"><span class="dish-badge">🇵🇹 Portugais</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Bacalhau à Brás</p>
+        <p class="dish-desc">Morue effilochée, œufs brouillés, olives et persil frais</p>
+        <div class="dish-foot"><span class="dish-price">18 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+    <div class="dish reveal">
+      <div class="dish-img di2"><span class="dish-badge">🇫🇷 Français</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Confit de canard</p>
+        <p class="dish-desc">Cuisse confite maison, pommes sarladaises, jus au thym</p>
+        <div class="dish-foot"><span class="dish-price">21 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+    <div class="dish reveal">
+      <div class="dish-img di3"><span class="dish-badge">✨ Signature</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Caldo verde revisité</p>
+        <p class="dish-desc">Soupe au chou kale, chorizo grillé, huile d'olive AOC</p>
+        <div class="dish-foot"><span class="dish-price">12 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+    <div class="dish reveal">
+      <div class="dish-img di4"><span class="dish-badge">🔥 Grill</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Piri-piri de poulet</p>
+        <p class="dish-desc">Poulet mariné 24h, sauce pimentée maison, frites dorées</p>
+        <div class="dish-foot"><span class="dish-price">17 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+    <div class="dish reveal">
+      <div class="dish-img di5"><span class="dish-badge">🇫🇷 Français</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Bœuf bourguignon</p>
+        <p class="dish-desc">Joue de bœuf braisée 6h, légumes racines, vin rouge</p>
+        <div class="dish-foot"><span class="dish-price">23 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+    <div class="dish reveal">
+      <div class="dish-img di6"><span class="dish-badge">🥩 Duo</span></div>
+      <div class="dish-body">
+        <p class="dish-name">Picanha &amp; chimichurri</p>
+        <p class="dish-desc">Rumsteck façon lusitanienne, sauce aux herbes, gratin dauphinois</p>
+        <div class="dish-foot"><span class="dish-price">26 €</span><button class="dish-btn">+</button></div>
+      </div>
+    </div>
+  </div>
+  <div class="menu-cta reveal">
+    <a href="#" class="btn-green" style="font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;">Voir la carte complète</a>
+  </div>
+</section>
+
+<!-- HISTOIRE -->
+<div class="story" id="histoire">
+  <div class="story-img"></div>
+  <div class="story-text reveal">
+    <span class="section-tag">Notre histoire</span>
+    <h2 class="section-title">Deux cultures,<br>une seule passion</h2>
+    <p>Née d'une amitié franco-lusophone, notre table réunit les recettes de grand-mère de deux familles. On cuisine avec le cœur, on sert avec le sourire.</p>
+    <p style="margin-top:0.8rem;">À Créteil depuis 2008, nous accueillons nos habitués comme des amis de longue date — parce que c'est exactement ce qu'ils sont. Chaque plat est préparé le matin même, avec des produits frais et de saison.</p>
+    <div class="flags">
+      <span class="flag-pill">🇫🇷 France</span>
+      <span class="flag-pill">🇵🇹 Portugal</span>
+      <span class="flag-pill">100% fait maison</span>
+      <span class="flag-pill">Produits frais</span>
+    </div>
+  </div>
+</div>
+
+<!-- INFOS -->
+<div class="infos" id="infos">
+  <div class="info-block reveal">
+    <div class="info-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+    </div>
+    <span class="info-label">Adresse</span>
+    <p class="info-val"><strong>12 avenue du Général de Gaulle</strong><br>94000 Créteil<br><small>RER D · Créteil-Pompadour</small></p>
+  </div>
+  <div class="info-block reveal">
+    <div class="info-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67V7z"/></svg>
+    </div>
+    <span class="info-label">Horaires</span>
+    <p class="info-val"><strong>Mar – Sam</strong> : 12h–14h30 · 19h–22h30<br><strong>Dimanche</strong> : 12h–15h<br>Fermé le lundi</p>
+  </div>
+  <div class="info-block reveal">
+    <div class="info-icon-wrap">
+      <svg viewBox="0 0 24 24"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+    </div>
+    <span class="info-label">Contact &amp; résa</span>
+    <p class="info-val"><strong>01 48 XX XX XX</strong><br>contact@cestlaquecestbon.fr<br><small>Réservation conseillée le week-end</small></p>
+  </div>
+</div>
+
+<!-- RESERVATION -->
+<section class="reservation" id="reservation">
+  <span class="section-tag">Réservation en ligne</span>
+  <h2 class="section-title">On vous attend !</h2>
+  <p>Choisissez votre date et on prépare votre table avec soin.<br>Pour les groupes de plus de 8 personnes, appelez-nous directement.</p>
+  <div class="res-form reveal">
+    <input class="res-input" type="text" placeholder="Votre prénom" />
+    <input class="res-input" type="date" />
+    <input class="res-input" type="time" value="20:00" />
+    <select class="res-input">
+      <option>2 personnes</option>
+      <option>3 personnes</option>
+      <option>4 personnes</option>
+      <option>6 personnes</option>
+      <option>8 personnes</option>
+    </select>
+    <button class="res-btn">Réserver ma table</button>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <div class="footer-brand">
+      C'est Là Que C'est Bon
+      <span>Cuisine franco-portugaise · Créteil · depuis 2008</span>
+    </div>
+    <p class="footer-desc">Un bistrot de famille où la France et le Portugal se retrouvent à table. Fait maison, avec amour, depuis 2008. Venez comme vous êtes.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigation</h4>
+    <a href="#">La carte</a>
+    <a href="#">Nos spécialités</a>
+    <a href="#">Notre histoire</a>
+    <a href="#">Événements &amp; groupes</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-col">
+    <h4>Retrouvez-nous</h4>
+    <a href="#">Instagram</a>
+    <a href="#">Facebook</a>
+    <a href="#">Google Maps</a>
+    <a href="#">TripAdvisor</a>
+  </div>
+  <div class="footer-col">
+    <h4>Informations</h4>
+    <a href="#">Mentions légales</a>
+    <a href="#">Politique de confidentialité</a>
+    <a href="#">Accessibilité PMR</a>
+    <a href="#">Plan d'accès</a>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 C'est Là Que C'est Bon · Tous droits réservés</p>
+  <p>Fait avec ♥ à Créteil</p>
+</div>
+
+<script>
+  // Navbar scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Fullscreen menu
+  const burgerBtn = document.getElementById('burgerBtn');
+  const fsMenu = document.getElementById('fsMenu');
+  const fsClose = document.getElementById('fsClose');
+  burgerBtn.addEventListener('click', () => fsMenu.classList.add('open'));
+  fsClose.addEventListener('click', () => fsMenu.classList.remove('open'));
+  document.querySelectorAll('.fs-link').forEach(a => {
+    a.addEventListener('click', () => fsMenu.classList.remove('open'));
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Menu tabs (mock)
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
