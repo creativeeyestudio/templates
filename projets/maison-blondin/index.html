@@ -1,0 +1,1332 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Maison Blondin — Conciergerie en Ardèche</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,500;1,700&family=Open+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush:  #e4c3bf;
+      --pink:   #ff66c4;
+      --cream:  #fff3e8;
+      --brown:  #572400;
+      --ink:    #1a0e08;
+      --text:   #6b4232;
+      --muted:  #b09080;
+      --sand:   #eeddd6;
+      --white:  #ffffff;
+      --blush2: #f5e8e4;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Open Sans', sans-serif;
+      background: var(--cream);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+
+    /* ─── NAV ─── */
+    /* Ribbit: nav transparente, logo gauche, liens milieu, CTA droite */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 48px; height: 74px;
+      transition: background .5s, backdrop-filter .5s, box-shadow .5s;
+    }
+    nav.stuck {
+      background: rgba(255,243,232,.94);
+      backdrop-filter: blur(22px);
+      box-shadow: 0 1px 0 rgba(228,195,191,.6);
+    }
+
+    #nav {
+      background: rgba(255,243,232,.94);
+    }
+
+    /* Logo */
+    .logo { display: flex; align-items: center; gap: 13px; text-decoration: none; }
+    .logo-mark {
+      width: 42px; height: 50px; flex-shrink: 0;
+    }
+    .logo-text { display: flex; flex-direction: column; line-height: 1; }
+    .logo-top {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 9px; font-weight: 600; letter-spacing: .38em; text-transform: uppercase;
+      color: var(--brown);
+    }
+    .logo-btm {
+      font-family: 'Playfair Display', serif;
+      font-size: 21px; font-weight: 400; letter-spacing: .02em;
+      color: var(--brown); margin-top: 2px;
+    }
+
+    /* Nav center links */
+    .nav-links {
+      position: absolute; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 0; list-style: none;
+    }
+    .nav-links a {
+      font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--ink); text-decoration: none;
+      padding: 0 20px; display: flex; align-items: center; height: 74px;
+      position: relative; transition: color .25s;
+    }
+    .nav-links a::after {
+      content: ''; position: absolute; bottom: 16px; left: 20px; right: 20px;
+      height: 1.5px; background: var(--pink);
+      transform: scaleX(0); transition: transform .3s; transform-origin: left;
+    }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a:hover { color: var(--brown); }
+
+    /* Nav right: CTA */
+    .nav-right { display: flex; align-items: center; gap: 18px; }
+    .nav-tel {
+      font-size: 12px; font-weight: 600; letter-spacing: .06em;
+      color: var(--brown); text-decoration: none;
+      display: flex; align-items: center; gap: 7px;
+      transition: color .25s;
+    }
+    .nav-tel:hover { color: var(--pink); }
+    .nav-tel-dot { width: 7px; height: 7px; background: var(--pink); border-radius: 50%; animation: blink 1.8s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .nav-cta {
+      font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--white); background: var(--brown);
+      padding: 11px 24px; text-decoration: none;
+      transition: background .3s, box-shadow .3s;
+    }
+    .nav-cta:hover { background: var(--pink); box-shadow: 0 8px 24px rgba(255,102,196,.3); }
+
+
+    /* ─── HAMBURGER & MENU MOBILE ─── */
+    .nav-burger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      width: 44px; height: 44px;
+      background: none; border: none;
+      padding: 8px 4px;
+      cursor: pointer;
+      z-index: 301;
+    }
+    .nav-burger span {
+      display: block;
+      width: 26px; height: 1.5px;
+      background: var(--brown);
+      transition: transform .4s ease, opacity .3s ease;
+      transform-origin: center;
+    }
+    .nav-burger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-burger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+    .nav-burger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* Overlay plein écran */
+    #mobile-menu {
+      position: fixed; inset: 0;
+      background: var(--cream);
+      z-index: 300;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 80px 40px 48px;
+      opacity: 0; pointer-events: none;
+      transition: opacity .4s ease;
+    }
+    #mobile-menu.open {
+      opacity: 1; pointer-events: all;
+    }
+    .mm-links {
+      list-style: none;
+      display: flex; flex-direction: column;
+      gap: 0;
+      margin-bottom: 48px;
+    }
+    .mm-links li {
+      border-bottom: 1px solid var(--sand);
+    }
+    .mm-links li:first-child {
+      border-top: 1px solid var(--sand);
+    }
+    .mm-links a {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 0;
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 7vw, 40px);
+      font-weight: 400;
+      color: var(--brown);
+      text-decoration: none;
+      transition: color .25s;
+    }
+    .mm-links a:hover { color: var(--pink); }
+    .mm-links a::after {
+      content: '→';
+      font-family: 'Open Sans', sans-serif;
+      font-size: 18px;
+      color: var(--pink);
+      opacity: 0;
+      transform: translateX(-8px);
+      transition: opacity .25s, transform .25s;
+    }
+    .mm-links a:hover::after { opacity: 1; transform: translateX(0); }
+
+    .mm-bottom {
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .mm-tel {
+      font-size: 15px; font-weight: 600; letter-spacing: .06em;
+      color: var(--brown); text-decoration: none;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .mm-tel-dot {
+      width: 7px; height: 7px;
+      background: var(--pink); border-radius: 50%;
+      animation: blink 1.8s ease-in-out infinite;
+    }
+    .mm-cta {
+      display: inline-block;
+      font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--white); background: var(--brown);
+      padding: 14px 28px; text-decoration: none;
+      transition: background .3s;
+      align-self: flex-start;
+    }
+    .mm-cta:hover { background: var(--pink); }
+
+    /* ─── HERO — Ribbit style ─── */
+    /* Pleine page crème, contenu centré, titre massif, étiquettes flottantes */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: var(--cream);
+      padding: 100px 48px 60px;
+      position: relative; overflow: hidden;
+      text-align: center;
+    }
+
+    /* Fond texturé subtle */
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 20% 30%, rgba(228,195,191,.35) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 70%, rgba(255,102,196,.08) 0%, transparent 55%);
+      pointer-events: none;
+    }
+
+    /* Étiquettes flottantes autour du titre — exactement comme Ribbit */
+    .hero-tag {
+      position: absolute;
+      display: flex; align-items: center; gap: 8px;
+      font-size: 10px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase;
+      padding: 8px 16px; border-radius: 100px;
+      pointer-events: none;
+      animation: tagfloat 0s ease-in-out infinite;
+    }
+    .hero-tag img { width: 22px; height: 22px; border-radius: 50%; object-fit: cover; }
+    .tag1 { top: 22%; left: 7%; background: var(--white); color: var(--brown); box-shadow: 0 4px 20px rgba(87,36,0,.1); border: 1px solid var(--sand); animation-duration: 6s; }
+    .tag2 { top: 18%; right: 8%; background: var(--pink); color: white; box-shadow: 0 4px 20px rgba(255,102,196,.25); animation-duration: 7.5s; animation-delay: .5s; }
+    .tag3 { bottom: 28%; left: 5%; background: var(--brown); color: white; box-shadow: 0 4px 20px rgba(87,36,0,.2); animation-duration: 8s; animation-delay: 1s; }
+    .tag4 { bottom: 32%; right: 6%; background: var(--blush); color: var(--brown); border: 1px solid var(--sand); animation-duration: 6.5s; animation-delay: .8s; }
+    .tag5 { top: 42%; left: 2%; background: var(--white); color: var(--brown); box-shadow: 0 4px 16px rgba(87,36,0,.08); border: 1px solid var(--sand); animation-duration: 9s; animation-delay: .3s; }
+    @keyframes tagfloat {
+      0%,100% { transform: translateY(0) rotate(0deg); }
+      33%      { transform: translateY(-10px) rotate(-1.5deg); }
+      66%      { transform: translateY(5px) rotate(1deg); }
+    }
+
+    /* Tag emoji icon */
+    .tag-emoji { font-size: 16px; line-height: 1; }
+
+    /* Petit label au dessus du titre */
+    .hero-pre {
+      font-size: 10px; font-weight: 600; letter-spacing: .35em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 28px;
+      display: flex; align-items: center; gap: 14px;
+      position: relative; z-index: 2;
+      opacity: 0; animation: fadeup .8s .1s forwards;
+    }
+    .hero-pre span { width: 28px; height: 1px; background: var(--muted); display: block; }
+
+    /* Titre gigantesque — Ribbit style */
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(64px, 10vw, 148px);
+      font-weight: 400; line-height: .92; letter-spacing: -.03em;
+      color: var(--brown);
+      position: relative; z-index: 2;
+      margin-bottom: 20px;
+      opacity: 0; animation: fadeup .9s .2s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--ink); }
+    .hero-title .swap-wrap {
+      display: inline-block;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Mot animé qui change — comme Ribbit */
+    .swap-word {
+      display: block;
+      animation: swapword 6s ease-in-out infinite;
+      color: var(--pink);
+    }
+    @keyframes swapword {
+      0%,28%  { transform: translateY(0); opacity: 1; }
+      32%,68% { transform: translateY(-100%); opacity: 0; }
+      72%,100%{ transform: translateY(0); opacity: 1; }
+    }
+
+    /* Ligne descriptive sous le titre */
+    .hero-sub {
+      font-size: clamp(13px, 1.5vw, 17px); font-weight: 300; line-height: 1.7;
+      color: var(--text); max-width: 520px;
+      position: relative; z-index: 2;
+      margin-bottom: 44px;
+      opacity: 0; animation: fadeup .8s .38s forwards;
+    }
+
+    /* Boutons hero */
+    .hero-actions {
+      display: flex; gap: 14px; align-items: center; justify-content: center;
+      position: relative; z-index: 2;
+      opacity: 0; animation: fadeup .8s .52s forwards;
+    }
+    .btn-fill {
+      background: var(--brown); color: white;
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      padding: 15px 36px; text-decoration: none;
+      transition: background .3s, transform .3s, box-shadow .3s;
+      display: inline-block;
+    }
+    .btn-fill:hover { background: var(--pink); transform: translateY(-2px); box-shadow: 0 10px 28px rgba(255,102,196,.3); }
+    .btn-out {
+      background: transparent; color: var(--brown);
+      font-family: 'Open Sans', sans-serif;
+      font-size: 11px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      padding: 14px 34px; text-decoration: none;
+      border: 1.5px solid var(--sand);
+      transition: border-color .3s, color .3s, background .3s;
+    }
+    .btn-out:hover { border-color: var(--brown); background: var(--brown); color: white; }
+
+    /* Scroll indicator */
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 9px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase;
+      color: var(--muted); z-index: 2;
+      opacity: 0; animation: fadeup .8s .7s forwards;
+    }
+    .scroll-line { width: 1px; height: 44px; background: var(--muted); animation: scrolldrop 2s ease-in-out infinite; }
+    @keyframes scrolldrop {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+    @keyframes fadeup { from { opacity:0; transform: translateY(22px); } to { opacity:1; transform: none; } }
+
+    /* ─── MARQUEE ─── */
+    .mq { background: var(--brown); overflow: hidden; padding: 16px 0; }
+    .mq-track {
+      display: flex; white-space: nowrap;
+      animation: mqscroll 20s linear infinite;
+    }
+    .mq-track span {
+      font-size: 10px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+      padding: 0 26px;
+    }
+    .mq-w { color: rgba(255,255,255,.38); }
+    .mq-b { color: var(--blush); }
+    .mq-p { color: var(--pink); }
+    @keyframes mqscroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+    /* ─── IDENTITY SECTION ─── */
+    /* Ribbit: "Ribbit is a / Curious / Fullservice / Motion Agency / Based in Copenhagen"
+       Adapté: texte empilé géant avec alternance couleur/taille, lignes séparées, illustré */
+    #identity {
+      padding: 120px 48px 80px;
+      background: var(--cream);
+      position: relative;
+    }
+    .identity-label {
+      font-size: 10px; font-weight: 600; letter-spacing: .35em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 36px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .identity-label::before { content:''; width: 20px; height: 1.5px; background: var(--pink); }
+
+    .identity-stack {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .identity-line {
+      display: flex; align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--sand);
+      position: relative;
+      overflow: hidden;
+    }
+    .identity-line:first-child { border-top: 1px solid var(--sand); }
+    .identity-line-word {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(44px, 7vw, 100px);
+      font-weight: 400; line-height: 1;
+      letter-spacing: -.02em;
+      color: var(--brown);
+      transition: color .4s;
+    }
+    .identity-line-word.italic { font-style: italic; }
+    .identity-line-word.pink   { color: var(--pink); }
+    .identity-line-word.light  { color: var(--blush); font-weight: 400; }
+    .identity-line:hover .identity-line-word { color: var(--pink); }
+
+    /* Numéro à droite */
+    .identity-line-num {
+      margin-left: auto;
+      font-family: 'Playfair Display', serif;
+      font-size: 14px; font-weight: 400; font-style: italic;
+      color: var(--muted); padding-right: 12px;
+    }
+
+    /* Pill tag inline dans la ligne */
+    .id-pill {
+      font-family: 'Open Sans', sans-serif;
+      font-size: 10px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      padding: 7px 16px; border-radius: 100px;
+      border: 1.5px solid var(--blush);
+      color: var(--brown);
+      margin-left: 24px;
+      flex-shrink: 0;
+      transition: background .3s, color .3s, border-color .3s;
+    }
+    .identity-line:hover .id-pill { background: var(--pink); color: white; border-color: var(--pink); }
+
+    /* ─── MAISONS (Projects grid — Ribbit style) ─── */
+    #maisons {
+      padding: 100px 0 80px;
+      background: var(--cream);
+    }
+    .maisons-hd {
+      display: flex; justify-content: space-between; align-items: flex-end;
+      padding: 0 48px; margin-bottom: 48px;
+    }
+    .maisons-hd-left { max-width: 600px; }
+    .section-eyebrow {
+      font-size: 10px; font-weight: 600; letter-spacing: .32em; text-transform: uppercase;
+      color: var(--pink); margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .section-eyebrow::before { content:''; width: 18px; height: 1.5px; background: var(--pink); }
+    .section-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(32px, 4vw, 56px);
+      font-weight: 400; line-height: 1.05; letter-spacing: -.01em;
+      color: var(--brown);
+    }
+    .section-h2 em { font-style: italic; }
+
+    /* Grille 3 colonnes + 1 large — comme Ribbit projects */
+    .maisons-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 3px;
+      padding: 0 48px;
+    }
+    .maison-card {
+      position: relative; overflow: hidden;
+      background: var(--brown);
+    }
+    .maison-card:first-child {
+      grid-column: 1 / 3;
+    }
+    .maison-visual {
+      width: 100%; height: 100%;
+      padding-bottom: 58%;
+      position: relative; overflow: hidden;
+    }
+    .maison-card:first-child .maison-visual {
+      padding-bottom: 50%;
+    }
+    .maison-bg {
+      position: absolute; inset: 0;
+      transition: transform .7s cubic-bezier(.25,.46,.45,.94);
+      background-repeat: no-repeat;
+      background-size: cover;
+    }
+    .maison-card:hover .maison-bg { transform: scale(1.07); }
+
+    /* Gradients per house */
+    .mb1 { background-image: url('https://static.wixstatic.com/media/f729d7_4d0d1e9f850c4b809479355eac0a1bc0~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/d0bd76a8-95f6-4aec-af17-3dd1636a4587%202_JPG.jpg'); }
+    .mb2 { background-image: url('https://static.wixstatic.com/media/f729d7_ab32969571df486e89cdbcf5eb2972ce~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/IMG_8045.jpg'); }
+    .mb3 { background-image: url('https://static.wixstatic.com/media/f729d7_7898074ef8ff4781b49b9ed0eec4ca22~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/9b4d19b4-c824-483e-b739-94ad085c3c7e_JPG.jpg'); }
+    .mb4 { background-image: url('https://static.wixstatic.com/media/f729d7_db479ffff35f4b2dbcad879788da8baa~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/5bc671cc-660a-4001-9705-6bc189b07747_JPG.jpg'); }
+    .mb5 { background-image: url('https://static.wixstatic.com/media/f729d7_97ea04b850c84c1cba7e3426cfd9a4d9~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/7ad565b0-c61e-45aa-a0be-707394ecd5c9_JPG.jpg'); }
+    .mb6 { background-image: url('https://static.wixstatic.com/media/f729d7_9f207b629a5843a09e216b17bcf0019c~mv2.jpg/v1/fill/w_317,h_296,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/e1782331-76f0-46c5-ae6a-a37c1ba94614_JPG.jpg') }
+
+    /* Decorative circle */
+    .maison-visual::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 40%; height: 0; padding-bottom: 40%;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.15);
+      transition: all .6s ease;
+    }
+    .maison-card:hover .maison-visual::after {
+      width: 55%; padding-bottom: 55%;
+      border-color: rgba(255,102,196,.3);
+    }
+
+    /* Pink dot hover overlay */
+    .maison-overlay {
+      position: absolute; inset: 0;
+      display: flex; align-items: flex-end;
+      padding: 28px 32px;
+    }
+    .maison-info {
+      transform: translateY(8px); opacity: 0;
+      transition: all .4s cubic-bezier(.25,.46,.45,.94);
+    }
+    .maison-card:hover .maison-info { transform: none; opacity: 1; }
+    .maison-badge {
+      display: inline-block;
+      background: var(--pink); color: white;
+      font-size: 9px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase;
+      padding: 5px 12px; margin-bottom: 10px;
+    }
+    .maison-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 400; font-style: italic;
+      color: white; line-height: 1.1;
+    }
+    .maison-loc { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: rgba(255,255,255,.65); margin-top: 4px; }
+
+    /* Always visible subtle label (top left) */
+    .maison-label {
+      position: absolute; top: 16px; left: 16px;
+      font-size: 9px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(255,255,255,.5);
+      transition: color .3s;
+    }
+    .maison-card:hover .maison-label { color: var(--pink); }
+
+    .maisons-link { display: flex; justify-content: center; margin-top: 48px; }
+
+    /* ─── SERVICES (accordéon) ─── */
+    #services {
+      padding: 120px 48px;
+      background: var(--blush2);
+    }
+    .services-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 72px; }
+    .services-hd-right { max-width: 360px; font-size: 14px; font-weight: 300; line-height: 1.8; color: var(--text); text-align: right; }
+
+    .services-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; }
+    .services-col-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 400; font-style: italic;
+      color: var(--brown); margin-bottom: 32px;
+      padding-bottom: 20px; border-bottom: 1.5px solid var(--brown);
+    }
+    .srv-acc { display: flex; flex-direction: column; gap: 0; }
+    .srv-acc-item {
+      border-bottom: 1px solid var(--sand);
+      overflow: hidden;
+    }
+    .srv-acc-hd {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 20px 0; cursor: none;
+      transition: color .25s;
+    }
+    .srv-acc-hd:hover { color: var(--pink); }
+    .srv-acc-title {
+      font-size: 15px; font-weight: 600; color: inherit;
+      transition: color .25s;
+    }
+    .srv-acc-arrow {
+      font-size: 18px; color: var(--muted);
+      transition: transform .35s, color .25s;
+      flex-shrink: 0; margin-left: 16px;
+    }
+    .srv-acc-item.open .srv-acc-arrow { transform: rotate(45deg); color: var(--pink); }
+    .srv-acc-item.open .srv-acc-title { color: var(--pink); }
+    .srv-acc-body {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease, padding .4s ease;
+      font-size: 13px; font-weight: 300; line-height: 1.8; color: var(--text);
+    }
+    .srv-acc-item.open .srv-acc-body { max-height: 160px; padding-bottom: 18px; }
+
+    /* ─── TEMOIGNAGES ─── */
+    #temo {
+      padding: 120px 48px;
+      background: var(--cream);
+      position: relative; overflow: hidden;
+    }
+    .temo-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(180,154,106,.12);
+      pointer-events: none;
+    }
+    .temo-ring1 { width: 600px; height: 600px; top: -200px; right: -100px; }
+    .temo-ring2 { width: 350px; height: 350px; bottom: -100px; left: -50px; border-color: rgba(255,102,196,.08); }
+
+    .temo-hd { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 64px; }
+    .temo-ey { color: var(--brown); }
+    .temo-ey::before { background: var(--pink); }
+    .temo-h { color: var(--brown); }
+    .temo-h em { color: var(--pink); }
+
+    .temo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+    .temo-card {
+      padding: 44px 40px;
+      border: 1px solid var(--sand);
+      background: var(--white);
+      transition: background .35s, border-color .35s;
+    }
+    .temo-card:hover { background: var(--blush); border-color: rgba(180,154,106,.3); }
+    .temo-open-q {
+      font-family: 'Playfair Display', serif;
+      font-size: 72px; line-height: .75;
+      color: var(--pink); opacity: .4; margin-bottom: 18px;
+    }
+    .temo-stars { color: var(--brown); font-size: 13px; letter-spacing: 3px; margin-bottom: 16px; }
+    .temo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-style: italic; font-weight: 400;
+      line-height: 1.7; color: var(--brown); margin-bottom: 32px;
+    }
+    .temo-author { display: flex; gap: 14px; align-items: center; }
+    .temo-ava {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blush), var(--brown));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Playfair Display', serif; font-size: 17px; color: white; flex-shrink: 0;
+    }
+    .temo-name { font-size: 13px; font-weight: 600; color: var(--brown); }
+    .temo-role { font-size: 11px; font-weight: 300; color: var(--muted); letter-spacing: .05em; }
+
+    /* ─── FOOTER — Ribbit style ─── */
+    /* Grand nom centré + contact + illu + liens */
+    footer {
+      background: var(--cream);
+      padding: 80px 48px 48px;
+      position: relative;
+      border-top: 1px solid var(--sand);
+    }
+
+    /* Grand titre centré "Maison Blondin" à la Ribbit */
+    .footer-big {
+      text-align: center;
+      padding: 40px 0 60px;
+      border-bottom: 1px solid var(--sand);
+      margin-bottom: 60px;
+      position: relative;
+    }
+
+    /* Monogramme décoratif MB en grand au centre */
+    .footer-mono-wrap {
+      display: flex; justify-content: center;
+      margin-bottom: 28px;
+    }
+    .footer-mono { width: 120px; height: 144px; opacity: .12; }
+
+    .footer-big-name {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(64px, 10vw, 130px);
+      font-weight: 700; font-style: italic;
+      letter-spacing: -.03em; line-height: .9;
+      color: var(--brown);
+      margin-bottom: 12px;
+    }
+    .footer-big-sub {
+      font-size: 11px; font-weight: 600; letter-spacing: .38em; text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* Contact centré sous le nom */
+    .footer-contact {
+      display: flex; flex-direction: column; align-items: center; gap: 12px;
+      margin-top: 36px;
+    }
+    .footer-contact a {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 400; font-style: italic;
+      color: var(--brown); text-decoration: none;
+      display: flex; align-items: center; gap: 12px;
+      transition: color .25s;
+    }
+    .footer-contact a:hover { color: var(--pink); }
+    .footer-contact a span.dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pink); flex-shrink: 0; }
+
+    /* Bouton CTA centré */
+    .footer-cta-wrap { display: flex; justify-content: center; margin-top: 40px; }
+
+    /* Bottom bar */
+    .footer-bar {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-bar-links { display: flex; gap: 28px; }
+    .footer-bar-links a {
+      font-size: 11px; font-weight: 400; color: var(--muted);
+      text-decoration: none; transition: color .25s;
+    }
+    .footer-bar-links a:hover { color: var(--brown); }
+    .footer-cr { font-size: 11px; font-weight: 300; color: var(--muted); }
+    .footer-socials { display: flex; gap: 14px; }
+    .footer-soc {
+      width: 38px; height: 38px;
+      border: 1.5px solid var(--sand);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; text-decoration: none;
+      transition: border-color .25s, background .25s;
+    }
+    .footer-soc:hover { border-color: var(--pink); background: var(--pink); }
+
+    /* ─── ZONE BAND ─── */
+    #zone {
+      background: var(--blush); padding: 80px 48px;
+    }
+    .zone-inner {
+      display: flex; justify-content: space-between; align-items: center; gap: 60px;
+    }
+    .zone-left { max-width: 520px; }
+    .zone-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+    .z-pill {
+      font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+      padding: 8px 18px; border: 1.5px solid var(--brown);
+      color: var(--brown); transition: all .25s;
+    }
+    .z-pill:hover { background: var(--brown); color: white; }
+    .zone-cta { margin-top: 36px; display: flex; gap: 16px; align-items: center; }
+    .zone-right { flex-shrink: 0; }
+    .zone-stats {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+    }
+    .z-stat {
+      background: var(--white); padding: 36px 32px;
+    }
+    .z-stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 56px; font-weight: 400; color: var(--brown); line-height: 1;
+      margin-bottom: 8px;
+    }
+    .z-stat-num .pink { color: var(--pink); }
+    .z-stat-label { font-size: 12px; font-weight: 400; color: var(--text); }
+
+    /* ─── REVEAL ─── */
+    .  { opacity: 0; transform: translateY(18px); transition: opacity .7s ease, transform .7s ease; }
+    . { opacity: 0; transform: translateY(18px); transition: opacity .7s .12s ease, transform .7s .12s ease; }
+    . { opacity: 0; transform: translateY(18px); transition: opacity .7s .24s ease, transform .7s .24s ease; }
+    ..in, ..in, ..in { opacity: 1 !important; transform: none !important; }
+    @media (prefers-reduced-motion: reduce) {
+      ., ., . { opacity: 1 !important; transform: none !important; transition: none !important; }
+    }
+
+    /* ─── RESPONSIVE ─── */
+    @media(max-width:900px){
+      nav { padding: 0 20px; }
+      .nav-links { display: none; }
+      .nav-right { display: none; }
+      .nav-burger { display: flex; }
+      #hero { padding: 90px 20px 60px; }
+      .hero-tag { display: none; }
+      .hero-title { font-size: 56px; }
+      #identity { padding: 80px 20px; }
+      .identity-line-word { font-size: clamp(36px,8vw,60px); }
+      #maisons { padding: 80px 0; }
+      .maisons-hd { padding: 0 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+      .maisons-grid { grid-template-columns: 1fr 1fr; padding: 0 20px; }
+      .maison-card:first-child { grid-column: 1/3; }
+      #services { padding: 80px 20px; }
+      .services-cols { grid-template-columns: 1fr; gap: 48px; }
+      .services-hd { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .services-hd-right { text-align: left; }
+      #temo { padding: 80px 20px; }
+      .temo-grid { grid-template-columns: 1fr; }
+      .temo-hd { flex-direction: column; gap: 16px; }
+      #zone { padding: 60px 20px; }
+      .zone-inner { flex-direction: column; }
+      .zone-right { width: 100%; }
+      .zone-stats { grid-template-columns: 1fr 1fr; }
+      footer { padding: 60px 20px 40px; }
+      .footer-big-name { font-size: 56px; }
+      .footer-bar { flex-direction: column; gap: 20px; align-items: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <a href="#" class="logo">
+      <img src="./logo-removebg-preview.png" width="64px" alt="">
+      <div class="logo-text">
+        <span class="logo-top">Maison</span>
+        <span class="logo-btm">Blondin</span>
+      </div>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#maisons">Nos biens</a></li>
+      <li><a href="#services">Propriétaires</a></li>
+      <li><a href="#services">Voyageurs</a></li>
+      <li><a href="#temo">Avis</a></li>
+    </ul>
+
+    <div class="nav-right">
+      <a href="tel:0670648664" class="nav-tel">
+        <span class="nav-tel-dot"></span>
+        06 70 64 86 64
+      </a>
+      <a href="#contact" class="nav-cta">Nous contacter</a>
+    </div>
+
+    <button class="nav-burger" id="burger" aria-label="Ouvrir le menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- ══ MENU MOBILE ══ -->
+  <div id="mobile-menu" role="dialog" aria-modal="true" aria-label="Menu navigation">
+    <ul class="mm-links">
+      <li><a href="#maisons"  class="mm-link">Nos biens</a></li>
+      <li><a href="#services" class="mm-link">Propriétaires</a></li>
+      <li><a href="#services" class="mm-link">Voyageurs</a></li>
+      <li><a href="#temo"     class="mm-link">Avis</a></li>
+      <li><a href="#contact"  class="mm-link">Contact</a></li>
+    </ul>
+    <div class="mm-bottom">
+      <a href="tel:0670648664" class="mm-tel">
+        <span class="mm-tel-dot"></span>
+        06 70 64 86 64
+      </a>
+      <a href="#contact" class="mm-cta mm-link">Nous contacter →</a>
+    </div>
+  </div>
+
+  <!-- ══ HERO ══ -->
+  <section id="hero">
+    <!-- Étiquettes flottantes comme Ribbit -->
+    <div class="hero-tag tag1"><span class="tag-emoji">🏡</span> Gestion locative</div>
+    <div class="hero-tag tag2"><span class="tag-emoji">🌿</span> Ardèche</div>
+    <div class="hero-tag tag3"><span class="tag-emoji">⭐</span> 4,9 / 5</div>
+    <div class="hero-tag tag4"><span class="tag-emoji">🔑</span> 6 propriétés</div>
+    <div class="hero-tag tag5"><span class="tag-emoji">📅</span> 7j/7</div>
+
+    <div class="hero-pre"><span></span>Conciergerie · Ardèche · Depuis 2022<span></span></div>
+
+    <h1 class="hero-title">
+      Votre bien,<br>
+      notre <em>passion</em>
+    </h1>
+
+    <p class="hero-sub">
+      Gestion complète de vos locations saisonnières en Ardèche. Accueil des voyageurs, ménage, annonces, suivi — nous nous occupons de tout.
+    </p>
+
+    <div class="hero-actions">
+      <a href="#services" class="btn-fill">Confier mon bien</a>
+      <a href="#maisons" class="btn-out">Voir les maisons</a>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      Défiler
+    </div>
+  </section>
+
+  <!-- ══ MARQUEE ══ -->
+  <div class="mq">
+    <div class="mq-track">
+      <span class="mq-b">Maison Blondin</span><span class="mq-w"> · </span>
+      <span class="mq-w">Gestion locative</span><span class="mq-w"> · </span>
+      <span class="mq-p">Ardèche</span><span class="mq-w"> · </span>
+      <span class="mq-w">Locations saisonnières</span><span class="mq-w"> · </span>
+      <span class="mq-b">Accueil voyageurs</span><span class="mq-w"> · </span>
+      <span class="mq-w">Partenaires locaux</span><span class="mq-w"> · </span>
+      <span class="mq-p">Confiance & proximité</span><span class="mq-w"> · </span>
+      <span class="mq-w">7j/7</span><span class="mq-w"> · </span>
+      <!-- dupliqué pour boucle infinie -->
+      <span class="mq-b">Maison Blondin</span><span class="mq-w"> · </span>
+      <span class="mq-w">Gestion locative</span><span class="mq-w"> · </span>
+      <span class="mq-p">Ardèche</span><span class="mq-w"> · </span>
+      <span class="mq-w">Locations saisonnières</span><span class="mq-w"> · </span>
+      <span class="mq-b">Accueil voyageurs</span><span class="mq-w"> · </span>
+      <span class="mq-w">Partenaires locaux</span><span class="mq-w"> · </span>
+      <span class="mq-p">Confiance & proximité</span><span class="mq-w"> · </span>
+      <span class="mq-w">7j/7</span><span class="mq-w"> · </span>
+    </div>
+  </div>
+
+  <!-- ══ IDENTITY — texte empilé géant (Ribbit) ══ -->
+  <section id="identity">
+    <div class="identity-label">Maison Blondin, c'est</div>
+    <div class="identity-stack">
+      <div class="identity-line">
+        <span class="identity-line-word">Une conciergerie</span>
+        <span class="id-pill">Ardèche 07</span>
+        <span class="identity-line-num">01</span>
+      </div>
+      <div class="identity-line">
+        <span class="identity-line-word italic">locale</span>
+        <span class="id-pill">Depuis 2022</span>
+        <span class="identity-line-num">02</span>
+      </div>
+      <div class="identity-line">
+        <span class="identity-line-word pink">& humaine</span>
+        <span class="id-pill">6 maisons</span>
+        <span class="identity-line-num">03</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ MAISONS (Projects grid) ══ -->
+  <section id="maisons">
+    <div class="maisons-hd">
+      <div class="maisons-hd-left">
+        <div class="section-eyebrow">Nos biens</div>
+        <h2 class="section-h2">Des maisons choisies <em>avec soin</em></h2>
+      </div>
+      <a href="#contact" class="btn-out">Réserver →</a>
+    </div>
+
+    <div class="maisons-grid">
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb1"></div>
+          <div class="maison-label">01 / Vallon-Pont-d'Arc</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-badge">Piscine + Jacuzzi</div>
+              <div class="maison-name">L'Échappée de Vallon</div>
+              <div class="maison-loc">13 voyageurs · 4 chambres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb2"></div>
+          <div class="maison-label">02 / Mercuer</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-badge">Piscine</div>
+              <div class="maison-name">Maison Luciole</div>
+              <div class="maison-loc">10 voyageurs · 4 chambres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb3"></div>
+          <div class="maison-label">03 / Ucel</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-badge">Piscine</div>
+              <div class="maison-name">Maison Bonheur</div>
+              <div class="maison-loc">8 voyageurs · 3 chambres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb4"></div>
+          <div class="maison-label">04 / Saint-Privat</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-name">Maison des Genêts</div>
+              <div class="maison-loc">6 voyageurs · 2 chambres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb5"></div>
+          <div class="maison-label">05 / St-Julien-du-Serre</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-name">Maison les 2 Chênes</div>
+              <div class="maison-loc">8 voyageurs · 4 chambres</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="maison-card">
+        <div class="maison-visual">
+          <div class="maison-bg mb6"></div>
+          <div class="maison-label">06 / Sète</div>
+          <div class="maison-overlay">
+            <div class="maison-info">
+              <div class="maison-badge" style="background:#405878">Vue mer</div>
+              <div class="maison-name">Maison les Ondines</div>
+              <div class="maison-loc">4 voyageurs · 1 chambre</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="maisons-link">
+      <a href="#contact" class="btn-fill">Réserver un séjour →</a>
+    </div>
+  </section>
+
+  <!-- ══ SERVICES ══ -->
+  <section id="services">
+    <div class="services-hd">
+      <div>
+        <div class="section-eyebrow">Nos services</div>
+        <h2 class="section-h2">Deux espaces,<br><em>une même attention</em></h2>
+      </div>
+      <p class="services-hd-right">
+        Que vous soyez propriétaire souhaitant déléguer, ou voyageur en quête d'une maison d'exception — Maison Blondin s'occupe de tout.
+      </p>
+    </div>
+
+    <div class="services-cols">
+      <!-- Propriétaire -->
+      <div>
+        <div class="services-col-title">Pour les propriétaires</div>
+        <div class="srv-acc">
+          <div class="srv-acc-item open">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Gestion des clés & accueil</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Remise des clés, accueil personnalisé des locataires, états des lieux complets à l'arrivée et au départ.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Ménage & linge de maison</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Nettoyage complet entre chaque séjour. Linge de maison fourni, lavé et repassé. Votre maison toujours impeccable.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Mise en valeur & annonces</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Séance photo professionnelle, rédaction des annonces et diffusion sur Airbnb, Booking et toutes les plateformes majeures.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Gestion des revenus</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Encaissements, suivi comptable mensuel, optimisation des tarifs selon la saisonnalité. Vous recevez simplement vos revenus.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Maintenance & artisans locaux</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Réseau de prestataires de confiance pour tout entretien rapide. Nous gérons les imprévus sans vous solliciter.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voyageur -->
+      <div>
+        <div class="services-col-title">Pour les voyageurs</div>
+        <div class="srv-acc">
+          <div class="srv-acc-item open">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Maisons sélectionnées avec soin</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Chaque bien est personnellement choisi, entretenu et vérifié. Vous arrivez dans une maison prête, propre, parfaite.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Accueil personnalisé sur place</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Votre concierge vous accueille en personne, vous présente la maison et reste joignable pendant toute la durée de votre séjour.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Bons plans & conseils locaux</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Restaurants incontournables, balades cachées, producteurs locaux, activités en famille — nos vraies recommandations terrain.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Services à la carte</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Panier d'accueil, courses livrées avant votre arrivée, réservations de restaurants ou d'activités — sur simple demande.</div>
+          </div>
+          <div class="srv-acc-item">
+            <div class="srv-acc-hd" onclick="toggleAcc(this)">
+              <span class="srv-acc-title">Disponibilité 7j/7</span>
+              <span class="srv-acc-arrow">+</span>
+            </div>
+            <div class="srv-acc-body">Un numéro unique pour toutes vos demandes, 7 jours sur 7. Nous répondons rapidement, sans exception.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ STATS + ZONE ══ -->
+  <section id="zone">
+    <div class="zone-inner">
+      <div class="zone-left">
+        <div class="section-eyebrow">Zone d'intervention</div>
+        <h2 class="section-h2">Au cœur de <em>l'Ardèche</em></h2>
+        <p class="" style="font-size:14px;font-weight:300;line-height:1.8;color:var(--text);margin-top:16px;max-width:400px">Ancrés localement, nous intervenons sur tout le département avec une connaissance intime de chaque village et vallée.</p>
+        <div class="zone-pills">
+          <span class="z-pill">Vallon-Pont-d'Arc</span>
+          <span class="z-pill">Aubenas</span>
+          <span class="z-pill">Ruoms</span>
+          <span class="z-pill">Ucel</span>
+          <span class="z-pill">Mercuer</span>
+          <span class="z-pill">Saint-Privat</span>
+          <span class="z-pill">Gorges de l'Ardèche</span>
+          <span class="z-pill">Vals-les-Bains</span>
+        </div>
+        <div class="zone-cta">
+          <a href="#contact" class="btn-fill">Nous contacter</a>
+          <a href="tel:0670648664" style="font-size:13px;font-weight:600;color:var(--brown);text-decoration:none">06 70 64 86 64</a>
+        </div>
+      </div>
+      <div class="zone-right">
+        <div class="zone-stats">
+          <div class="z-stat">
+            <div class="z-stat-num">6</div>
+            <div class="z-stat-label">Propriétés gérées</div>
+          </div>
+          <div class="z-stat">
+            <div class="z-stat-num">4,9<span class="pink">★</span></div>
+            <div class="z-stat-label">Note moyenne</div>
+          </div>
+          <div class="z-stat">
+            <div class="z-stat-num">7<span class="pink">j</span></div>
+            <div class="z-stat-label">Disponibilité / 7</div>
+          </div>
+          <div class="z-stat">
+            <div class="z-stat-num">100<span class="pink">%</span></div>
+            <div class="z-stat-label">Satisfaction clients</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ TEMOIGNAGES ══ -->
+  <section id="temo">
+    <div class="temo-ring temo-ring1"></div>
+    <div class="temo-ring temo-ring2"></div>
+    <div class="temo-hd">
+      <div>
+        <div class="section-eyebrow temo-ey">Témoignages</div>
+        <h2 class="section-h2 temo-h">Ce qu'ils disent de<br><em>Maison Blondin</em></h2>
+      </div>
+      <a href="#contact" class="btn-fill">Rejoignez-nous →</a>
+    </div>
+    <div class="temo-grid">
+      <div class="temo-card">
+        <div class="temo-open-q">"</div>
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">Une semaine à l'Échappée de Vallon — tout était parfait. L'accueil chaleureux et les conseils de l'équipe nous ont permis de vivre une Ardèche authentique.</p>
+        <div class="temo-author">
+          <div class="temo-ava">L</div>
+          <div><div class="temo-name">Lucie & Marc</div><div class="temo-role">Voyageurs · Été 2024</div></div>
+        </div>
+      </div>
+      <div class="temo-card">
+        <div class="temo-open-q">"</div>
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">Propriétaire confiant depuis 2 ans, je ne gère plus rien. Taux d'occupation +30%, comptes rendus clairs chaque mois. Bienveillance et professionnalisme au rendez-vous.</p>
+        <div class="temo-author">
+          <div class="temo-ava">P</div>
+          <div><div class="temo-name">Pierre Autran</div><div class="temo-role">Propriétaire · Vallon-Pont-d'Arc</div></div>
+        </div>
+      </div>
+      <div class="temo-card">
+        <div class="temo-open-q">"</div>
+        <div class="temo-stars">★★★★★</div>
+        <p class="temo-text">La Maison Luciole était exactement ce qu'il nous fallait. Propre, bien équipée, au calme. La rando organisée par l'équipe — inoubliable.</p>
+        <div class="temo-author">
+          <div class="temo-ava">S</div>
+          <div><div class="temo-name">Sophie Delorme</div><div class="temo-role">Voyageuse · Famille · Août 2024</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ CONTACT ══ -->
+  <section id="contact" style="display:grid;grid-template-columns:1fr 1fr;min-height:80vh">
+    <div style="background:var(--blush);padding:100px 72px;display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div class="section-eyebrow" style="color:var(--brown)">Parlons-en</div>
+        <h2 class="" style="font-family:'Playfair Display',serif;font-size:clamp(44px,6vw,80px);font-weight:400;line-height:.95;letter-spacing:-.02em;color:var(--brown)">
+          Donnons<br>vie à votre<br><em>projet</em>
+        </h2>
+      </div>
+      <div class="" style="display:flex;flex-direction:column;gap:0">
+        <div style="display:flex;gap:16px;align-items:center;padding:20px 0;border-bottom:1px solid rgba(87,36,0,.15)">
+          <div style="width:42px;height:42px;background:var(--brown);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">📞</div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Téléphone</div>
+            <a href="tel:0670648664" style="font-size:16px;font-weight:400;color:var(--brown);text-decoration:none">06 70 64 86 64</a>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;padding:20px 0;border-bottom:1px solid rgba(87,36,0,.15)">
+          <div style="width:42px;height:42px;background:var(--brown);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">✉️</div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Email</div>
+            <a href="/cdn-cgi/l/email-protection#096468607a66676b6566676d606749606a65667c6d276a6664" style="font-size:15px;font-weight:400;color:var(--brown);text-decoration:none"><span class="__cf_email__" data-cfemail="503d3139233f3e323c3f3e34393e1039333c3f25347e333f3d">[email&#160;protected]</span></a>
+          </div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;padding:20px 0">
+          <div style="width:42px;height:42px;background:var(--brown);display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0">📍</div>
+          <div>
+            <div style="font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--muted);margin-bottom:4px">Secteur</div>
+            <span style="font-size:15px;font-weight:400;color:var(--brown)">Ardèche · Département 07</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--white);padding:100px 72px;display:flex;flex-direction:column;justify-content:center">
+      <h3 class="" style="font-family:'Playfair Display',serif;font-size:34px;font-weight:400;color:var(--brown);margin-bottom:6px">Écrivez-nous</h3>
+      <p class="" style="font-size:13px;font-weight:300;color:var(--muted);margin-bottom:36px">Réponse garantie sous 24h</p>
+      <div class="" style="margin-bottom:16px">
+        <label style="display:block;font-size:9px;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--text);margin-bottom:7px">Vous êtes</label>
+        <div style="display:flex">
+          <div class="cf-tog on" onclick="this.classList.add('on');this.nextElementSibling.classList.remove('on')" style="flex:1;padding:11px;border:1.5px solid var(--sand);font-family:'Open Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text);cursor:pointer;text-align:center;transition:all .25s">Propriétaire</div>
+          <div class="cf-tog" onclick="this.classList.add('on');this.previousElementSibling.classList.remove('on')" style="flex:1;padding:11px;border:1.5px solid var(--sand);border-left:none;font-family:'Open Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text);cursor:pointer;text-align:center;transition:all .25s">Voyageur</div>
+        </div>
+      </div>
+      <div class="" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div>
+          <label style="display:block;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text);margin-bottom:7px">Prénom</label>
+          <input type="text" placeholder="Marie" style="width:100%;padding:11px 0;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:300;color:var(--brown);background:transparent;border:none;border-bottom:1.5px solid var(--sand);outline:none;transition:border-color .3s" onfocus="this.style.borderColor='#ff66c4'" onblur="this.style.borderColor='#eeddd6'"/>
+        </div>
+        <div>
+          <label style="display:block;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text);margin-bottom:7px">Nom</label>
+          <input type="text" placeholder="Dupont" style="width:100%;padding:11px 0;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:300;color:var(--brown);background:transparent;border:none;border-bottom:1.5px solid var(--sand);outline:none;transition:border-color .3s" onfocus="this.style.borderColor='#ff66c4'" onblur="this.style.borderColor='#eeddd6'"/>
+        </div>
+      </div>
+      <div class="" style="margin-bottom:16px">
+        <label style="display:block;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text);margin-bottom:7px">Email</label>
+        <input type="email" placeholder="marie@exemple.fr" style="width:100%;padding:11px 0;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:300;color:var(--brown);background:transparent;border:none;border-bottom:1.5px solid var(--sand);outline:none;transition:border-color .3s" onfocus="this.style.borderColor='#ff66c4'" onblur="this.style.borderColor='#eeddd6'"/>
+      </div>
+      <div class="" style="margin-bottom:20px">
+        <label style="display:block;font-size:9px;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:var(--text);margin-bottom:7px">Message</label>
+        <textarea placeholder="Parlez-nous de votre projet…" style="width:100%;padding:11px 0;font-family:'Open Sans',sans-serif;font-size:14px;font-weight:300;color:var(--brown);background:transparent;border:none;border-bottom:1.5px solid var(--sand);outline:none;resize:vertical;min-height:80px;transition:border-color .3s" onfocus="this.style.borderColor='#ff66c4'" onblur="this.style.borderColor='#eeddd6'"></textarea>
+      </div>
+      <button class="" style="width:100%;padding:16px;background:var(--brown);color:white;border:none;font-family:'Open Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;cursor:pointer;transition:all .3s" onmouseover="this.style.background='#ff66c4'" onmouseout="this.style.background='#572400'">Envoyer →</button>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER — Ribbit style ══ -->
+  <footer>
+    <!-- Grand nom centré -->
+    <div class="footer-big">
+      <div class="footer-mono-wrap">
+        <img src="./logo-removebg-preview.png" width="256" alt="" style="opacity: 0.5;">
+      </div>
+      <div class="footer-big-name">Maison Blondin</div>
+      <div class="footer-big-sub">Conciergerie · Ardèche · Département 07</div>
+
+      <div class="footer-contact">
+        <a href="tel:0670648664"><span class="dot"></span>06 70 64 86 64</a>
+        <a href="/cdn-cgi/l/email-protection#c4a9a5adb7abaaa6a8abaaa0adaa84ada7a8abb1a0eaa7aba9"><span class="dot"></span><span class="__cf_email__" data-cfemail="f09d9199839f9e929c9f9e94999eb099939c9f8594de939f9d">[email&#160;protected]</span></a>
+      </div>
+
+      <div class="footer-cta-wrap">
+        <a href="#contact" class="btn-fill">Prendre contact →</a>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bar">
+      <div class="footer-bar-links">
+        <a href="#">Mentions légales</a>
+        <a href="#">Confidentialité</a>
+        <a href="#">Cookies</a>
+      </div>
+      <div class="footer-socials">
+        <a href="#" class="footer-soc">ig</a>
+        <a href="#" class="footer-soc">fb</a>
+      </div>
+      <span class="footer-cr">© 2025 Maison Blondin — Tous droits réservés</span>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    /* ── Nav stuck ── */
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('stuck', scrollY > 60));
+
+    /* ── Menu mobile ── */
+    const burger = document.getElementById('burger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    let menuOpen = false;
+
+    function toggleMenu(force) {
+      menuOpen = force !== undefined ? force : !menuOpen;
+      burger.classList.toggle('open', menuOpen);
+      mobileMenu.classList.toggle('open', menuOpen);
+      burger.setAttribute('aria-expanded', menuOpen);
+      document.body.style.overflow = menuOpen ? 'hidden' : '';
+    }
+
+    burger.addEventListener('click', () => toggleMenu());
+    document.querySelectorAll('.mm-link').forEach(a => a.addEventListener('click', () => toggleMenu(false)));
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) toggleMenu(false); });
+
+    const revealEls = document.querySelectorAll('.,.,.');
+    // Déclencher immédiatement les éléments dans le viewport au chargement
+    function revealVisible() {
+      revealEls.forEach(el => {
+        const r = el.getBoundingClientRect();
+        if (r.top < window.innerHeight + 40) el.classList.add('in');
+      });
+    }
+    if ('IntersectionObserver' in window) {
+      const obs = new IntersectionObserver(entries => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); } });
+      }, { threshold: 0, rootMargin: '0px 0px 60px 0px' });
+      revealEls.forEach(el => obs.observe(el));
+    }
+    // Fallback : tout visible après 400ms + vérification immédiate au chargement
+    revealVisible();
+    window.addEventListener('scroll', revealVisible, { passive: true });
+    setTimeout(() => revealEls.forEach(el => el.classList.add('in')), 400);
+
+    /* ── Accordion ── */
+    function toggleAcc(hd) {
+      const item = hd.parentElement;
+      const wasOpen = item.classList.contains('open');
+      // Close all in same column
+      item.closest('.srv-acc').querySelectorAll('.srv-acc-item').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) item.classList.add('open');
+    }
+
+    /* ── Contact toggle style ── */
+    document.querySelectorAll('.cf-tog').forEach(t => {
+      t.addEventListener('click', () => {
+        const isOn = t.classList.contains('on');
+        if(isOn){ t.style.background='#572400'; t.

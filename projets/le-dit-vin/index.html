@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Dit Vin — Saint-Maurice</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Raleway:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burgundy: #6B1B2A;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A3;
+    --cream: #FAF6EE;
+    --warm-dark: #1C1209;
+    --text: #2A1F14;
+    --text-light: #7A6553;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Cormorant Garamond', serif; background: var(--cream); color: var(--text); overflow-x: hidden; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(28,18,9,0.93); backdrop-filter: blur(10px);
+    border-bottom: 1px solid rgba(201,168,76,0.18);
+    transition: padding 0.3s;
+  }
+  nav.scrolled { padding: 12px 60px; }
+  .nav-logo { font-family: 'Playfair Display', serif; font-size: 1.55rem; color: var(--gold); font-style: italic; line-height: 1; }
+  .nav-logo span { display: block; font-style: normal; font-family: 'Raleway', sans-serif; font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-top: 3px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { color: rgba(255,255,255,0.65); text-decoration: none; font-family: 'Raleway', sans-serif; font-size: 0.73rem; letter-spacing: 0.17em; text-transform: uppercase; transition: color 0.3s; }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta { background: var(--burgundy) !important; color: var(--gold-light) !important; padding: 9px 20px; }
+  .nav-cta:hover { background: var(--gold) !important; color: var(--warm-dark) !important; }
+
+  /* ── HERO ── */
+  #hero {
+    height: 100vh; position: relative;
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
+  }
+  .hero-photo {
+    position: absolute; inset: 0;
+    background-image: url('https://picsum.photos/seed/bistrot-paris/1600/900');
+    background-size: cover; background-position: center 40%;
+    transform: scale(1.06);
+    transition: transform 10s ease;
+    filter: brightness(0.28) saturate(0.7);
+  }
+  #hero:hover .hero-photo { transform: scale(1.1); }
+  .hero-gradient { position: absolute; inset: 0; background: linear-gradient(170deg, rgba(28,18,9,0.45) 0%, rgba(107,27,42,0.22) 50%, rgba(28,18,9,0.65) 100%); }
+  .hero-content { position: relative; z-index: 2; text-align: center; animation: fadeUp 1.2s ease both; }
+  .hero-eyebrow { font-family: 'Raleway', sans-serif; font-size: 0.7rem; letter-spacing: 0.38em; text-transform: uppercase; color: var(--gold); margin-bottom: 22px; }
+  .hero-title { font-family: 'Playfair Display', serif; font-size: clamp(3.8rem,9vw,8rem); color: #fff; line-height: 0.88; }
+  .hero-title em { display: block; font-style: italic; color: var(--gold); font-size: clamp(4.2rem,10vw,9rem); }
+  .hero-sub { margin: 18px 0 48px; font-size: 1.25rem; font-style: italic; font-weight: 300; color: rgba(255,255,255,0.55); }
+  .hero-btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+  .btn-gold { background: var(--gold); color: var(--warm-dark); padding: 14px 36px; font-family: 'Raleway', sans-serif; font-size: 0.76rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; border: none; cursor: pointer; transition: all 0.3s; display: inline-block; }
+  .btn-gold:hover { background: #fff; transform: translateY(-2px); }
+  .btn-outline { border: 1px solid rgba(255,255,255,0.32); color: rgba(255,255,255,0.82); padding: 14px 36px; font-family: 'Raleway', sans-serif; font-size: 0.76rem; letter-spacing: 0.2em; text-transform: uppercase; text-decoration: none; transition: all 0.3s; display: inline-block; background: transparent; cursor: pointer; }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .hero-scroll { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.28); font-family: 'Raleway', sans-serif; font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase; display: flex; flex-direction: column; align-items: center; gap: 8px; animation: scrollBounce 2.3s infinite; }
+  .hero-scroll::after { content: ''; width: 1px; height: 38px; background: linear-gradient(to bottom, rgba(201,168,76,0.55), transparent); }
+
+  /* ── SECTIONS ── */
+  section { padding: 100px 60px; }
+  .eyebrow { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; display: flex; align-items: center; gap: 12px; }
+  .eyebrow::before { content: ''; width: 28px; height: 1px; background: var(--gold); }
+  h2.stitle { font-family: 'Playfair Display', serif; font-size: clamp(2rem,4vw,3.2rem); line-height: 1.1; margin-bottom: 22px; }
+
+  /* ── ABOUT ── */
+  #about { background: var(--warm-dark); color: #fff; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  #about .stitle { color: #fff; }
+  #about p { font-size: 1.12rem; line-height: 1.9; color: rgba(255,255,255,0.6); font-weight: 300; margin-bottom: 18px; }
+  .stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 28px; margin-top: 44px; border-top: 1px solid rgba(201,168,76,0.18); padding-top: 36px; }
+  .stat-n { font-family: 'Playfair Display', serif; font-size: 2.6rem; color: var(--gold); font-style: italic; line-height: 1; }
+  .stat-l { font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-top: 4px; }
+
+  /* photos empilées */
+  .about-imgs { position: relative; height: 540px; }
+  .aimg { position: absolute; overflow: hidden; }
+  .aimg img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.6s ease; }
+  .aimg:hover img { transform: scale(1.05); }
+  .aimg.main { width: 78%; height: 400px; top: 0; right: 0; border: 2px solid rgba(201,168,76,0.15); }
+  .aimg.accent { width: 54%; height: 200px; bottom: 0; left: 0; border: 2px solid rgba(201,168,76,0.15); }
+  .img-caption { position: absolute; bottom: 0; left: 0; right: 0; padding: 10px 14px; background: linear-gradient(to top, rgba(28,18,9,0.88), transparent); font-family: 'Raleway', sans-serif; font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); }
+
+  /* ── PLATS ── */
+  #plats { background: var(--cream); }
+  .plats-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 22px; margin-top: 44px; }
+  .plat-card { position: relative; overflow: hidden; cursor: pointer; }
+  .plat-card img { width: 100%; height: 295px; object-fit: cover; display: block; transition: transform 0.5s ease, filter 0.4s; filter: brightness(0.86); }
+  .plat-card:hover img { transform: scale(1.06); filter: brightness(1); }
+  .plat-overlay { position: absolute; bottom: 0; left: 0; right: 0; padding: 22px 20px; background: linear-gradient(to top, rgba(10,4,2,0.9) 0%, rgba(10,4,2,0.2) 70%, transparent); }
+  .plat-name { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: #fff; font-style: italic; display: block; margin-bottom: 3px; }
+  .plat-sub { font-family: 'Raleway', sans-serif; font-size: 0.66rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+  .plat-badge { position: absolute; top: 13px; right: 13px; background: var(--burgundy); color: var(--gold-light); font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; padding: 5px 12px; }
+
+  /* ── MENU ONGLETS ── */
+  #menu { background: #F4EFE6; }
+  .tabs { display: flex; border-bottom: 1px solid rgba(201,168,76,0.28); margin: 36px 0 54px; overflow-x: auto; }
+  .tab { padding: 13px 26px; background: none; border: none; cursor: pointer; font-family: 'Raleway', sans-serif; font-size: 0.72rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-light); border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.3s; white-space: nowrap; }
+  .tab.on { color: var(--burgundy); border-bottom-color: var(--burgundy); }
+  .tab:hover { color: var(--burgundy); }
+  .mpanel { display: none; }
+  .mpanel.on { display: grid; grid-template-columns: 1fr 1fr; gap: 0 72px; }
+  .mcat { margin-bottom: 42px; }
+  .mcat-t { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--burgundy); margin-bottom: 20px; padding-bottom: 9px; border-bottom: 1px solid rgba(107,27,42,0.1); }
+  .mrow { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 0; border-bottom: 1px dotted rgba(0,0,0,0.07); transition: padding-left 0.2s; }
+  .mrow:hover { padding-left: 7px; }
+  .mrow-info { flex: 1; }
+  .mrow-name { font-size: 1.02rem; color: var(--text); display: block; margin-bottom: 2px; }
+  .mrow-desc { font-size: 0.83rem; font-style: italic; color: var(--text-light); }
+  .mrow-price { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--burgundy); font-style: italic; margin-left: 18px; white-space: nowrap; }
+  .mnote { grid-column: 1/-1; background: rgba(107,27,42,0.04); border-left: 3px solid var(--burgundy); padding: 18px 22px; font-style: italic; font-size: 0.93rem; color: var(--text-light); }
+
+  /* ── AMBIANCE MOSAÏQUE ── */
+  #ambiance { background: var(--warm-dark); color: #fff; padding-bottom: 0; }
+  .amb-header { text-align: center; margin-bottom: 52px; }
+  .amb-header .eyebrow { justify-content: center; }
+  .amb-header .eyebrow::before { display: none; }
+  .amb-header .stitle { color: #fff; max-width: 560px; margin: 0 auto 14px; }
+  .amb-header p { font-style: italic; color: rgba(255,255,255,0.45); font-size: 1.1rem; }
+  .mosaic { display: grid; grid-template-columns: 2fr 1fr 1fr; grid-template-rows: 280px 280px; gap: 3px; }
+  .mtile { overflow: hidden; position: relative; }
+  .mtile img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.68) saturate(0.8); transition: filter 0.45s, transform 0.55s; }
+  .mtile:hover img { filter: brightness(0.88) saturate(1.1); transform: scale(1.05); }
+  .mtile:first-child { grid-row: 1/3; }
+  .mtile-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 18px 20px; background: linear-gradient(to top, rgba(28,18,9,0.82), transparent); font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); opacity: 0; transform: translateY(8px); transition: all 0.35s; }
+  .mtile:hover .mtile-label { opacity: 1; transform: translateY(0); }
+
+  /* ── HORAIRES ── */
+  #horaires { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+  .hrow { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+  .hday { font-family: 'Raleway', sans-serif; font-size: 0.76rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; }
+  .htime { font-size: 0.98rem; font-style: italic; color: var(--text-light); }
+  .hclosed { color: var(--burgundy); }
+  .badge { background: var(--burgundy); color: #fff; font-family: 'Raleway', sans-serif; font-size: 0.56rem; letter-spacing: 0.09em; text-transform: uppercase; padding: 3px 7px; margin-left: 7px; vertical-align: middle; }
+  .contact-box { background: var(--warm-dark); color: #fff; padding: 44px; }
+  .citem { display: flex; gap: 18px; align-items: flex-start; margin-bottom: 28px; }
+  .cicon { width: 38px; height: 38px; border: 1px solid rgba(201,168,76,0.28); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--gold); font-size: 1rem; }
+  .clabel { font-family: 'Raleway', sans-serif; font-size: 0.63rem; letter-spacing: 0.17em; text-transform: uppercase; color: rgba(255,255,255,0.36); margin-bottom: 4px; }
+  .cval { font-size: 1rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .cval a { color: var(--gold); text-decoration: none; }
+  .cval a:hover { text-decoration: underline; }
+
+  /* map photo */
+  .map-photo { position: relative; margin-top: 22px; overflow: hidden; height: 165px; cursor: pointer; }
+  .map-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center; filter: saturate(0.55) brightness(0.78); transition: all 0.4s; display: block; }
+  .map-photo:hover img { filter: saturate(1) brightness(1); }
+  .map-photo-label { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: 'Raleway', sans-serif; font-size: 0.68rem; letter-spacing: 0.22em; text-transform: uppercase; color: rgba(255,255,255,0); transition: color 0.4s; }
+  .map-photo:hover .map-photo-label { color: var(--gold); }
+
+  /* ── AVIS ── */
+  #avis { background: var(--cream); }
+  .reviews { display: grid; grid-template-columns: repeat(3,1fr); gap: 26px; margin-top: 44px; }
+  .rcard { background: #fff; padding: 34px; border: 1px solid rgba(0,0,0,0.055); position: relative; transition: transform 0.3s, box-shadow 0.3s; }
+  .rcard:hover { transform: translateY(-4px); box-shadow: 0 18px 38px rgba(0,0,0,0.08); }
+  .rstars { color: var(--gold); font-size: 0.88rem; letter-spacing: 2px; margin-bottom: 14px; }
+  .rtext { font-size: 0.98rem; line-height: 1.82; font-style: italic; font-weight: 300; margin-bottom: 22px; }
+  .rauthor { font-family: 'Raleway', sans-serif; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-light); display: flex; justify-content: space-between; align-items: center; }
+  .rsource { background: rgba(107,27,42,0.07); padding: 3px 8px; font-size: 0.62rem; color: var(--burgundy); }
+  .rqmark { position: absolute; top: 18px; right: 22px; font-family: 'Playfair Display', serif; font-size: 4.5rem; line-height: 1; color: rgba(107,27,42,0.055); font-style: italic; pointer-events: none; }
+
+  /* ── RÉSERVATION ── */
+  #resa { background: var(--burgundy); color: #fff; text-align: center; }
+  #resa .eyebrow { justify-content: center; color: var(--gold-light); }
+  #resa .eyebrow::before { background: var(--gold-light); }
+  #resa .stitle { color: #fff; max-width: 680px; margin: 0 auto 12px; }
+  #resa > p { font-style: italic; color: rgba(255,255,255,0.56); font-size: 1.1rem; margin-bottom: 46px; }
+  .rform { display: grid; grid-template-columns: repeat(4,1fr) auto; gap: 10px; max-width: 900px; margin: 0 auto; align-items: end; }
+  .fg { text-align: left; }
+  .fl { font-family: 'Raleway', sans-serif; font-size: 0.62rem; letter-spacing: 0.17em; text-transform: uppercase; color: rgba(255,255,255,0.46); display: block; margin-bottom: 7px; }
+  .fi, .fs { width: 100%; padding: 13px 14px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: 'Cormorant Garamond', serif; font-size: 0.98rem; outline: none; -webkit-appearance: none; transition: border-color 0.3s; }
+  .fi:focus, .fs:focus { border-color: var(--gold-light); background: rgba(255,255,255,0.12); }
+  .fi::placeholder { color: rgba(255,255,255,0.28); }
+  .fs option { background: #4A1019; }
+  .btn-resa { background: var(--gold); color: var(--warm-dark); border: none; cursor: pointer; padding: 13px 24px; font-family: 'Raleway', sans-serif; font-size: 0.74rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; height: 48px; white-space: nowrap; transition: all 0.3s; }
+  .btn-resa:hover { background: #fff; }
+
+  /* ── FOOTER ── */
+  footer { background: var(--warm-dark); color: rgba(255,255,255,0.42); padding: 58px 60px; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 56px; border-top: 1px solid rgba(201,168,76,0.09); }
+  .flogo { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--gold); font-style: italic; display: block; margin-bottom: 12px; }
+  footer p { font-size: 0.88rem; line-height: 1.8; font-style: italic; max-width: 270px; }
+  .ftitle { font-family: 'Raleway', sans-serif; font-size: 0.65rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  footer ul { list-style: none; }
+  footer li { margin-bottom: 9px; }
+  footer a { color: rgba(255,255,255,0.4); text-decoration: none; font-size: 0.88rem; transition: color 0.3s; }
+  footer a:hover { color: var(--gold); }
+  .fsocials { display: flex; gap: 9px; margin-top: 22px; }
+  .fsoc { width: 36px; height: 36px; border: 1px solid rgba(255,255,255,0.13); display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.42); font-size: 0.82rem; text-decoration: none; font-family: 'Raleway', sans-serif; transition: all 0.3s; }
+  .fsoc:hover { border-color: var(--gold); color: var(--gold); }
+  .fbot { grid-column: 1/-1; display: flex; justify-content: space-between; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.055); font-size: 0.76rem; }
+
+  /* ── NOTIF ── */
+  .notif { position: fixed; bottom: 28px; right: 28px; z-index: 999; background: var(--warm-dark); color: #fff; padding: 16px 22px; border-left: 3px solid var(--gold); font-size: 0.93rem; display: none; max-width: 330px; line-height: 1.65; white-space: pre-line; animation: slideIn 0.3s ease; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes scrollBounce { 0%,100% { transform:translateX(-50%) translateY(0); } 50% { transform:translateX(-50%) translateY(7px); } }
+  @keyframes slideIn { from { transform:translateX(90px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+  .reveal { opacity:0; transform:translateY(20px); transition:opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity:1; transform:translateY(0); }
+
+  @media (max-width:900px) {
+    nav { padding:15px 22px; } .nav-links { display:none; }
+    section { padding:65px 22px; }
+    #about, #horaires { grid-template-columns:1fr; gap:38px; }
+    .about-imgs { display:none; }
+    .plats-grid, .reviews { grid-template-columns:1fr; }
+    .mosaic { grid-template-columns:1fr 1fr; grid-template-rows:repeat(3,190px); }
+    .mtile:first-child { grid-row:auto; grid-column:1/3; }
+    .mpanel.on { grid-template-columns:1fr; }
+    .rform { grid-template-columns:1fr 1fr; }
+    footer { grid-template-columns:1fr; gap:32px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ NAV ═══ -->
+<nav id="nav">
+  <div class="nav-logo">Le Dit Vin <span>Saint-Maurice · Val-de-Marne</span></div>
+  <ul class="nav-links">
+    <li><a href="#about">Notre Histoire</a></li>
+    <li><a href="#plats">La Carte</a></li>
+    <li><a href="#ambiance">Ambiance</a></li>
+    <li><a href="#horaires">Horaires</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#resa" class="nav-cta">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ HERO ═══ -->
+<section id="hero">
+  <!-- Café parisien / brasserie - seed stable Picsum -->
+  <div class="hero-photo" style="background-image:url('https://leditvinresto.com/wp-content/uploads/2024/05/IMG_3951-2-scaled.jpg');"></div>
+  <div class="hero-gradient"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Brasserie · Cuisine du Marché · Cave à Vins</p>
+    <h1 class="hero-title">Le <em>Dit Vin</em></h1>
+    <p class="hero-sub">Cuisine du terroir, produits frais, âme de quartier</p>
+    <div class="hero-btns">
+      <a href="#plats" class="btn-gold">Découvrir la carte</a>
+      <a href="#resa" class="btn-outline">Réserver une table</a>
+    </div>
+  </div>
+  <div class="hero-scroll">Défiler</div>
+</section>
+
+<!-- ═══ ABOUT ═══ -->
+<section id="about">
+  <div>
+    <p class="eyebrow">Notre Histoire</p>
+    <h2 class="stitle">Un bistrot comme on les aime</h2>
+    <p>Le Dit Vin, c'est l'art de la table dans sa plus belle simplicité : une cuisine faite maison avec des ingrédients frais et de saison, une cave soigneusement sélectionnée, et une atmosphère conviviale qui vous invite à rester.</p>
+    <p>Chaque jour, notre chef compose un menu renouvelé — entrecôte, magret de canard, couscous du mercredi, tajine, et bien d'autres pépites de la cuisine franco-méditerranéenne.</p>
+    <div class="stats">
+      <div><div class="stat-n">4,7</div><div class="stat-l">Note Google</div></div>
+      <div><div class="stat-n">2020</div><div class="stat-l">Ouverture</div></div>
+      <div><div class="stat-n">100%</div><div class="stat-l">Fait Maison</div></div>
+    </div>
+  </div>
+  <div class="about-imgs">
+    <!-- intérieur restaurant chaleureux -->
+    <div class="aimg main">
+      <img src="https://www.pagesjaunes.fr/media/newdam/eb/f0/2e/00/00/57/00/6f/b6/19/6448ebf02e000057006fb619/6448ebf02e00005c2e6fb61c.jpg" alt="Salle du restaurant Le Dit Vin">
+      <div class="img-caption">La Salle</div>
+    </div>
+    <!-- verre de vin / cave -->
+    <div class="aimg accent">
+      <img src="https://onthegrid.city/imager/s3_amazonaws_com/onthegrid.city/assets/grid/paris/south-pigalle/le-dit-vin/E64A9862_299006722e285f47655d17d1c9136337.jpg" alt="Notre cave à vins">
+      <div class="img-caption">Notre Cave</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PLATS EN VEDETTE ═══ -->
+<section id="plats">
+  <p class="eyebrow">Nos Incontournables</p>
+  <h2 class="stitle">Ce qui fait notre réputation</h2>
+  <p style="color:var(--text-light);font-style:italic;font-size:1.03rem;margin-top:-8px;">Cuisine renouvelée chaque jour · Produits frais du marché</p>
+
+  <div class="plats-grid">
+
+    <div class="plat-card reveal">
+      <img src="https://img.restaurantguru.com/re4d-Le-Dit-Vin-meals-2022-09-3.jpg" alt="Entrecôte maison">
+      <div class="plat-badge">19 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Entrecôte maison</span>
+        <span class="plat-sub">Frites fraîches · Sauce au choix</span>
+      </div>
+    </div>
+
+    <div class="plat-card reveal">
+      <img src="https://halalfrais.fr/cdn/shop/articles/Recette-Couscous-Royal_55a1391e-ad15-4236-a18e-0ffe1c2b0152_1400x.jpg?v=1763382764" alt="Couscous royal">
+      <div class="plat-badge">19 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Couscous Royal ★</span>
+        <span class="plat-sub">Agneau · Merguez · Poulet · Mercredi</span>
+      </div>
+    </div>
+
+    <div class="plat-card reveal">
+      <img src="https://www.abeilles-environnement.com/wp-content/uploads/2024/10/magret-de-canard-et-miel-au-four.webp" alt="Magret de canard">
+      <div class="plat-badge">21 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Magret de Canard</span>
+        <span class="plat-sub">Réduction miel · Légumes de saison</span>
+      </div>
+    </div>
+
+    <div class="plat-card reveal">
+      <img src="https://www.arts-et-gastronomie.com/wp-content/uploads/2021/07/tajine-agneau-country-club-600x600.webp" alt="Tajine agneau">
+      <div class="plat-badge">18 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Tajine Agneau Pruneaux</span>
+        <span class="plat-sub">Amandes grillées · Semoule fine</span>
+      </div>
+    </div>
+
+    <div class="plat-card reveal">
+      <img src="https://www.recettesetcabas.com/data/recettes/2379-1-fiche@67C71C9C-hamburger-a-la-tomme-de-savoie-bacon-et-salade.webp" alt="Hamburger maison">
+      <div class="plat-badge">16 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Hamburger Maison</span>
+        <span class="plat-sub">Pain brioche · Frites fraîches</span>
+      </div>
+    </div>
+
+    <div class="plat-card reveal">
+      <img src="https://www.markal.fr/application/files/medias_markal/recettes/988-recette-creme-brulee.jpg" alt="Crème brûlée">
+      <div class="plat-badge">7 €</div>
+      <div class="plat-overlay">
+        <span class="plat-name">Crème Brûlée Vanille</span>
+        <span class="plat-sub">Caramel de canne · Fait maison</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══ MENU COMPLET ═══ -->
+<section id="menu">
+  <p class="eyebrow">La Carte Complète</p>
+  <h2 class="stitle">Tous nos plats</h2>
+  <div class="tabs">
+    <button class="tab on" onclick="setTab('e',this)">Entrées</button>
+    <button class="tab" onclick="setTab('p',this)">Plats</button>
+    <button class="tab" onclick="setTab('d',this)">Desserts</button>
+    <button class="tab" onclick="setTab('b',this)">Vins & Boissons</button>
+    <button class="tab" onclick="setTab('f',this)">Formules</button>
+  </div>
+
+  <div class="mpanel on" id="tp-e">
+    <div class="mcat">
+      <div class="mcat-t">Entrées du moment</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Salade niçoise maison</span><span class="mrow-desc">Thon, œuf, tomates cerises, olives, anchois</span></div><span class="mrow-price">9 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Velouté de saison</span><span class="mrow-desc">Crème fraîche, croûtons grillés</span></div><span class="mrow-price">7 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Œuf poché, lardons croustillants</span><span class="mrow-desc">Salade frisée, vinaigrette moutardée</span></div><span class="mrow-price">8 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Terrine du chef</span><span class="mrow-desc">Cornichons, pain de campagne grillé</span></div><span class="mrow-price">8 €</span></div>
+    </div>
+    <div class="mcat">
+      <div class="mcat-t">À partager</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Planche charcuterie-fromages</span><span class="mrow-desc">Sélection du marché, confiture de figues</span></div><span class="mrow-price">16 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Crudités maison</span><span class="mrow-desc">Légumes du jour, sauce verte ou aïoli</span></div><span class="mrow-price">7 €</span></div>
+    </div>
+    <p class="mnote">🌿 Les entrées varient selon les arrivages. Demandez les suggestions du jour.</p>
+  </div>
+
+  <div class="mpanel" id="tp-p">
+    <div class="mcat">
+      <div class="mcat-t">Viandes & Grillades</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Entrecôte maison</span><span class="mrow-desc">Frites fraîches, sauce au choix</span></div><span class="mrow-price">19 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Magret de canard</span><span class="mrow-desc">Réduction au miel, légumes de saison</span></div><span class="mrow-price">21 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Hamburger maison</span><span class="mrow-desc">Pain brioche, viande hachée fraîche, frites</span></div><span class="mrow-price">16 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Osso-buco maison</span><span class="mrow-desc">Risotto crémeux, gremolata</span></div><span class="mrow-price">20 €</span></div>
+    </div>
+    <div class="mcat">
+      <div class="mcat-t">Spécialités Méditerranéennes</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Couscous royal ★ Mercredi</span><span class="mrow-desc">Agneau, merguez, poulet, légumes</span></div><span class="mrow-price">19 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Tajine agneau pruneaux</span><span class="mrow-desc">Amandes grillées, semoule fine</span></div><span class="mrow-price">18 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Tajine poulet-artichauts</span><span class="mrow-desc">Citron confit, olives vertes</span></div><span class="mrow-price">17 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Porc aux coquillages ★ Mardi</span><span class="mrow-desc">Moules, palourdes, chorizo</span></div><span class="mrow-price">18 €</span></div>
+    </div>
+  </div>
+
+  <div class="mpanel" id="tp-d">
+    <div class="mcat">
+      <div class="mcat-t">Desserts maison</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Crème brûlée vanille</span><span class="mrow-desc">Caramel de canne blond</span></div><span class="mrow-price">7 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Fondant au chocolat</span><span class="mrow-desc">Cœur coulant, glace vanille</span></div><span class="mrow-price">8 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Parfait glacé</span><span class="mrow-desc">Coulis de fruits rouges</span></div><span class="mrow-price">7 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Tarte du jour</span><span class="mrow-desc">Selon la saison</span></div><span class="mrow-price">6 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Café gourmand</span><span class="mrow-desc">Espresso, mini-desserts assortis</span></div><span class="mrow-price">7 €</span></div>
+    </div>
+    <div class="mcat">
+      <div class="mcat-t">Boissons chaudes</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Café / Allongé</span></div><span class="mrow-price">2 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Thé / Infusion</span></div><span class="mrow-price">2,50 €</span></div>
+    </div>
+  </div>
+
+  <div class="mpanel" id="tp-b">
+    <div class="mcat">
+      <div class="mcat-t">Vins au verre</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Côtes du Ventoux Rouge</span><span class="mrow-desc">Grenache, Syrah — Vallée du Rhône</span></div><span class="mrow-price">5 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Cuvée Sudiste Rouge</span><span class="mrow-desc">Languedoc — Recommandé par le patron</span></div><span class="mrow-price">5 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Tlemcen Rouge</span><span class="mrow-desc">Algérie — Idéal avec les tajines</span></div><span class="mrow-price">5 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Blanc sec du moment</span><span class="mrow-desc">Sélection hebdomadaire</span></div><span class="mrow-price">5 €</span></div>
+    </div>
+    <div class="mcat">
+      <div class="mcat-t">Bières & Softs</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Bière pression — Demi / Pinte</span></div><span class="mrow-price">3 / 5 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Soft drinks</span><span class="mrow-desc">Coca, eau, jus de fruits</span></div><span class="mrow-price">3 €</span></div>
+    </div>
+  </div>
+
+  <div class="mpanel" id="tp-f">
+    <div class="mcat">
+      <div class="mcat-t">Formule Déjeuner</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Entrée + Plat</span></div><span class="mrow-price">13,50 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Plat + Dessert</span></div><span class="mrow-price">13,50 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Entrée + Plat + Dessert</span></div><span class="mrow-price">17 €</span></div>
+    </div>
+    <div class="mcat">
+      <div class="mcat-t">Formule Soir</div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Menu Dégustation</span><span class="mrow-desc">Entrée + plat + dessert + verre de vin</span></div><span class="mrow-price">25 €</span></div>
+      <div class="mrow"><div class="mrow-info"><span class="mrow-name">Menu Affaires</span><span class="mrow-desc">Sur réservation — café offert</span></div><span class="mrow-price">30 €</span></div>
+    </div>
+    <p class="mnote">🍷 Carafe d'eau incluse. Menu renouvelé chaque midi selon arrivages.</p>
+  </div>
+</section>
+
+<!-- ═══ AMBIANCE ═══ -->
+<section id="ambiance">
+  <div class="amb-header">
+    <p class="eyebrow">L'Ambiance</p>
+    <h2 class="stitle">Musique, convivialité & bonne humeur</h2>
+    <p>Une salle chaleureuse, une terrasse en saison, des repas qui deviennent des souvenirs.</p>
+  </div>
+  <div class="mosaic">
+    <!-- grande photo gauche : salle de restaurant -->
+    <div class="mtile">
+      <img src="https://img.restaurantguru.com/rd01-design-Le-Dit-Vin-2022-09-4.jpg" alt="La salle">
+      <div class="mtile-label">La Salle</div>
+    </div>
+    <!-- vin rouge -->
+    <div class="mtile">
+      <img src="https://www.vins-de-sicile.com/wp-content/uploads/2011/11/temp%C3%A9rature-conservation-vin.jpg" alt="Notre cave">
+      <div class="mtile-label">Notre Cave</div>
+    </div>
+    <!-- dessert -->
+    <div class="mtile">
+      <img src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/1d/f8/d7/4a/excellent-super-cuisinier.jpg?w=600&h=-1&s=1" alt="Nos desserts">
+      <div class="mtile-label">Nos Desserts</div>
+    </div>
+    <!-- viande grillée -->
+    <div class="mtile">
+      <img src="https://resize.elle.fr/original/var/plain_site/storage/images/elle-a-table/les-dossiers-de-la-redaction/dossier-de-la-redac/menu-gastronomique/88780110-1-fre-FR/Comment-faire-un-menu-gastronomique.jpg" alt="Nos viandes">
+      <div class="mtile-label">Nos Viandes</div>
+    </div>
+    <!-- terrasse -->
+    <div class="mtile">
+      <img src="https://www.pagesjaunes.fr/media/newdam/eb/f1/2e/00/00/49/00/6f/b6/21/6448ebf12e000049006fb621/6448ebf12e0000622e6fb623.jpg" alt="La terrasse">
+      <div class="mtile-label">La Terrasse</div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ HORAIRES ═══ -->
+<section id="horaires">
+  <div>
+    <p class="eyebrow">Horaires & Accès</p>
+    <h2 class="stitle">Quand nous retrouver ?</h2>
+    <div style="margin-top:36px;">
+      <div class="hrow"><span class="hday">Lundi</span><span class="htime">10h – Minuit <span class="badge">Cuisine 12h–15h / 19h–22h30</span></span></div>
+      <div class="hrow"><span class="hday">Mardi</span><span class="htime">10h – Minuit <span class="badge">Porc aux coquillages ★</span></span></div>
+      <div class="hrow"><span class="hday">Mercredi</span><span class="htime">10h – Minuit <span class="badge">Couscous Royal ★</span></span></div>
+      <div class="hrow"><span class="hday">Jeudi</span><span class="htime">10h – Minuit</span></div>
+      <div class="hrow"><span class="hday">Vendredi</span><span class="htime">10h – Minuit <span class="badge">Morue ★</span></span></div>
+      <div class="hrow"><span class="hday">Samedi</span><span class="htime">18h – Minuit</span></div>
+      <div class="hrow"><span class="hday">Dimanche</span><span class="htime hclosed">Fermé</span></div>
+    </div>
+  </div>
+  <div>
+    <div class="contact-box">
+      <div class="citem"><div class="cicon">📍</div><div><div class="clabel">Adresse</div><div class="cval">272 Rue du Maréchal Leclerc<br>94410 Saint-Maurice</div></div></div>
+      <div class="citem"><div class="cicon">📞</div><div><div class="clabel">Téléphone</div><div class="cval"><a href="tel:0148774483">01 48 77 44 83</a></div></div></div>
+      <div class="citem"><div class="cicon">🚆</div><div><div class="clabel">Transports</div><div class="cval">RER A — Joinville-le-Pont (632 m)<br>Parking Montgolfier (242 m)</div></div></div>
+      <div class="citem"><div class="cicon">📘</div><div><div class="clabel">Facebook</div><div class="cval"><a href="https://www.facebook.com/ledit.vin.7" target="_blank">Le Dit Vin · Page officielle</a></div></div></div>
+      <!-- photo aérienne ville -->
+      <div class="map-photo" onclick="window.open('https://maps.google.com/?q=272+Rue+Maréchal+Leclerc+94410+Saint-Maurice','_blank')">
+        <img src="https://picsum.photos/seed/parismapaerial/700/300" alt="Localisation">
+        <div class="map-photo-label">🗺 Voir sur Google Maps</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ AVIS ═══ -->
+<section id="avis">
+  <p class="eyebrow">Ce qu'ils en disent</p>
+  <h2 class="stitle">Ils nous ont fait confiance</h2>
+  <div class="reviews">
+    <div class="rcard reveal">
+      <div class="rstars">★★★★★</div>
+      <p class="rtext">Une cuisine savoureuse, un service efficace et une ambiance musicale qui rend l'expérience unique. On y revient les yeux fermés.</p>
+      <div class="rauthor"><span>Gabriel D. — 2025</span><span class="rsource">Google</span></div>
+      <div class="rqmark">"</div>
+    </div>
+    <div class="rcard reveal">
+      <div class="rstars">★★★★★</div>
+      <p class="rtext">Accueil chaleureux, patron au top, menu renouvelé chaque jour. Le meilleur rapport qualité-prix de Saint-Maurice, sans hésitation.</p>
+      <div class="rauthor"><span>Sandrine V. — 2025</span><span class="rsource">Google</span></div>
+      <div class="rqmark">"</div>
+    </div>
+    <div class="rcard reveal">
+      <div class="rstars">★★★★★</div>
+      <p class="rtext">Loin du tourisme de masse — just a warm French bistrot with attentive service. The chef asked how we wanted our steak. That says it all.</p>
+      <div class="rauthor"><span>Visiteur Néerlandais</span><span class="rsource">Restaurant Guru</span></div>
+      <div class="rqmark">"</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:44px;">
+    <p style="font-style:italic;color:var(--text-light);margin-bottom:18px;font-size:0.98rem;">Note moyenne 4,7/5 · Plus de 178 avis</p>
+    <a href="https://fr.restaurantguru.com/Le-Dit-Vin-Saint-Maurice-Ile-de-France" target="_blank" class="btn-gold" style="text-decoration:none;">Voir tous les avis</a>
+  </div>
+</section>
+
+<!-- ═══ RÉSERVATION ═══ -->
+<section id="resa">
+  <p class="eyebrow">Réservation</p>
+  <h2 class="stitle">Réservez votre table</h2>
+  <p>Confirmation immédiate · Service midi et soir · Du lundi au samedi</p>
+  <div class="rform">
+    <div class="fg"><label class="fl">Votre nom</label><input type="text" class="fi" id="rName" placeholder="Marie Dupont"></div>
+    <div class="fg"><label class="fl">Date</label><input type="date" class="fi" id="rDate"></div>
+    <div class="fg"><label class="fl">Heure</label>
+      <select class="fs" id="rTime">
+        <option>12h00</option><option>12h30</option><option>13h00</option>
+        <option>19h00</option><option>19h30</option><option>20h00</option><option>20h30</option><option>21h00</option>
+      </select>
+    </div>
+    <div class="fg"><label class="fl">Couverts</label>
+      <select class="fs" id="rCovers">
+        <option>1 personne</option><option>2 personnes</option><option>3 personnes</option>
+        <option>4 personnes</option><option>5 personnes</option><option>6+ personnes</option>
+      </select>
+    </div>
+    <button class="btn-resa" onclick="doResa()">Réserver →</button>
+  </div>
+  <p style="margin-top:26px;font-size:0.83rem;color:rgba(255,255,255,0.36);font-style:italic;">
+    Ou appelez-nous directement : <a href="tel:0148774483" style="color:var(--gold-light);">01 48 77 44 83</a>
+  </p>
+</section>
+
+<!-- ═══ FOOTER ═══ -->
+<footer>
+  <div>
+    <span class="flogo">Le Dit Vin</span>
+    <p>Brasserie-restaurant à Saint-Maurice depuis 2020. Cuisine du marché, vins soigneusement sélectionnés, et une ambiance qui vous fait revenir.</p>
+    <div class="fsocials">
+      <a href="https://www.facebook.com/ledit.vin.7" target="_blank" class="fsoc">f</a>
+      <a href="#" class="fsoc">★</a>
+    </div>
+  </div>
+  <div>
+    <div class="ftitle">Navigation</div>
+    <ul>
+      <li><a href="#about">Notre Histoire</a></li>
+      <li><a href="#plats">La Carte</a></li>
+      <li><a href="#ambiance">L'Ambiance</a></li>
+      <li><a href="#horaires">Horaires</a></li>
+      <li><a href="#avis">Avis Clients</a></li>
+      <li><a href="#resa">Réservation</a></li>
+    </ul>
+  </div>
+  <div>
+    <div class="ftitle">Infos Pratiques</div>
+    <ul>
+      <li><a href="#">272 Rue du Maréchal Leclerc</a></li>
+      <li><a href="#">94410 Saint-Maurice</a></li>
+      <li><a href="tel:0148774483">01 48 77 44 83</a></li>
+      <li><a href="#">Privatisation de salle</a></li>
+      <li><a href="#">Menu du jour</a></li>
+    </ul>
+  </div>
+  <div class="fbot">
+    <span>© 2025 Le Dit Vin · Saint-Maurice · Val-de-Marne</span>
+    <span style="color:rgba(255,255,255,0.2);">Maquette fonctionnelle</span>
+  </div>
+</footer>
+
+<div class="notif" id="notif"></div>
+
+<script>
+  /* Nav scroll */
+  window.addEventListener('scroll', () => {
+    document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  /* Date min = aujourd'hui */
+  const t = new Date().toISOString().split('T')[0];
+  document.getElementById('rDate').min = t;
+  document.getElementById('rDate').value = t;
+
+  /* Onglets menu */
+  const tabMap = { e:'tp-e', p:'tp-p', d:'tp-d', b:'tp-b', f:'tp-f' };
+  function setTab(key, btn) {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('on'));
+    document.querySelectorAll('.mpanel').forEach(p => p.classList.remove('on'));
+    btn.classList.add('on');
+    document.getElementById(tabMap[key]).classList.add('on');
+  }
+
+  /* Réservation */
+  function doResa() {
+    const name = document.getElementById('rName').value.trim();
+    const date = document.getElementById('rDate').value;
+    const time = document.getElementById('rTime').value;
+    const covers = document.getElementById('rCovers').value;
+    if (!name) { showNotif('⚠️ Veuillez entrer votre nom.'); return; }
+    const d = new Date(date + 'T12:00:00');
+    const fmt = d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    showNotif('✅ Table réservée !\n' + name + '\n' + fmt + ' à ' + time + '\n' + covers);
+  }
+
+  function showNotif(msg) {
+    const n = document.getElementById('notif');
+    n.innerText = msg; n.style.display = 'block';
+    setTimeout(() => n.style.display = 'none', 5000);
+  }
+
+  /* Scroll reveal */
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>

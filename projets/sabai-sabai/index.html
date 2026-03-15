@@ -1,0 +1,1030 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sabai Sabai — Thai Cuisine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8C97A;
+    --deep: #1A1209;
+    --warm: #2E1F0A;
+    --cream: #F5EED8;
+    --cream-soft: #FAF6EC;
+    --red-thai: #8B1A1A;
+    --text-muted: #9A8B6E;
+    --white: #FFFFFF;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--deep);
+    color: var(--cream);
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    position: fixed;
+    width: 10px; height: 10px;
+    background: var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    mix-blend-mode: difference;
+  }
+  .cursor-ring {
+    position: fixed;
+    width: 36px; height: 36px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.3s ease;
+    opacity: 0.6;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 24px 60px;
+    background: linear-gradient(to bottom, rgba(26,18,9,0.95) 0%, transparent 100%);
+    transition: background 0.3s;
+  }
+  nav.scrolled {
+    background: rgba(26,18,9,0.97);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 16px 60px;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: var(--gold-light);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cream); opacity: 0.7; font-style: italic; }
+  .nav-links {
+    display: flex; align-items: center; gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--cream);
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    opacity: 0.75;
+    transition: opacity 0.2s;
+  }
+  .nav-links a:hover { opacity: 1; color: var(--gold-light); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--deep) !important;
+    opacity: 1 !important;
+    padding: 10px 24px !important;
+    font-weight: 500 !important;
+    transition: background 0.2s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    height: 100vh; min-height: 700px;
+    display: flex; align-items: center;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse at 70% 50%, rgba(139,26,26,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse at 20% 80%, rgba(201,168,76,0.1) 0%, transparent 50%),
+      linear-gradient(135deg, #1A1209 0%, #2E1F0A 50%, #1A1209 100%);
+  }
+  /* Decorative Thai geometric pattern */
+  .hero-pattern {
+    position: absolute;
+    right: -80px; top: 50%;
+    transform: translateY(-50%);
+    width: 600px; height: 600px;
+    opacity: 0.04;
+    background-image:
+      repeating-linear-gradient(45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(-45deg, var(--gold) 0px, var(--gold) 1px, transparent 1px, transparent 40px);
+  }
+  .hero-content {
+    position: relative;
+    padding: 0 60px;
+    max-width: 700px;
+    animation: fadeUp 1s ease forwards;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: '';
+    display: block; width: 40px; height: 1px;
+    background: var(--gold); opacity: 0.6;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(64px, 8vw, 110px);
+    font-weight: 300;
+    line-height: 0.95;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+    display: block;
+  }
+  .hero-sub {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+    margin-top: 16px;
+  }
+  .hero-desc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: rgba(245,238,216,0.7);
+    max-width: 440px;
+    margin-bottom: 48px;
+  }
+  .hero-actions { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--deep);
+    padding: 16px 36px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+  .btn-primary:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 40px rgba(201,168,76,0.25);
+  }
+  .btn-secondary {
+    color: var(--cream);
+    font-size: 12px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 10px;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+  .btn-secondary::after {
+    content: '→';
+    font-size: 16px;
+    transition: transform 0.2s;
+  }
+  .btn-secondary:hover { opacity: 1; }
+  .btn-secondary:hover::after { transform: translateX(4px); }
+
+  .hero-scroll {
+    position: absolute;
+    bottom: 40px; right: 60px;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--text-muted);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* ─── LOCATIONS ─── */
+  .locations {
+    padding: 120px 60px;
+    background: var(--deep);
+  }
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 60px;
+  }
+  .section-tag {
+    font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(36px, 4vw, 54px);
+    font-weight: 300;
+    line-height: 1.1;
+  }
+  .section-title em { font-style: italic; color: var(--gold-light); }
+
+  .locations-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2px;
+  }
+  .location-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--warm);
+    cursor: pointer;
+    group: true;
+  }
+  .location-card:hover .location-img-wrap img {
+    transform: scale(1.06);
+  }
+  .location-img-wrap {
+    height: 420px;
+    overflow: hidden;
+    background: linear-gradient(135deg, #2E1F0A, #1A1209);
+    display: flex; align-items: center; justify-content: center;
+    position: relative;
+  }
+  .location-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s ease;
+    filter: brightness(0.7);
+  }
+  /* Placeholder visuals for locations */
+  .loc-placeholder {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 16px;
+  }
+  .loc-icon {
+    width: 80px; height: 80px;
+    border: 1px solid rgba(201,168,76,0.3);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 32px;
+  }
+  .location-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(26,18,9,0.9) 0%, transparent 60%);
+  }
+  .location-info {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 36px 40px;
+  }
+  .location-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px; font-weight: 300;
+    margin-bottom: 6px;
+  }
+  .location-address {
+    font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .location-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold);
+    background: rgba(201,168,76,0.1);
+    border: 1px solid rgba(201,168,76,0.25);
+    padding: 7px 16px;
+  }
+  .location-meta {
+    padding: 28px 40px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .hours-grid { display: flex; gap: 32px; }
+  .hours-item { font-size: 12px; color: var(--text-muted); }
+  .hours-label { text-transform: uppercase; letter-spacing: 0.1em; font-size: 10px; margin-bottom: 3px; }
+  .hours-time { color: var(--cream); font-size: 14px; }
+  .location-link {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--gold); text-decoration: none;
+    display: flex; align-items: center; gap: 8px;
+    transition: gap 0.2s;
+  }
+  .location-link:hover { gap: 14px; }
+
+  /* ─── MENU PREVIEW ─── */
+  .menu-section {
+    padding: 120px 60px;
+    background: var(--cream-soft);
+    color: var(--deep);
+  }
+  .menu-section .section-tag { color: var(--red-thai); }
+  .menu-section .section-title { color: var(--deep); }
+  .menu-section .section-title em { color: var(--red-thai); }
+
+  .dishes-scroll {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    margin-top: 60px;
+    background: rgba(26,18,9,0.08);
+  }
+  .dish-card {
+    background: var(--cream-soft);
+    padding: 36px 28px;
+    transition: background 0.3s;
+    cursor: pointer;
+  }
+  .dish-card:hover { background: var(--cream); }
+  .dish-emoji {
+    font-size: 48px;
+    margin-bottom: 20px;
+    display: block;
+    filter: saturate(1.2);
+  }
+  .dish-category {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 10px;
+  }
+  .dish-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    color: var(--deep);
+    margin-bottom: 10px;
+    line-height: 1.2;
+  }
+  .dish-desc {
+    font-size: 13px; line-height: 1.6;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+  .dish-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px; font-weight: 600;
+    color: var(--deep);
+  }
+  .dish-heat {
+    display: inline-flex; gap: 3px;
+    margin-top: 8px;
+  }
+  .chili { font-size: 10px; }
+  .chili.off { opacity: 0.2; }
+
+  /* ─── STORY / TIMELINE ─── */
+  .story-section {
+    padding: 120px 60px;
+    background: var(--deep);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+  }
+  .story-left { position: sticky; top: 120px; }
+  .story-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(28px, 3vw, 42px);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--cream);
+    margin-bottom: 32px;
+    border-left: 2px solid var(--gold);
+    padding-left: 28px;
+  }
+  .story-text {
+    font-size: 15px; line-height: 1.8;
+    color: rgba(245,238,216,0.65);
+    margin-bottom: 40px;
+  }
+
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute; left: 16px; top: 0; bottom: 0;
+    width: 1px; background: rgba(201,168,76,0.2);
+  }
+  .timeline-item {
+    padding-left: 52px;
+    padding-bottom: 56px;
+    position: relative;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute; left: 9px; top: 6px;
+    width: 15px; height: 15px;
+    border-radius: 50%;
+    border: 2px solid var(--gold);
+    background: var(--deep);
+    transition: background 0.3s;
+  }
+  .timeline-item:hover::before { background: var(--gold); }
+  .timeline-date {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 8px;
+  }
+  .timeline-event {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 22px; font-weight: 400;
+    margin-bottom: 10px;
+  }
+  .timeline-desc {
+    font-size: 13px; line-height: 1.7;
+    color: rgba(245,238,216,0.55);
+  }
+
+  /* ─── REVIEWS ─── */
+  .reviews-section {
+    padding: 120px 60px;
+    background: var(--warm);
+  }
+  .reviews-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+    margin-top: 60px;
+    background: rgba(201,168,76,0.08);
+  }
+  .review-card {
+    background: var(--warm);
+    padding: 40px 36px;
+    transition: background 0.3s;
+  }
+  .review-card:hover { background: #261708; }
+  .review-stars {
+    display: flex; gap: 4px; margin-bottom: 20px;
+  }
+  .star { color: var(--gold); font-size: 14px; }
+  .review-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 17px; font-style: italic; font-weight: 300;
+    line-height: 1.7; color: var(--cream);
+    margin-bottom: 28px;
+  }
+  .review-author {
+    display: flex; align-items: center; gap: 14px;
+  }
+  .author-avatar {
+    width: 42px; height: 42px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 500;
+    color: var(--deep);
+    flex-shrink: 0;
+  }
+  .author-name { font-size: 13px; font-weight: 500; color: var(--cream); }
+  .author-loc { font-size: 11px; color: var(--text-muted); letter-spacing: 0.08em; }
+
+  /* ─── CTA BANNER ─── */
+  .cta-banner {
+    padding: 100px 60px;
+    background: var(--deep);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-banner::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(201,168,76,0.08) 0%, transparent 70%);
+  }
+  .cta-banner .section-tag { text-align: center; justify-content: center; }
+  .cta-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(42px, 6vw, 80px);
+    font-weight: 300;
+    line-height: 1.1;
+    margin: 16px auto 32px;
+    max-width: 700px;
+  }
+  .cta-title em { font-style: italic; color: var(--gold-light); }
+  .cta-phones {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .phone-tag {
+    background: rgba(201,168,76,0.08);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 14px 28px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px;
+  }
+  .phone-icon { font-size: 16px; }
+  .phone-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); }
+  .phone-number { font-size: 15px; color: var(--cream); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: var(--deep);
+    border-top: 1px solid rgba(201,168,76,0.1);
+    padding: 60px 60px 40px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand .nav-logo { display: block; margin-bottom: 16px; font-size: 20px; }
+  .footer-tagline { font-size: 13px; color: var(--text-muted); line-height: 1.7; max-width: 280px; }
+  .footer-social { display: flex; gap: 14px; margin-top: 24px; }
+  .social-btn {
+    width: 38px; height: 38px;
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; text-decoration: none;
+    color: var(--cream); opacity: 0.6;
+    transition: all 0.2s;
+  }
+  .social-btn:hover { opacity: 1; border-color: var(--gold); color: var(--gold); }
+  .footer-col h4 {
+    font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col li {
+    font-size: 13px; color: rgba(245,238,216,0.6);
+    margin-bottom: 10px; cursor: pointer;
+    transition: color 0.2s;
+  }
+  .footer-col li:hover { color: var(--cream); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(201,168,76,0.08);
+    padding-top: 28px;
+    font-size: 11px; color: var(--text-muted);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── DECORATIVE LINE ─── */
+  .gold-line {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 20px;
+  }
+  .gold-line::before, .gold-line::after {
+    content: ''; flex: 1; height: 1px; background: rgba(201,168,76,0.2);
+  }
+  .gold-diamond { color: var(--gold); font-size: 10px; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ─── MOBILE NAV HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    flex-direction: column; gap: 5px;
+    cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 1px;
+    background: var(--cream);
+    transition: all 0.3s;
+  }
+
+  /* ─── MEDIA QUERIES ─── */
+  @media (max-width: 1100px) {
+    nav { padding: 20px 32px; }
+    nav.scrolled { padding: 14px 32px; }
+    .hero-content { padding: 0 32px; }
+    .locations, .menu-section, .story-section, .reviews-section, .cta-banner { padding: 80px 32px; }
+    footer { padding: 48px 32px 32px; }
+    .dishes-scroll { grid-template-columns: repeat(2, 1fr); }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .story-section { grid-template-columns: 1fr; gap: 48px; }
+    .story-left { position: static; }
+  }
+  @media (max-width: 700px) {
+    .nav-links { display: none; }
+    .hamburger { display: flex; }
+    .locations-grid { grid-template-columns: 1fr; }
+    .dishes-scroll { grid-template-columns: 1fr; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .section-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .footer-grid { grid-template-columns: 1fr; }
+    .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+    .hero h1 { font-size: 58px; }
+    .hero-scroll { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- ─── NAV ─── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">Sabai<span>·</span>Sabai</a>
+  <ul class="nav-links">
+    <li><a href="#locations">Nos Adresses</a></li>
+    <li><a href="#menu">La Carte</a></li>
+    <li><a href="#histoire">Notre Histoire</a></li>
+    <li><a href="#avis">Avis</a></li>
+    <li><a href="#contact" class="nav-cta">Réserver</a></li>
+  </ul>
+  <div class="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-pattern"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">Cuisine Thaïlandaise Authentique</div>
+    <h1>
+      Sabai<br>
+      <em>Sabai</em>
+    </h1>
+    <p class="hero-sub">Val-de-Marne · Depuis 2022</p>
+    <p class="hero-desc">
+      Voyagez au cœur de la Thaïlande à travers une cuisine fait maison, préparée par des chefs thaïlandais passionnés qui mettent leur culture dans chaque assiette.
+    </p>
+    <div class="hero-actions">
+      <a href="#locations" class="btn-primary">Découvrir nos adresses</a>
+      <a href="#menu" class="btn-secondary">Voir la carte</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ─── LOCATIONS ─── -->
+<section class="locations" id="locations">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-tag">Nos Restaurants</div>
+      <h2 class="section-title">Deux adresses,<br>une seule <em>passion</em></h2>
+    </div>
+    <p style="max-width:300px; font-size:14px; color:var(--text-muted); line-height:1.7; text-align:right;">
+      Choisissez votre expérience dans l'un de nos deux restaurants au cœur du Val-de-Marne.
+    </p>
+  </div>
+
+  <div class="locations-grid reveal">
+    <!-- Maisons-Alfort -->
+    <div class="location-card">
+      <div class="location-img-wrap">
+        <div class="loc-placeholder">
+          <div class="loc-icon">🏮</div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(245,238,216,0.4);letter-spacing:0.1em;">Maisons-Alfort</span>
+          <div style="display:flex;gap:4px;opacity:0.25;">
+            <div style="width:6px;height:6px;background:var(--gold);border-radius:50%"></div>
+            <div style="width:6px;height:6px;background:var(--gold);border-radius:50%"></div>
+            <div style="width:6px;height:6px;background:var(--gold);border-radius:50%"></div>
+          </div>
+        </div>
+        <div class="location-overlay"></div>
+        <div class="location-info">
+          <div class="location-name">Maisons-Alfort</div>
+          <div class="location-address">239 Avenue de la République, 94700</div>
+          <div class="location-badge">🏅 Ouvert depuis 2022</div>
+        </div>
+      </div>
+      <div class="location-meta">
+        <div class="hours-grid">
+          <div class="hours-item">
+            <div class="hours-label">Midi</div>
+            <div class="hours-time">12:00 – 14:30</div>
+          </div>
+          <div class="hours-item">
+            <div class="hours-label">Soir</div>
+            <div class="hours-time">19:00 – 23:00</div>
+          </div>
+          <div class="hours-item">
+            <div class="hours-label">Jours</div>
+            <div class="hours-time">Lun – Sam</div>
+          </div>
+        </div>
+        <a href="#" class="location-link">Explorer →</a>
+      </div>
+    </div>
+
+    <!-- Saint-Maur -->
+    <div class="location-card">
+      <div class="location-img-wrap" style="background:linear-gradient(135deg,#1A1209,#3D1505);">
+        <div class="loc-placeholder">
+          <div class="loc-icon">🌿</div>
+          <span style="font-family:'Cormorant Garamond',serif;font-size:18px;color:rgba(245,238,216,0.4);letter-spacing:0.1em;">Saint-Maur-des-Fossés</span>
+          <div style="font-size:11px;letter-spacing:0.2em;color:rgba(201,168,76,0.4);text-transform:uppercase;">Terrasse</div>
+        </div>
+        <div class="location-overlay"></div>
+        <div class="location-info">
+          <div class="location-name">Saint-Maur</div>
+          <div class="location-address">Saint-Maur-des-Fossés, 94</div>
+          <div class="location-badge">✨ Nouvelle adresse · Juillet 2024</div>
+        </div>
+      </div>
+      <div class="location-meta">
+        <div class="hours-grid">
+          <div class="hours-item">
+            <div class="hours-label">Terrasse</div>
+            <div class="hours-time">Disponible</div>
+          </div>
+          <div class="hours-item">
+            <div class="hours-label">Exclusivité</div>
+            <div class="hours-time">Plats inédits</div>
+          </div>
+        </div>
+        <a href="#" class="location-link">Explorer →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── MENU PREVIEW ─── -->
+<section class="menu-section" id="menu">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-tag">La Cuisine</div>
+      <h2 class="section-title" style="color:var(--deep);">Des saveurs qui<br>font <em>voyager</em></h2>
+    </div>
+    <a href="#" class="btn-primary" style="flex-shrink:0;">Voir le menu complet</a>
+  </div>
+
+  <div class="dishes-scroll reveal">
+    <div class="dish-card">
+      <span class="dish-emoji">🥭</span>
+      <div class="dish-category">Dessert signature</div>
+      <div class="dish-name">Mango Sticky Rice</div>
+      <div class="dish-desc">Riz gluant à la crème de coco, mangue fraîche et graines de sésame torréfiées.</div>
+      <div class="dish-price">8,90 €</div>
+    </div>
+    <div class="dish-card">
+      <span class="dish-emoji">🍜</span>
+      <div class="dish-category">Plat emblématique</div>
+      <div class="dish-name">Pad Thaï</div>
+      <div class="dish-desc">Nouilles de riz sautées, œuf, germes de soja, cacahuètes et citron vert.</div>
+      <div class="dish-price">14,90 €</div>
+      <div class="dish-heat">
+        <span class="chili">🌶</span><span class="chili">🌶</span><span class="chili off">🌶</span>
+      </div>
+    </div>
+    <div class="dish-card">
+      <span class="dish-emoji">🍖</span>
+      <div class="dish-category">Spécialité</div>
+      <div class="dish-name">Ribs Caramélisés</div>
+      <div class="dish-desc">Travers de porc laqués à la sauce thaïlandaise, pommes de terre sautées.</div>
+      <div class="dish-price">16,90 €</div>
+      <div class="dish-heat">
+        <span class="chili">🌶</span><span class="chili off">🌶</span><span class="chili off">🌶</span>
+      </div>
+    </div>
+    <div class="dish-card">
+      <span class="dish-emoji">🍛</span>
+      <div class="dish-category">Classique thaï</div>
+      <div class="dish-name">Khao Pad Kai</div>
+      <div class="dish-desc">Riz sauté au poulet, légumes de saison, œuf et sauce de soja.</div>
+      <div class="dish-price">13,90 €</div>
+      <div class="dish-heat">
+        <span class="chili">🌶</span><span class="chili">🌶</span><span class="chili off">🌶</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── STORY / TIMELINE ─── -->
+<section class="story-section" id="histoire">
+  <div class="story-left reveal">
+    <div class="section-tag">Notre Histoire</div>
+    <p class="story-quote">
+      « Trois amis, une passion, l'envie de partager la Thaïlande avec vous. »
+    </p>
+    <p class="story-text">
+      Sabai Sabai est né d'une amitié et d'un rêve partagé : apporter les saveurs authentiques de la cuisine thaïlandaise au cœur du Val-de-Marne. Nos chefs mettent tout leur cœur dans chaque plat, pour que chaque repas soit un voyage.
+    </p>
+    <a href="#locations" class="btn-primary">Réserver une table</a>
+  </div>
+
+  <div class="timeline reveal" style="animation-delay:0.2s">
+    <div class="timeline-item">
+      <div class="timeline-date">29 Novembre 2022</div>
+      <div class="timeline-event">Ouverture de Maisons-Alfort</div>
+      <p class="timeline-desc">Trois amis s'associent et ouvrent le premier Sabai Sabai à Maisons-Alfort. Le début d'une belle aventure gastronomique.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">Juillet 2023</div>
+      <div class="timeline-event">Un projet prend forme</div>
+      <p class="timeline-desc">Le succès est au rendez-vous. L'équipe cherche un second lieu pour continuer à faire voyager ses clients.</p>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-date">15 Juillet 2024</div>
+      <div class="timeline-event">Ouverture de Saint-Maur</div>
+      <p class="timeline-desc">Une nouvelle adresse avec une belle terrasse et des plats exclusifs, pour une expérience encore plus riche.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ─── REVIEWS ─── -->
+<section class="reviews-section" id="avis">
+  <div class="section-header reveal">
+    <div>
+      <div class="section-tag">Avis Clients</div>
+      <h2 class="section-title">Vous en parlez<br>mieux que nous</h2>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:54px;color:var(--gold);line-height:1;">5.0</div>
+      <div style="font-size:11px;letter-spacing:0.15em;color:var(--text-muted);text-transform:uppercase;margin-top:4px;">Note Google moyenne</div>
+    </div>
+  </div>
+
+  <div class="reviews-grid reveal">
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text">«&thinsp;Votre restaurant est absolument impeccable ! La fraîcheur des plats et le mélange des saveurs est extraordinaire. Merci pour votre accueil chaleureux.&thinsp;»</p>
+      <div class="review-author">
+        <div class="author-avatar">MD</div>
+        <div>
+          <div class="author-name">Modjo D.</div>
+          <div class="author-loc">Maisons-Alfort</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text">«&thinsp;Des samoussas croustillants, un pad thaï qui a un goût de Chiang Mai ou des rues animées de Bangkok. Le service était rapide et très aimable.&thinsp;»</p>
+      <div class="review-author">
+        <div class="author-avatar">CD</div>
+        <div>
+          <div class="author-name">Claire D.</div>
+          <div class="author-loc">Maisons-Alfort</div>
+        </div>
+      </div>
+    </div>
+    <div class="review-card">
+      <div class="review-stars">⭐⭐⭐⭐⭐</div>
+      <p class="review-text">«&thinsp;Un cadre chaleureux, un service efficace et des plats tous aussi bons les uns que les autres. Une référence en terme de cuisine thaï !&thinsp;»</p>
+      <div class="review-author">
+        <div class="author-avatar">LL</div>
+        <div>
+          <div class="author-name">Luc L.</div>
+          <div class="author-loc">Maisons-Alfort</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─── CTA ─── -->
+<section class="cta-banner" id="contact">
+  <div class="gold-line"><div class="gold-diamond">◆</div></div>
+  <div class="section-tag" style="display:block;text-align:center;margin-bottom:12px;">Une petite faim ?</div>
+  <h2 class="cta-title reveal">
+    Réservez votre table<br><em>dès maintenant</em>
+  </h2>
+  <p style="font-size:15px;color:var(--text-muted);margin-bottom:40px;line-height:1.7;max-width:480px;margin-left:auto;margin-right:auto;">
+    Choisissez votre adresse et réservez directement par téléphone. Nos équipes sont heureuses de vous accueillir.
+  </p>
+  <div class="cta-phones reveal">
+    <div class="phone-tag">
+      <div class="phone-icon">📞</div>
+      <div>
+        <div class="phone-label">Maisons-Alfort</div>
+        <div class="phone-number">01 XX XX XX XX</div>
+      </div>
+    </div>
+    <div class="phone-tag">
+      <div class="phone-icon">📞</div>
+      <div>
+        <div class="phone-label">Saint-Maur</div>
+        <div class="phone-number">01 XX XX XX XX</div>
+      </div>
+    </div>
+  </div>
+  <a href="#" class="btn-primary">Voir le formulaire de contact</a>
+</section>
+
+<!-- ─── FOOTER ─── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Sabai<span>·</span>Sabai</a>
+      <p class="footer-tagline">Cuisine thaïlandaise authentique, préparée avec amour par des chefs passionnés. Deux adresses dans le Val-de-Marne pour vous faire voyager.</p>
+      <div class="footer-social">
+        <a href="https://www.facebook.com/sabaisabaithaicuisine/" target="_blank" class="social-btn">f</a>
+        <a href="https://www.instagram.com/sabaisabai_m.alfort/" target="_blank" class="social-btn">✦</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li>À propos</li>
+        <li>Maisons-Alfort</li>
+        <li>Saint-Maur</li>
+        <li>La carte</li>
+        <li>Contact</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Horaires</h4>
+      <ul>
+        <li>Lundi – Samedi</li>
+        <li>Midi : 12h – 14h30</li>
+        <li>Soir : 19h – 23h</li>
+        <li style="opacity:0.4;">Dimanche : Fermé</li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Adresses</h4>
+      <ul>
+        <li>239 av. de la République</li>
+        <li>94700 Maisons-Alfort</li>
+        <li style="margin-top:12px;opacity:0.4;">Saint-Maur-des-Fossés</li>
+        <li style="opacity:0.4;">94, Val-de-Marne</li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2024 Sabai Sabai Thai Cuisine · Tous droits réservés</span>
+    <span style="color:rgba(154,139,110,0.4);">Maquette by Claude Sonnet</span>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mouseX = 0, mouseY = 0, ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX; mouseY = e.clientY;
+    cursor.style.left = mouseX - 5 + 'px';
+    cursor.style.top = mouseY - 5 + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mouseX - ringX - 18) * 0.12;
+    ringY += (mouseY - ringY - 18) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, .dish-card, .location-card, .review-card').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      cursor.style.transform = 'scale(2.5)';
+      ring.style.transform = 'scale(1.5)';
+      ring.style.opacity = '0.3';
+    });
+    el.addEventListener('mouseleave', () => {
+      cursor.style.transform = 'scale(1)';
+      ring.style.transform = 'scale(1)';
+      ring.style.opacity = '0.6';
+    });
+  });
+
+  // Navbar scroll
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      }
+    });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+</body>
+</html>
