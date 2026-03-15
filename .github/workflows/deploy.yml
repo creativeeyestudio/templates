@@ -23,6 +23,9 @@ jobs:
       - name: Deploy files via rsync
         run: |
           rsync -avz --delete \
+          --exclude ".git" \
+          --exclude ".github" \
+          --exclude ".gitignore" \
           -e "ssh -p ${{ secrets.SSH_PORT }}" \
           ./ \
           ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}

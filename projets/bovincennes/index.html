@@ -1,0 +1,1061 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le Bo'Vincennes — Viandes d'Exception</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5F0E8;
+    --dark: #1A1208;
+    --charcoal: #2C2416;
+    --gold: #C49A3C;
+    --gold-light: #E8C870;
+    --rust: #8B3A1C;
+    --warm-gray: #7A6E5F;
+    --border: rgba(196,154,60,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Raleway', sans-serif;
+    background: var(--cream);
+    color: var(--dark);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 72px;
+    background: rgba(26,18,8,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    transition: all .3s;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: .05em;
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--cream); font-style: italic; font-weight: 400; }
+  .nav-links {
+    display: flex; gap: 2.5rem; list-style: none;
+    align-items: center;
+  }
+  .nav-links a {
+    color: rgba(245,240,232,0.75);
+    text-decoration: none;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--gold); }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--dark) !important;
+    padding: .55rem 1.4rem;
+    font-weight: 600 !important;
+    transition: background .2s, transform .15s !important;
+  }
+  .nav-cta:hover { background: var(--gold-light) !important; transform: translateY(-1px); }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh;
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: var(--dark);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 70% at 60% 40%, rgba(139,58,28,0.18) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 50% at 20% 80%, rgba(196,154,60,0.12) 0%, transparent 60%);
+  }
+  /* Decorative meat texture lines */
+  .hero-texture {
+    position: absolute; inset: 0; opacity: .04;
+    background-image: repeating-linear-gradient(
+      -45deg,
+      transparent, transparent 2px,
+      rgba(245,240,232,1) 2px, rgba(245,240,232,1) 3px
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    text-align: center;
+    padding: 0 1.5rem;
+    animation: fadeUp .9s ease both;
+  }
+  .hero-eyebrow {
+    font-size: .72rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 500;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block;
+    width: 40px; height: 1px; background: var(--gold); opacity: .6;
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    font-weight: 900;
+    color: var(--cream);
+    line-height: .92;
+    letter-spacing: -.02em;
+    margin-bottom: .3rem;
+  }
+  .hero-title em {
+    color: var(--gold);
+    font-style: italic;
+    display: block;
+  }
+  .hero-subtitle {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
+    color: rgba(245,240,232,0.55);
+    font-weight: 300;
+    letter-spacing: .08em;
+    margin-top: 1.2rem;
+    margin-bottom: 2.8rem;
+    font-style: italic;
+  }
+  .hero-actions {
+    display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--dark);
+    padding: .9rem 2.4rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    transition: background .2s, transform .15s, box-shadow .2s;
+    box-shadow: 0 4px 24px rgba(196,154,60,0.3);
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(196,154,60,0.4); }
+  .btn-ghost {
+    border: 1px solid rgba(245,240,232,0.3);
+    color: var(--cream);
+    padding: .9rem 2.4rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: .78rem;
+    font-weight: 500;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(196,154,60,0.05); }
+
+  .hero-scroll {
+    position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: .5rem;
+    color: rgba(245,240,232,0.3);
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    animation: pulse 2.5s ease infinite;
+  }
+  .scroll-line {
+    width: 1px; height: 50px;
+    background: linear-gradient(to bottom, rgba(196,154,60,0.6), transparent);
+    animation: grow 2.5s ease infinite;
+  }
+
+  /* ── INTRO BAND ── */
+  .intro-band {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 2rem 5vw;
+    display: flex; align-items: center; justify-content: center;
+    gap: 3rem; flex-wrap: wrap;
+    overflow: hidden;
+  }
+  .band-item {
+    display: flex; align-items: center; gap: .8rem;
+    color: rgba(245,240,232,0.65);
+    font-size: .72rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500;
+    white-space: nowrap;
+  }
+  .band-item .dot {
+    width: 5px; height: 5px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0;
+  }
+  .band-sep {
+    width: 1px; height: 28px; background: var(--border);
+  }
+
+  /* ── SECTION BASE ── */
+  section { padding: 8rem 5vw; }
+  .section-label {
+    font-size: .68rem; letter-spacing: .3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600;
+    display: flex; align-items: center; gap: .8rem;
+    margin-bottom: 1.2rem;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 28px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 4.5vw, 4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+  }
+  .section-title em { color: var(--rust); font-style: italic; }
+
+  /* ── ABOUT / VIANDES ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+  }
+  .about-text p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+    line-height: 1.75;
+    color: var(--charcoal);
+    font-weight: 300;
+    margin-top: 1.8rem;
+  }
+  .about-text p + p { margin-top: 1.2rem; }
+  .about-signature {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold);
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-img-frame {
+    position: relative;
+    background: var(--charcoal);
+    aspect-ratio: 4/5;
+    overflow: hidden;
+  }
+  /* Simulated meat photo with CSS */
+  .about-img-inner {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 50% at 50% 60%, #5C2010 0%, #2C1408 40%, #1A0C05 100%);
+  }
+  .about-img-inner::after {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle 80px at 40% 45%, rgba(220,120,60,0.6) 0%, transparent 100%),
+      radial-gradient(circle 60px at 65% 50%, rgba(180,60,20,0.4) 0%, transparent 100%);
+  }
+  .img-placeholder-text {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: rgba(245,240,232,0.15);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; letter-spacing: .2em;
+    text-transform: uppercase; font-style: italic;
+    z-index: 2;
+    gap: .5rem;
+  }
+  .img-placeholder-text::before {
+    content: '🥩';
+    font-size: 3rem;
+    opacity: .3;
+    filter: grayscale(1);
+  }
+  .about-frame-deco {
+    position: absolute;
+    top: -16px; left: -16px;
+    width: 80px; height: 80px;
+    border-top: 2px solid var(--gold);
+    border-left: 2px solid var(--gold);
+    opacity: .5;
+    z-index: 3;
+  }
+  .about-frame-deco-br {
+    position: absolute;
+    bottom: -16px; right: -16px;
+    width: 80px; height: 80px;
+    border-bottom: 2px solid var(--gold);
+    border-right: 2px solid var(--gold);
+    opacity: .5;
+    z-index: 3;
+  }
+  .about-badge {
+    position: absolute;
+    bottom: -20px; left: 30px;
+    background: var(--dark);
+    border: 1px solid var(--border);
+    padding: 1.2rem 1.6rem;
+    z-index: 4;
+  }
+  .about-badge-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: var(--gold);
+    line-height: 1;
+  }
+  .about-badge-txt {
+    font-size: .65rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.55);
+    font-weight: 500;
+    margin-top: .3rem;
+  }
+
+  /* ── MENU SECTION ── */
+  .menu-section {
+    background: var(--dark);
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(to right, transparent, var(--gold), transparent);
+    opacity: .4;
+  }
+  .menu-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 4rem;
+    flex-wrap: wrap; gap: 2rem;
+    max-width: 1200px; margin-left: auto; margin-right: auto;
+    margin-bottom: 4rem;
+  }
+  .menu-header .section-title { color: var(--cream); }
+  .menu-header .section-label { color: var(--gold-light); }
+  .menu-tabs {
+    display: flex; gap: .5rem;
+  }
+  .tab {
+    padding: .55rem 1.2rem;
+    font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    font-weight: 600; font-family: 'Raleway', sans-serif;
+    border: 1px solid rgba(245,240,232,0.15);
+    color: rgba(245,240,232,0.45);
+    background: transparent;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .tab.active, .tab:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    background: rgba(196,154,60,0.08);
+  }
+  .menu-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5px;
+    max-width: 1200px; margin: 0 auto;
+    background: var(--border);
+  }
+  .menu-card {
+    background: var(--charcoal);
+    padding: 2.2rem 2rem;
+    transition: background .25s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+  .menu-card::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(to right, var(--gold), transparent);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .menu-card:hover { background: #2E2012; }
+  .menu-card:hover::after { transform: scaleX(1); }
+  .menu-card-label {
+    font-size: .62rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: .8rem;
+  }
+  .menu-card-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--cream);
+    margin-bottom: .6rem;
+  }
+  .menu-card-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: .95rem;
+    color: rgba(245,240,232,0.45);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .menu-card-price {
+    margin-top: 1.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .menu-cta-row {
+    text-align: center;
+    margin-top: 3rem;
+  }
+
+  /* ── VIANDES ── */
+  .viandes-section { background: var(--cream); }
+  .viandes-content { max-width: 1200px; margin: 0 auto; }
+  .viandes-intro { max-width: 600px; margin-bottom: 4rem; }
+  .viandes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+  .viande-card {
+    border: 1px solid var(--border);
+    padding: 2.5rem 2rem;
+    position: relative;
+    background: #fff;
+    transition: box-shadow .25s, transform .25s;
+  }
+  .viande-card:hover {
+    box-shadow: 0 20px 60px rgba(26,18,8,0.12);
+    transform: translateY(-4px);
+  }
+  .viande-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 4rem;
+    font-weight: 900;
+    color: rgba(196,154,60,0.12);
+    line-height: 1;
+    margin-bottom: 1.2rem;
+  }
+  .viande-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: .6rem;
+  }
+  .viande-origin {
+    font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .viande-desc {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--warm-gray);
+    line-height: 1.65;
+    font-style: italic;
+  }
+  .viande-tag {
+    display: inline-block;
+    margin-top: 1.2rem;
+    background: rgba(196,154,60,0.1);
+    border: 1px solid var(--border);
+    color: var(--gold);
+    font-size: .62rem;
+    font-weight: 600;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: .35rem .8rem;
+  }
+
+  /* ── RESERVATION ── */
+  .resa-section {
+    background:
+      linear-gradient(135deg, var(--dark) 0%, #2A160A 50%, var(--charcoal) 100%);
+    position: relative;
+    overflow: hidden;
+  }
+  .resa-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse 50% 80% at 80% 50%, rgba(196,154,60,0.07) 0%, transparent 70%);
+  }
+  .resa-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    position: relative; z-index: 2;
+  }
+  .resa-left .section-title { color: var(--cream); margin-bottom: 1.8rem; }
+  .resa-left .section-label { color: var(--gold-light); }
+  .resa-left p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem;
+    color: rgba(245,240,232,0.55);
+    font-style: italic;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+  .resa-info {
+    display: flex; flex-direction: column; gap: 1rem;
+    margin-top: 2rem;
+  }
+  .resa-info-item {
+    display: flex; align-items: center; gap: 1rem;
+    color: rgba(245,240,232,0.65);
+    font-size: .85rem;
+  }
+  .resa-info-item .icon {
+    width: 36px; height: 36px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; flex-shrink: 0;
+  }
+  .resa-form {
+    background: rgba(245,240,232,0.04);
+    border: 1px solid var(--border);
+    padding: 3rem;
+  }
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .form-group { display: flex; flex-direction: column; gap: .5rem; }
+  .form-group.full { grid-column: 1 / -1; }
+  .form-group label {
+    font-size: .65rem; letter-spacing: .2em; text-transform: uppercase;
+    color: rgba(245,240,232,0.4); font-weight: 600;
+  }
+  .form-group input, .form-group select, .form-group textarea {
+    background: rgba(245,240,232,0.06);
+    border: 1px solid rgba(245,240,232,0.1);
+    padding: .85rem 1rem;
+    color: var(--cream);
+    font-family: 'Raleway', sans-serif;
+    font-size: .85rem;
+    outline: none;
+    transition: border-color .2s;
+    -webkit-appearance: none;
+  }
+  .form-group input::placeholder, .form-group select option,
+  .form-group textarea::placeholder { color: rgba(245,240,232,0.3); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+  }
+  .form-group select { cursor: pointer; }
+  .form-group textarea { resize: none; height: 80px; }
+  .form-submit {
+    margin-top: 1.5rem;
+    width: 100%;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    padding: 1.1rem;
+    font-family: 'Raleway', sans-serif;
+    font-size: .78rem;
+    font-weight: 700;
+    letter-spacing: .2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background .2s, transform .15s;
+  }
+  .form-submit:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* ── HOURS ── */
+  .hours-section {
+    background: var(--cream);
+    padding: 6rem 5vw;
+  }
+  .hours-inner {
+    max-width: 900px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+  }
+  .hours-list { margin-top: 2.5rem; }
+  .hours-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  .hours-row .day { font-weight: 600; color: var(--charcoal); }
+  .hours-row .time {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    font-style: italic;
+    color: var(--warm-gray);
+  }
+  .hours-row .closed { color: rgba(139,58,28,0.7); font-style: italic; font-size: .85rem; }
+  .hours-map {
+    background: var(--charcoal);
+    aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .map-placeholder {
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+    color: rgba(245,240,232,0.25);
+  }
+  .map-pin {
+    width: 40px; height: 40px;
+    background: var(--gold);
+    clip-path: polygon(50% 0%, 100% 35%, 80% 100%, 50% 85%, 20% 100%, 0% 35%);
+    opacity: .5;
+  }
+  .map-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: .1em;
+  }
+  .map-address {
+    font-size: .75rem; letter-spacing: .15em; text-transform: uppercase;
+    opacity: .5;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    border-top: 1px solid var(--border);
+    padding: 4rem 5vw 2rem;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; max-width: 1200px; margin: 0 auto;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .footer-brand .nav-logo { font-size: 1.6rem; display: block; margin-bottom: 1rem; }
+  .footer-brand p {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: rgba(245,240,232,0.4);
+    font-size: 1rem;
+    line-height: 1.65;
+  }
+  .footer-col h4 {
+    font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+    color: var(--gold); font-weight: 600; margin-bottom: 1.2rem;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .footer-col ul a {
+    text-decoration: none;
+    color: rgba(245,240,232,0.5);
+    font-size: .82rem;
+    transition: color .2s;
+  }
+  .footer-col ul a:hover { color: var(--cream); }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    padding-top: 1.5rem;
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .footer-bottom p {
+    font-size: .72rem;
+    color: rgba(245,240,232,0.25);
+    letter-spacing: .05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: .3; }
+    50% { opacity: .8; }
+  }
+  @keyframes grow {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* Scroll fade-in */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .about-grid, .resa-grid, .hours-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .menu-grid { grid-template-columns: 1fr; }
+    .viandes-grid { grid-template-columns: 1fr 1fr; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .about-badge { position: static; margin-top: 1.5rem; display: inline-block; }
+    .about-visual { margin-bottom: 3rem; }
+  }
+  @media (max-width: 600px) {
+    .viandes-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+    .hero-title { font-size: 3rem; }
+    section { padding: 5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">Le Bo'<span>Vincennes</span></a>
+  <ul class="nav-links">
+    <li><a href="#about">Notre histoire</a></li>
+    <li><a href="#menu">Nos menus</a></li>
+    <li><a href="#viandes">Nos viandes</a></li>
+    <li><a href="#horaires">Horaires</a></li>
+    <li><a href="#reservation" class="nav-cta">Réserver</a></li>
+  </ul>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-bg"  style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/AHVAweoS7vnOEnwjx4dnCPlVFERStwinLuocsUKbi0mRum96gMarkIVMqrB_idz4z_XOH5xJzKVlPd_NeLwjqB2ZlH6mthzz5_h59nYTs6ZajjmHFb9DC31Z21E5fBZcA42T3MjksIuEEv0RxEtR=s680-w680-h510-rw'); background-size: cover; opacity: 0.25"></div>
+  <div class="hero-texture"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Vincennes — Depuis 2022</p>
+    <h1 class="hero-title">
+      L'Art de la<br>
+      <em>Viande d'Exception</em>
+    </h1>
+    <p class="hero-subtitle">Races nobles · Origines sélectionnées · Savoir-faire artisanal</p>
+    <div class="hero-actions">
+      <a href="#reservation" class="btn-primary">Réserver une table</a>
+      <a href="#menu" class="btn-ghost">Voir nos menus</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    Découvrir
+  </div>
+</section>
+
+<!-- ── INTRO BAND ── -->
+<div class="intro-band">
+  <div class="band-item"><span class="dot"></span>Accessible PMR</div>
+  <div class="band-sep"></div>
+  <div class="band-item"><span class="dot"></span>Wi-Fi gratuit</div>
+  <div class="band-sep"></div>
+  <div class="band-item"><span class="dot"></span>Climatisation</div>
+  <div class="band-sep"></div>
+  <div class="band-item"><span class="dot"></span>Ticket Restaurant accepté</div>
+  <div class="band-sep"></div>
+  <div class="band-item"><span class="dot"></span>+33 1 79 86 27 60</div>
+</div>
+
+<!-- ── ABOUT ── -->
+<section id="about">
+  <div class="about-grid">
+    <div class="about-visual reveal">
+      <div class="about-img-frame" style="background-image:url('https://lh3.googleusercontent.com/gps-cs-s/AHVAwero1myN7u3fYYTs_njPSUZrGqaS7sfv4T-dgSIyEE8yDz8XD0ZnQPqk5f6X3gjgKxuFkSXFJ_SVkna-q4pWPqY3mqZJZEFNdsb6dXHcXGRJnXdw3jyHcjVfiOBkKvUk0HOMZBUCZZA3Pj1-=s680-w680-h510-rw');">
+        
+      </div>
+      <div class="about-badge">
+        <div class="about-badge-num">100%</div>
+        <div class="about-badge-txt">Races & Origines sélectionnées</div>
+      </div>
+    </div>
+    <div class="about-text reveal">
+      <div class="section-label">Notre histoire</div>
+      <h2 class="section-title">Une passion pour la <em>viande vraie</em></h2>
+      <p>Au cœur de Vincennes, Le Bo'Vin célèbre le meilleur de l'élevage français et international. Chaque pièce est choisie avec exigence : des races à viande d'exception, élevées selon des méthodes traditionnelles qui respectent l'animal et subliment la saveur.</p>
+      <p>Notre chef sélectionne personnellement chaque fournisseur, construisant des relations de confiance avec des éleveurs passionnés. Du Wagyu japonais aux races françaises ancestrales, chaque bouchée raconte une histoire.</p>
+      <p class="about-signature">— Hakim Mechaab, fondateur</p>
+    </div>
+  </div>
+</section>
+
+<!-- ── MENU ── -->
+<section class="menu-section" id="menu">
+  <div class="menu-header reveal">
+    <div>
+      <div class="section-label">À table</div>
+      <h2 class="section-title" style="color:var(--cream)">Nos <em style="color:var(--gold)">menus</em></h2>
+    </div>
+    <div class="menu-tabs">
+      <button class="tab active" onclick="switchTab(this)">Menu Midi</button>
+      <button class="tab" onclick="switchTab(this)">Notre Carte</button>
+      <button class="tab" onclick="switchTab(this)">Viandes d'Exception</button>
+    </div>
+  </div>
+  <div class="menu-grid" id="menu-grid">
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Entrée</div>
+      <div class="menu-card-name">Tartare de bœuf maison</div>
+      <div class="menu-card-desc">Couteau, câpres, jaune d'œuf confit, chips de parmesan</div>
+      <div class="menu-card-price">16€</div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Entrée</div>
+      <div class="menu-card-name">Os à moelle rôti</div>
+      <div class="menu-card-desc">Pain de campagne grillé, fleur de sel, persil ciselé</div>
+      <div class="menu-card-price">12€</div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Plat</div>
+      <div class="menu-card-name">Entrecôte Charolaise</div>
+      <div class="menu-card-desc">Sauce béarnaise maison, frites fraîches, salade</div>
+      <div class="menu-card-price">28€</div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Plat</div>
+      <div class="menu-card-name">Côte de bœuf 500g</div>
+      <div class="menu-card-desc">À partager, jus de viande réduit, légumes de saison</div>
+      <div class="menu-card-price">52€</div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Dessert</div>
+      <div class="menu-card-name">Tarte Tatin caramélisée</div>
+      <div class="menu-card-desc">Crème fraîche épaisse, caramel beurre salé</div>
+      <div class="menu-card-price">9€</div>
+    </div>
+    <div class="menu-card reveal">
+      <div class="menu-card-label">Formule</div>
+      <div class="menu-card-name">Menu du Midi</div>
+      <div class="menu-card-desc">Entrée + Plat ou Plat + Dessert au choix</div>
+      <div class="menu-card-price">24€</div>
+    </div>
+  </div>
+  <div class="menu-cta-row reveal">
+    <a href="#" class="btn-ghost" style="color:rgba(245,240,232,0.7); border-color:rgba(245,240,232,0.2)">
+      Télécharger la carte complète (PDF)
+    </a>
+  </div>
+</section>
+
+<!-- ── VIANDES ── -->
+<section class="viandes-section" id="viandes">
+  <div class="viandes-content">
+    <div class="viandes-intro reveal">
+      <div class="section-label">Notre sélection</div>
+      <h2 class="section-title">Viandes de <em>Race & d'Origine</em></h2>
+    </div>
+    <div class="viandes-grid">
+      <div class="viande-card reveal">
+        <div class="viande-num">01</div>
+        <div class="viande-origin">Japon · Préfecture d'Ōita</div>
+        <div class="viande-name">Wagyu A5</div>
+        <div class="viande-desc">Le summum du persillé. Une tendreté incomparable obtenue par des années d'élevage traditionnel japonais. Fondue en bouche garantie.</div>
+        <span class="viande-tag">Exclusivité maison</span>
+      </div>
+      <div class="viande-card reveal">
+        <div class="viande-num">02</div>
+        <div class="viande-origin">France · Bourgogne</div>
+        <div class="viande-name">Charolaise AOP</div>
+        <div class="viande-desc">La reine des races françaises. Chair ferme aux arômes puissants, élevée en pâturages naturels au cœur du Morvan.</div>
+        <span class="viande-tag">Race française</span>
+      </div>
+      <div class="viande-card reveal">
+        <div class="viande-num">03</div>
+        <div class="viande-origin">Irlande · Connemara</div>
+        <div class="viande-name">Angus Irish</div>
+        <div class="viande-desc">Herbe fraîche, air marin, élevage extensif. L'Angus irlandais développe une saveur herbacée unique et un gras fin.</div>
+        <span class="viande-tag">Import sélectionné</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESERVATION ── -->
+<section class="resa-section" id="reservation">
+  <div class="resa-grid">
+    <div class="resa-left reveal">
+      <div class="section-label">Votre table vous attend</div>
+      <h2 class="section-title">Réserver une <em>table</em></h2>
+      <p>Nous nous réjouissons de vous accueillir pour une expérience carnivore inoubliable. Réservez en ligne ou contactez-nous directement.</p>
+      <a href="tel:+330179862760" class="btn-primary">📞 +33 1 79 86 27 60</a>
+      <div class="resa-info">
+        <div class="resa-info-item">
+          <span class="icon">📍</span>
+          6B av. du Général de Gaulle, 94300 Vincennes
+        </div>
+        <div class="resa-info-item">
+          <span class="icon">✉️</span>
+          lebovincennes@gmail.com
+        </div>
+        <div class="resa-info-item">
+          <span class="icon">🚇</span>
+          Métro ligne 1 — Château de Vincennes
+        </div>
+      </div>
+    </div>
+    <div class="resa-form reveal">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Prénom & Nom</label>
+          <input type="text" placeholder="Jean Dupont">
+        </div>
+        <div class="form-group">
+          <label>Téléphone</label>
+          <input type="tel" placeholder="+33 6 00 00 00 00">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date souhaitée</label>
+          <input type="date">
+        </div>
+        <div class="form-group">
+          <label>Heure</label>
+          <select>
+            <option>12h00</option>
+            <option>12h30</option>
+            <option>13h00</option>
+            <option>19h30</option>
+            <option>20h00</option>
+            <option>20h30</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre de personnes</label>
+          <select>
+            <option>1 personne</option>
+            <option>2 personnes</option>
+            <option>3 personnes</option>
+            <option>4 personnes</option>
+            <option>5 personnes</option>
+            <option>6+ personnes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" placeholder="jean@email.com">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Message (allergies, occasion spéciale…)</label>
+          <textarea placeholder="Toute information utile…"></textarea>
+        </div>
+      </div>
+      <button class="form-submit">Confirmer ma réservation</button>
+    </div>
+  </div>
+</section>
+
+<!-- ── HORAIRES ── -->
+<section class="hours-section" id="horaires">
+  <div class="hours-inner">
+    <div class="reveal">
+      <div class="section-label">Quand nous trouver</div>
+      <h2 class="section-title">Nos <em>horaires</em></h2>
+      <div class="hours-list">
+        <div class="hours-row"><span class="day">Lundi</span><span class="time">12h00 – 14h30 · 19h30 – 22h30</span></div>
+        <div class="hours-row"><span class="day">Mardi</span><span class="time">12h00 – 14h30 · 19h30 – 22h30</span></div>
+        <div class="hours-row"><span class="day">Mercredi</span><span class="time">12h00 – 14h30 · 19h30 – 22h30</span></div>
+        <div class="hours-row"><span class="day">Jeudi</span><span class="time">12h00 – 14h30 · 19h30 – 22h30</span></div>
+        <div class="hours-row"><span class="day">Vendredi</span><span class="time">12h00 – 14h30 · 19h30 – 23h00</span></div>
+        <div class="hours-row"><span class="day">Samedi</span><span class="time">12h00 – 15h00 · 19h30 – 23h00</span></div>
+        <div class="hours-row"><span class="day">Dimanche</span><span class="closed">Fermé</span></div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="hours-map">
+        <div class="map-placeholder">
+          <div class="map-pin"></div>
+          <div class="map-text">Le Bo'Vincennes</div>
+          <div class="map-address">6B av. du Général de Gaulle</div>
+          <div class="map-address">94300 VINCENNES</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Le Bo'<span>Vincennes</span></a>
+      <p>L'art de la viande d'exception au cœur de Vincennes. Races sélectionnées, origines maîtrisées, plaisir garanti.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <ul>
+        <li><a href="#about">Notre histoire</a></li>
+        <li><a href="#menu">Nos menus</a></li>
+        <li><a href="#viandes">Nos viandes</a></li>
+        <li><a href="#reservation">Réservation</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Menus PDF</h4>
+      <ul>
+        <li><a href="#">Menu Midi</a></li>
+        <li><a href="#">Notre Carte</a></li>
+        <li><a href="#">Viandes d'Exception</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="tel:+330179862760">+33 1 79 86 27 60</a></li>
+        <li><a href="mailto:lebovincennes@gmail.com">lebovincennes@gmail.com</a></li>
+        <li><a href="#">Accès & parking</a></li>
+        <li><a href="#">Mentions légales</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Le Bo'Vincennes — MMSA Le Bo'Vin — TVA FR44887547230</p>
+    <p>Conçu avec soin · Vincennes, France</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    document.querySelector('nav').style.height = window.scrollY > 50 ? '60px' : '72px';
+  });
+
+  // Menu tabs
+  function switchTab(btn) {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+</script>
+
+</body>
+</html>

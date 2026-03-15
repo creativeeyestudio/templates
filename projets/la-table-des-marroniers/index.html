@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>La Table des Marronniers — Restaurant & Épicerie Fine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream: #F5F0E8;
+    --warm-white: #FAF8F3;
+    --gold: #B8955A;
+    --gold-light: #D4AF7A;
+    --dark: #1A1612;
+    --brown: #3D2B1F;
+    --text: #2C2118;
+    --text-light: #7A6A5A;
+    --border: rgba(184,149,90,0.25);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--warm-white);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.4rem 4rem;
+    background: rgba(26,22,18,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(184,149,90,0.2);
+    transition: padding 0.3s;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.25rem;
+    font-weight: 300;
+    letter-spacing: 0.15em;
+    color: var(--gold-light);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .nav-logo span { font-style: italic; color: var(--cream); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: rgba(245,240,232,0.7);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-cta {
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    padding: 0.65rem 1.6rem;
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    cursor: pointer;
+    font-family: 'Jost', sans-serif;
+    transition: all 0.25s;
+    text-decoration: none;
+  }
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  /* ── HERO ── */
+  .hero {
+    height: 100vh; position: relative;
+    display: flex; align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('./bg-hero.jpeg') center/cover no-repeat;
+  }
+  .hero-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(
+      to bottom,
+      rgba(26,22,18,0.3) 0%,
+      rgba(26,22,18,0.1) 40%,
+      rgba(26,22,18,0.75) 80%,
+      rgba(26,22,18,0.95) 100%
+    );
+  }
+  .hero-content {
+    position: relative; z-index: 2;
+    padding: 0 4rem 6rem;
+    max-width: 750px;
+    animation: fadeUp 1.2s ease both;
+  }
+  .hero-eyebrow {
+    font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold-light); margin-bottom: 1.2rem;
+    font-family: 'Jost', sans-serif; font-weight: 400;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3.2rem, 6vw, 5.5rem);
+    font-weight: 300; line-height: 1.08;
+    color: var(--cream);
+    margin-bottom: 1.5rem;
+  }
+  .hero-title em { font-style: italic; color: var(--gold-light); }
+  .hero-sub {
+    font-size: 0.9rem; color: rgba(245,240,232,0.7);
+    line-height: 1.7; max-width: 460px;
+    font-weight: 300; margin-bottom: 2.5rem;
+  }
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+  .btn-primary {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none; cursor: pointer;
+    transition: background 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-ghost {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 1rem 2.5rem;
+    background: transparent;
+    color: var(--cream);
+    border: 1px solid rgba(245,240,232,0.4);
+    cursor: pointer;
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-block;
+  }
+  .btn-ghost:hover { border-color: var(--cream); }
+  .hero-phone {
+    position: absolute; right: 4rem; bottom: 6rem;
+    z-index: 2; text-align: right;
+    animation: fadeUp 1.2s 0.4s ease both;
+  }
+  .hero-phone a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300;
+    color: var(--gold-light); text-decoration: none;
+    letter-spacing: 0.05em;
+  }
+  .hero-phone p {
+    font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: rgba(245,240,232,0.5);
+    margin-bottom: 0.3rem;
+  }
+
+  /* ── STRIP ── */
+  .strip {
+    background: var(--gold);
+    padding: 1rem 4rem;
+    display: flex; align-items: center; justify-content: center; gap: 4rem;
+  }
+  .strip-item {
+    display: flex; align-items: center; gap: 0.7rem;
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--dark); font-weight: 500;
+  }
+  .strip-item svg { width: 18px; height: 18px; opacity: 0.7; }
+  .strip-sep { width: 1px; height: 24px; background: rgba(26,22,18,0.2); }
+
+  /* ── ABOUT ── */
+  .about {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 600px;
+  }
+  .about-images {
+    position: relative; overflow: hidden;
+  }
+  .about-img-main {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .about-img-badge {
+    position: absolute; bottom: 2.5rem; right: -1.5rem;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--warm-white);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+  .about-img-badge img { width: 100%; height: 100%; object-fit: cover; }
+  .about-text {
+    padding: 6rem 5rem 6rem 6rem;
+    background: var(--warm-white);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--gold); font-weight: 400;
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before {
+    content: ''; display: block;
+    width: 32px; height: 1px; background: var(--gold);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.2rem, 3.5vw, 3.2rem);
+    font-weight: 300; line-height: 1.15;
+    color: var(--brown); margin-bottom: 1.5rem;
+  }
+  .section-title em { font-style: italic; }
+  .section-body {
+    font-size: 0.9rem; line-height: 1.8;
+    color: var(--text-light); font-weight: 300;
+    margin-bottom: 2rem;
+  }
+  .divider {
+    width: 40px; height: 1px;
+    background: var(--gold); margin: 2rem 0;
+  }
+  .features { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 2.5rem; }
+  .feature { display: flex; align-items: flex-start; gap: 1rem; }
+  .feature-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--gold); flex-shrink: 0; margin-top: 0.5rem;
+  }
+  .feature p { font-size: 0.85rem; color: var(--text-light); line-height: 1.6; font-weight: 300; }
+  .feature strong { color: var(--text); font-weight: 500; }
+
+  /* ── MENU PREVIEW ── */
+  .menu-section {
+    background: var(--dark);
+    padding: 6rem 4rem;
+  }
+  .menu-header {
+    text-align: center; margin-bottom: 4rem;
+  }
+  .menu-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    font-weight: 300; color: var(--cream);
+    margin-bottom: 0.8rem;
+  }
+  .menu-sub {
+    font-size: 0.85rem; color: rgba(245,240,232,0.5);
+    font-weight: 300; letter-spacing: 0.08em;
+  }
+  .menu-tabs {
+    display: flex; justify-content: center; gap: 0; margin-bottom: 3.5rem;
+    border-bottom: 1px solid rgba(184,149,90,0.2);
+  }
+  .menu-tab {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase;
+    padding: 0.9rem 2rem; background: none; border: none;
+    color: rgba(245,240,232,0.45); cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all 0.2s;
+  }
+  .menu-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+  .menu-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: rgba(184,149,90,0.1);
+    max-width: 1000px; margin: 0 auto 3rem;
+  }
+  .menu-card {
+    background: rgba(255,255,255,0.03);
+    padding: 2.5rem 2rem;
+    transition: background 0.2s;
+  }
+  .menu-card:hover { background: rgba(184,149,90,0.07); }
+  .menu-card-top {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; margin-bottom: 0.8rem;
+  }
+  .menu-card-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.15rem; font-weight: 400;
+    color: var(--cream); line-height: 1.3;
+    max-width: 75%;
+  }
+  .menu-card-price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; font-weight: 300;
+    color: var(--gold-light); white-space: nowrap;
+  }
+  .menu-card-desc {
+    font-size: 0.78rem; color: rgba(245,240,232,0.4);
+    line-height: 1.6; font-weight: 300;
+  }
+  .menu-sep { width: 24px; height: 1px; background: var(--gold); margin: 1rem 0; opacity: 0.5; }
+  .menu-cta { text-align: center; }
+
+  /* ── EPICERIE ── */
+  .epicerie {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 560px;
+  }
+  .epicerie-text {
+    padding: 6rem 5rem;
+    background: var(--cream);
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1.5rem 0 2rem; }
+  .tag {
+    font-size: 0.68rem; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 0.4rem 1rem; border: 1px solid var(--border);
+    color: var(--text-light); background: transparent;
+    font-family: 'Jost', sans-serif;
+  }
+  .epicerie-images {
+    display: grid; grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
+  .epicerie-images img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
+  }
+
+  /* ── HOURS ── */
+  .hours-section {
+    padding: 6rem 4rem;
+    background: var(--warm-white);
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 4rem; align-items: start; max-width: 1100px; margin: 0 auto;
+  }
+  .hours-block { }
+  .hours-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.8rem; font-weight: 300; color: var(--brown);
+    margin-bottom: 0.5rem;
+  }
+  .hours-subtitle {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 2rem;
+  }
+  .hours-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .hours-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+    font-size: 0.85rem; font-weight: 300; color: var(--text-light);
+  }
+  .hours-row .day { font-weight: 400; color: var(--text); }
+  .hours-row .closed { color: var(--text-light); font-style: italic; }
+  .hours-divider {
+    width: 1px; background: var(--border); align-self: stretch;
+  }
+
+  /* ── GALLERY ── */
+  .gallery {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 300px 300px;
+    gap: 4px;
+  }
+  .gallery-item { overflow: hidden; }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; display: block; }
+  .gallery-item:hover img { transform: scale(1.04); }
+  .gallery-item.tall { grid-row: span 2; }
+
+  /* ── RESERVATION ── */
+  .reservation {
+    background: url('https://images.unsplash.com/photo-1551218808-94e220e084d2?w=1600&auto=format&fit=crop&q=80') center/cover no-repeat;
+    position: relative; padding: 8rem 4rem;
+    text-align: center;
+  }
+  .reservation::before {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(26,22,18,0.82);
+  }
+  .reservation-content { position: relative; z-index: 2; }
+  .res-eyebrow {
+    font-size: 0.65rem; letter-spacing: 0.35em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem;
+  }
+  .res-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 300;
+    color: var(--cream); line-height: 1.1; margin-bottom: 1.5rem;
+  }
+  .res-sub {
+    font-size: 0.9rem; color: rgba(245,240,232,0.6);
+    max-width: 500px; margin: 0 auto 3rem;
+    line-height: 1.7; font-weight: 300;
+  }
+  .res-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--dark);
+    padding: 4rem;
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 3rem; border-top: 1px solid rgba(184,149,90,0.15);
+  }
+  .footer-brand {}
+  .footer-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 300;
+    color: var(--gold-light); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 1rem;
+    text-decoration: none; display: block;
+  }
+  .footer-desc {
+    font-size: 0.8rem; color: rgba(245,240,232,0.4);
+    line-height: 1.7; font-weight: 300; max-width: 240px;
+  }
+  .footer-col h4 {
+    font-size: 0.65rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--gold); margin-bottom: 1.5rem; font-weight: 400;
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 0.6rem; }
+  .footer-links a {
+    font-size: 0.82rem; color: rgba(245,240,232,0.5);
+    text-decoration: none; transition: color 0.2s; font-weight: 300;
+  }
+  .footer-links a:hover { color: var(--cream); }
+  .footer-bottom {
+    background: var(--dark);
+    padding: 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center;
+    border-top: 1px solid rgba(184,149,90,0.08);
+  }
+  .footer-bottom p {
+    font-size: 0.72rem; color: rgba(245,240,232,0.25);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#"><span>La Table</span> des Marronniers</a>
+  <ul class="nav-links">
+    <li><a href="#about">L'histoire</a></li>
+    <li><a href="#menu">La carte</a></li>
+    <li><a href="#epicerie">Épicerie fine</a></li>
+    <li><a href="#horaires">Horaires</a></li>
+  </ul>
+  <a href="#reservation" class="nav-cta">Réserver</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Saint-Maur-des-Fossés · Cuisine Française</p>
+    <h1 class="hero-title">Une table d'exception,<br>au cœur <em>des saisons</em></h1>
+    <p class="hero-sub">Cuisine française traditionnelle revisitée, épicerie fine artisanale et art de recevoir. Un lieu unique où chaque repas devient un souvenir.</p>
+    <div class="hero-actions">
+      <a href="#reservation" class="btn-primary">Réserver une table</a>
+      <a href="#menu" class="btn-ghost">Découvrir la carte</a>
+    </div>
+  </div>
+  <div class="hero-phone">
+    <p>Nous contacter</p>
+    <a href="tel:0148859174">01 48 85 91 74</a>
+  </div>
+</section>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><circle cx="12" cy="11" r="3"/></svg>
+    8 Place des Marronniers, Saint-Maur-des-Fossés
+  </div>
+  <div class="strip-sep"></div>
+  <div class="strip-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+    Lun, Jeu – Dim · Midi & Soir
+  </div>
+  <div class="strip-sep"></div>
+  <div class="strip-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+    01 48 85 91 74
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-images">
+    <img class="about-img-main" src="http://www.latabledesmarronniers.fr/img-customer/configuration/61616a333d66e.20f4ab094d845b2ba8610b1c2d289aab.jpeg" alt="Salle du restaurant"/>
+    <div class="about-img-badge">
+      <img src="http://www.latabledesmarronniers.fr/img-customer/configuration/616430829f1ad.372559d6b37ba014d33456a1ef56f461.jpeg" alt="Plat signature"/>
+    </div>
+  </div>
+  <div class="about-text reveal">
+    <span class="section-label">Notre histoire</span>
+    <h2 class="section-title">Un lieu <em>pensé</em><br>pour les gourmets</h2>
+    <p class="section-body">La Table des Marronniers est un concept unique alliant restaurant gastronomique et épicerie fine artisanale. Chaque plat est élaboré avec des produits frais du terroir, dans le respect des saisons et des traditions françaises.</p>
+    <div class="divider"></div>
+    <div class="features">
+      <div class="feature"><div class="feature-dot"></div><p><strong>Carte saisonnière</strong> — renouvelée selon les arrivages et l'inspiration du chef</p></div>
+      <div class="feature"><div class="feature-dot"></div><p><strong>Épicerie fine</strong> — foie gras, truffes, fromages affinés, chocolats artisanaux</p></div>
+      <div class="feature"><div class="feature-dot"></div><p><strong>Coffrets cadeaux</strong> — sélections sur-mesure pour toutes les occasions</p></div>
+    </div>
+    <a href="#menu" class="btn-primary" style="align-self:flex-start;">Voir la carte</a>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu-section" id="menu">
+  <div class="menu-header reveal">
+    <span class="section-label" style="justify-content:center; color:var(--gold);">La carte</span>
+    <h2 class="menu-title">Saveurs <em style="font-style:italic">d'exception</em></h2>
+    <p class="menu-sub">Une sélection inspirée des produits de saison</p>
+  </div>
+  <div class="menu-tabs">
+    <button class="menu-tab active" onclick="switchTab(this,'entrees')">Entrées</button>
+    <button class="menu-tab" onclick="switchTab(this,'plats')">Plats</button>
+    <button class="menu-tab" onclick="switchTab(this,'desserts')">Desserts</button>
+  </div>
+
+  <!-- ENTRÉES -->
+  <div class="menu-grid" id="entrees">
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Foie gras maison</div>
+        <div class="menu-card-price">22€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Chutney de figues, brioche toastée et fleur de sel de Guérande</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Carpaccio de Saint-Jacques</div>
+        <div class="menu-card-price">18€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Agrumes, caviar de hareng et huile vierge extra</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Velouté de champignons</div>
+        <div class="menu-card-price">14€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Crème montée à la truffe noire, mouillettes grillées</div>
+    </div>
+  </div>
+
+  <!-- PLATS (hidden) -->
+  <div class="menu-grid" id="plats" style="display:none">
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Filet de bœuf Rossini</div>
+        <div class="menu-card-price">36€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Escalope de foie gras poêlée, sauce Périgueux, pommes sarladaises</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Turbot rôti entier</div>
+        <div class="menu-card-price">32€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Beurre blanc aux herbes, légumes de saison, caviar d'Aquitaine</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Côte de veau fermière</div>
+        <div class="menu-card-price">29€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Jus corsé, gnocchi à la romaine, champignons de Paris</div>
+    </div>
+  </div>
+
+  <!-- DESSERTS (hidden) -->
+  <div class="menu-grid" id="desserts" style="display:none">
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Soufflé au Grand Marnier</div>
+        <div class="menu-card-price">12€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Crème anglaise vanille bourbon, zestes d'orange confits</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Tarte Tatin maison</div>
+        <div class="menu-card-price">10€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Pommes Reinettes, caramel beurre salé, glace vanille</div>
+    </div>
+    <div class="menu-card">
+      <div class="menu-card-top">
+        <div class="menu-card-name">Sélection de fromages</div>
+        <div class="menu-card-price">16€</div>
+      </div>
+      <div class="menu-sep"></div>
+      <div class="menu-card-desc">Plateau affiné, condiments maison, pain de campagne grillé</div>
+    </div>
+  </div>
+
+  <div class="menu-cta">
+    <a href="#reservation" class="btn-primary">Réserver votre expérience</a>
+  </div>
+</section>
+
+<!-- EPICERIE FINE -->
+<section class="epicerie" id="epicerie">
+  <div class="epicerie-text reveal">
+    <span class="section-label">Épicerie fine</span>
+    <h2 class="section-title">L'art de la<br><em>table à emporter</em></h2>
+    <p class="section-body">Notre épicerie fine sélectionne pour vous le meilleur de l'artisanat gastronomique français. Venez composer votre panier ou offrir le goût du luxe en coffret cadeau personnalisé.</p>
+    <div class="tags">
+      <span class="tag">Foie gras maison</span>
+      <span class="tag">Truffes & Caviar</span>
+      <span class="tag">Fromages affinés</span>
+      <span class="tag">Poissons fumés</span>
+      <span class="tag">Chocolats & Macarons</span>
+      <span class="tag">Cave à vins</span>
+      <span class="tag">Pâtes fraîches</span>
+      <span class="tag">Thés & Cafés fins</span>
+    </div>
+    <a href="#reservation" class="btn-primary" style="align-self:flex-start;">Nous contacter</a>
+  </div>
+  <div class="epicerie-images">
+    <img src="https://images.unsplash.com/photo-1550583724-b2692b85b150?w=500&auto=format&fit=crop&q=80" alt="Fromages"/>
+    <img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=500&auto=format&fit=crop&q=80" alt="Charcuterie"/>
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZLT-clx1b9P4X6EG1Kv08tYWgPyy3OhkF9g&s" alt="Cave à vins"/>
+    <img src="https://images.unsplash.com/photo-1481391319762-47dff72954d9?w=500&auto=format&fit=crop&q=80" alt="Chocolats"/>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<div class="gallery">
+  <div class="gallery-item tall">
+    <img src="http://www.latabledesmarronniers.fr/img-customer/configuration/61616a55e4167.cb3597cb66f768b6394e566e762c5a44.jpeg" alt="Salle du restaurant"/>
+  </div>
+  <div class="gallery-item">
+    <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600&auto=format&fit=crop&q=80" alt="Plat"/>
+  </div>
+  <div class="gallery-item">
+    <img src="http://www.latabledesmarronniers.fr/img-customer/configuration/616430829f1ad.372559d6b37ba014d33456a1ef56f461.jpeg" alt="Plat signature"/>
+  </div>
+  <div class="gallery-item">
+    <img src="http://www.latabledesmarronniers.fr/img-customer/configuration/61641a3d19649.f1e9a207f749d76866ce5c8c92b352be.png" alt="Viande"/>
+  </div>
+</div>
+
+<!-- HORAIRES -->
+<section id="horaires" style="padding: 6rem 4rem; background: var(--warm-white);">
+  <div style="max-width:900px; margin:0 auto;">
+    <div style="text-align:center; margin-bottom:4rem;" class="reveal">
+      <span class="section-label" style="justify-content:center;">Infos pratiques</span>
+      <h2 class="section-title" style="font-size:2.8rem;">Horaires <em>&</em> Accès</h2>
+    </div>
+    <div class="hours-section" style="padding:0; max-width:100%;">
+      <div class="hours-block reveal">
+        <p class="hours-title">Restaurant</p>
+        <p class="hours-subtitle">Service du déjeuner & dîner</p>
+        <div class="hours-list">
+          <div class="hours-row"><span class="day">Lundi</span><span>12h–13h30 · 19h30–21h30</span></div>
+          <div class="hours-row"><span class="day">Mardi</span><span class="closed">Fermé</span></div>
+          <div class="hours-row"><span class="day">Mercredi</span><span class="closed">Fermé</span></div>
+          <div class="hours-row"><span class="day">Jeudi</span><span>12h–13h30 · 19h30–21h30</span></div>
+          <div class="hours-row"><span class="day">Vendredi</span><span>12h–13h30 · 19h30–21h30</span></div>
+          <div class="hours-row"><span class="day">Samedi</span><span>12h–13h30 · 19h30–21h30</span></div>
+          <div class="hours-row"><span class="day">Dimanche</span><span>12h–13h30 · 19h30–21h30</span></div>
+        </div>
+      </div>
+      <div class="hours-divider"></div>
+      <div class="hours-block reveal">
+        <p class="hours-title">Épicerie fine</p>
+        <p class="hours-subtitle">Mêmes horaires que le restaurant</p>
+        <div style="margin: 2rem 0; padding: 2rem; background: var(--cream); border-left: 2px solid var(--gold);">
+          <p style="font-family: 'Cormorant Garamond', serif; font-size:1.1rem; font-weight:300; color:var(--brown); margin-bottom:0.7rem;">Comment nous trouver</p>
+          <p style="font-size:0.85rem; color:var(--text-light); line-height:1.7; font-weight:300;">8 Place des Marronniers<br>94100 Saint-Maur-des-Fossés<br><br>RER A — Saint-Maur–Créteil<br>Bus 103, 111</p>
+        </div>
+        <a href="tel:0148859174" style="font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; color:var(--gold); text-decoration:none; letter-spacing:0.05em;">01 48 85 91 74</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESERVATION -->
+<section class="reservation" id="reservation">
+  <div class="reservation-content reveal">
+    <p class="res-eyebrow">Réservation en ligne</p>
+    <h2 class="res-title">Réservez votre<br><em style="font-style:italic; color:var(--gold-light)">moment de grâce</em></h2>
+    <p class="res-sub">Le restaurant La Table des Marronniers vous ouvre ses portes et vous fait découvrir ses plats travaillés avec des produits frais du terroir.</p>
+    <div class="res-actions">
+      <a href="https://boutique.wysifood.fr/32ee9eebcc2002326df91e13f5439db9/order/date" target="_blank" class="btn-primary">Réserver en ligne</a>
+      <a href="tel:0148859174" class="btn-ghost">01 48 85 91 74</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <a class="footer-logo" href="#">La Table des Marronniers</a>
+    <p class="footer-desc">Restaurant gastronomique et épicerie fine artisanale au cœur de Saint-Maur-des-Fossés. Une expérience culinaire française d'exception.</p>
+  </div>
+  <div class="footer-col">
+    <h4>Navigation</h4>
+    <div class="footer-links">
+      <a href="#about">L'histoire</a>
+      <a href="#menu">La carte</a>
+      <a href="#epicerie">Épicerie fine</a>
+      <a href="#horaires">Horaires</a>
+      <a href="#reservation">Réservation</a>
+    </div>
+  </div>
+  <div class="footer-col">
+    <h4>Nous trouver</h4>
+    <div class="footer-links">
+      <a href="#">8 Place des Marronniers</a>
+      <a href="#">94100 Saint-Maur-des-Fossés</a>
+      <a href="tel:0148859174">01 48 85 91 74</a>
+    </div>
+  </div>
+  <div class="footer-col">
+    <h4>Suivre</h4>
+    <div class="footer-links">
+      <a href="#">Facebook</a>
+      <a href="#">Instagram</a>
+      <a href="#">TripAdvisor</a>
+    </div>
+  </div>
+</footer>
+<div class="footer-bottom">
+  <p>© 2025 La Table des Marronniers — Tous droits réservés</p>
+  <p>Conçu avec passion à Saint-Maur-des-Fossés</p>
+</div>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => obs.observe(r));
+
+  // Menu tabs
+  function switchTab(btn, id) {
+    document.querySelectorAll('.menu-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    ['entrees','plats','desserts'].forEach(tab => {
+      document.getElementById(tab).style.display = (tab === id) ? 'grid' : 'none';
+    });
+  }
+</script>
+</body>
+</html>

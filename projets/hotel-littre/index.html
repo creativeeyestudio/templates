@@ -475,8 +475,7 @@
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(to bottom, rgba(10,22,40,0.45) 0%, rgba(10,22,40,0.1) 40%, rgba(10,22,40,0.7) 100%),
-      linear-gradient(135deg, #0d2550 0%, #1a4080 30%, #0f2a5c 55%, #091a38 80%, #060f22 100%);
+      url('./accueil.jpg') center bottom;
   }
 
   /* Architectural window illusion */
@@ -903,13 +902,13 @@
 
   /* Room visual gradient placeholders */
   .room-visual-1 {
-    background: linear-gradient(135deg, #0e2245 0%, #1a3a6e 40%, #0d1c38 100%);
+    background: url('./suite.avif');
   }
   .room-visual-2 {
-    background: linear-gradient(135deg, #122040 0%, #2460b5 60%, #0a1628 100%);
+    background: url('./chambre-deluxe.jpg');
   }
   .room-visual-3 {
-    background: linear-gradient(135deg, #0a1a35 0%, #163056 50%, #091522 100%);
+    background: url('./chambre-simple.jpg') center bottom;
   }
 
   /* Decorative room elements */
@@ -1294,7 +1293,7 @@
     </p>
 
     <div class="hero-actions">
-      <a href="#reservation" class="btn-primary"><span>Réserver</span></a>
+      <a href="#reservation" class="btn-ghost"><span>Réserver</span></a>
       <a href="#chambres" class="btn-ghost">Nos chambres</a>
     </div>
 
@@ -1399,7 +1398,6 @@
   <div class="rooms-grid">
     <div class="room-card">
       <div class="room-visual room-visual-1">
-        <div class="room-window"></div>
         <div class="room-info">
           <p class="room-category">Notre meilleure chambre</p>
           <h3 class="room-name">Suite Haussmann</h3>
@@ -1416,7 +1414,6 @@
     <div class="room-right">
       <div class="room-card">
         <div class="room-visual room-visual-2">
-          <div class="room-window"></div>
           <div class="room-info">
             <p class="room-category">Chambre supérieure</p>
             <h3 class="room-name">Chambre Deluxe</h3>
@@ -1430,7 +1427,6 @@
       </div>
       <div class="room-card">
         <div class="room-visual room-visual-3">
-          <div class="room-window"></div>
           <div class="room-info">
             <p class="room-category">Standard</p>
             <h3 class="room-name">Chambre Classique</h3>

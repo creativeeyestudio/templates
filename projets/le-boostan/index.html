@@ -1,964 +1,3183 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boostan — Restaurant & Salon de Thé</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
-<style>
-:root {
-  --sage:        #E9EEE7;
-  --sage-lt:     #F2F6F0;
-  --sage-mid:    #D0DBCA;
-  --sage-dk:     #B8CAAF;
-  --forest:      #1E2B1A;
-  --forest-mid:  #263320;
-  --forest-soft: #304028;
-  --olive:       #3A4A30;
-  --moss:        #2A3824;
-  --gold:        #B8963C;
-  --gold-lt:     #D4B060;
-  --gold-warm:   #C8A448;
-  --ink:         #1A2416;
-  --ink-mid:     #2E3D28;
-  --text-muted:  #5A6E52;
-  --text-dim:    #8A9E82;
-  --on-dk:       #D8E2D4;
-  --on-dk-dim:   #6A8860;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;background:var(--forest)}
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Boostan — Restaurant & Salon de Thé</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,500&family=DM+Sans:wght@200;300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --sage: #e9eee7;
+        --sage-lt: #f2f6f0;
+        --sage-mid: #d0dbca;
+        --sage-dk: #b8caaf;
+        --forest: #1e2b1a;
+        --forest-mid: #263320;
+        --forest-soft: #304028;
+        --olive: #3a4a30;
+        --moss: #2a3824;
+        --gold: #b8963c;
+        --gold-lt: #d4b060;
+        --gold-warm: #c8a448;
+        --ink: #1a2416;
+        --ink-mid: #2e3d28;
+        --text-muted: #5a6e52;
+        --text-dim: #8a9e82;
+        --on-dk: #d8e2d4;
+        --on-dk-dim: #6a8860;
+      }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        font-weight: 300;
+        overflow-x: hidden;
+        background: var(--forest);
+      }
 
-#cur{position:fixed;width:9px;height:9px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
-#cur-ring{position:fixed;width:32px;height:32px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:left .1s,top .1s;opacity:.5}
+      #cur {
+        position: fixed;
+        width: 9px;
+        height: 9px;
+        background: var(--gold);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9999;
+        transform: translate(-50%, -50%);
+      }
+      #cur-ring {
+        position: fixed;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--gold);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 9998;
+        transform: translate(-50%, -50%);
+        transition:
+          left 0.1s,
+          top 0.1s;
+        opacity: 0.5;
+      }
 
-nav{position:fixed;top:0;left:0;right:0;z-index:200;display:flex;align-items:center;justify-content:space-between;padding:28px 48px;transition:all .4s}
-nav.s-dark{background:rgba(30,43,26,.96);padding:18px 48px;backdrop-filter:blur(16px);border-bottom:1px solid rgba(184,150,60,.15)}
-nav.s-light{background:rgba(233,238,231,.96);padding:18px 48px;backdrop-filter:blur(16px);border-bottom:1px solid rgba(184,150,60,.2)}
-.nav-logo{height:30px;display:block;transition:filter .3s}
-.logo-inv{filter:invert(1) brightness(1.8) sepia(.3) hue-rotate(40deg) saturate(.6)}
-.logo-dk{filter:brightness(0) saturate(0);opacity:.85}
+      nav {
+        
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 48px;
+        transition: all 0.4s;
+      }
 
-/* Hamburger */
-.hamburger{background:none;border:none;cursor:pointer;padding:8px;display:flex;flex-direction:column;gap:6px;position:relative;z-index:500}
-.hb-line{display:block;width:28px;height:1.5px;background:var(--on-dk);transition:transform .45s cubic-bezier(.77,0,.18,1),opacity .3s,width .35s,background .3s;transform-origin:center}
-nav.s-light .hb-line{background:var(--ink)}
-.hamburger.open .hb-line:nth-child(1){transform:translateY(7.5px) rotate(45deg);width:28px}
-.hamburger.open .hb-line:nth-child(2){opacity:0;transform:scaleX(0)}
-.hamburger.open .hb-line:nth-child(3){transform:translateY(-7.5px) rotate(-45deg);width:28px}
-.hamburger.open .hb-line{background:rgba(233,238,231,.9)!important}
+      nav:not(.fsm-nav) {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 200;
+      }
 
-.nav-btn{padding:11px 28px;background:var(--gold);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;border:none;cursor:pointer;font-weight:500;transition:all .3s;position:relative;z-index:500}
-.nav-btn:hover{background:var(--forest-soft);color:var(--gold-lt)}
-nav.s-light .nav-btn:hover{background:var(--ink);color:var(--gold-lt)}
 
-/* ─── FULLSCREEN MENU ─── */
-@keyframes menuSlideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
-@keyframes menuSlideOut{from{transform:translateX(0)}to{transform:translateX(-100%)}}
-@keyframes imgFadeIn{from{opacity:0;transform:scale(1.04)}to{opacity:1;transform:scale(1)}}
-@keyframes itemReveal{from{opacity:0;transform:translateY(22px) skewY(3deg)}to{opacity:1;transform:translateY(0) skewY(0)}}
-@keyframes captionIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+      nav.s-dark {
+        background: rgba(30, 43, 26, 0.96);
+        padding: 18px 48px;
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(184, 150, 60, 0.15);
+      }
+      nav.s-light {
+        background: rgba(233, 238, 231, 0.96);
+        padding: 18px 48px;
+        backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(184, 150, 60, 0.2);
+      }
+      .nav-logo {
+        height: 30px;
+        display: block;
+        transition: filter 0.3s;
+      }
+      .logo-inv {
+        filter: invert(1) brightness(1.8) sepia(0.3) hue-rotate(40deg)
+          saturate(0.6);
+      }
+      .logo-dk {
+        filter: brightness(0) saturate(0);
+        opacity: 0.85;
+      }
 
-#fsMenu{
-  position:fixed;inset:0;z-index:300;
-  display:grid;grid-template-columns:55% 45%;
-  pointer-events:none;
-  visibility:hidden;
-}
-#fsMenu.opening,#fsMenu.open{visibility:visible;pointer-events:all}
+      /* Hamburger */
+      .hamburger {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        position: relative;
+        z-index: 500;
+      }
+      .hb-line {
+        display: block;
+        width: 28px;
+        height: 1.5px;
+        background: var(--on-dk);
+        transition:
+          transform 0.45s cubic-bezier(0.77, 0, 0.18, 1),
+          opacity 0.3s,
+          width 0.35s,
+          background 0.3s;
+        transform-origin: center;
+      }
+      nav.s-light .hb-line {
+        background: var(--ink);
+      }
+      .hamburger.open .hb-line:nth-child(1) {
+        transform: translateY(7.5px) rotate(45deg);
+        width: 28px;
+      }
+      .hamburger.open .hb-line:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+      }
+      .hamburger.open .hb-line:nth-child(3) {
+        transform: translateY(-7.5px) rotate(-45deg);
+        width: 28px;
+      }
+      .hamburger.open .hb-line {
+        background: rgba(233, 238, 231, 0.9) !important;
+      }
 
-.fsm-left{
-  background:var(--forest);
-  display:flex;flex-direction:column;
-  padding:0 64px 48px;
-  position:relative;overflow:hidden;
-  transform:translateX(-100%);
-  transition:transform .7s cubic-bezier(.77,0,.18,1);
-}
-#fsMenu.open .fsm-left{transform:translateX(0)}
+      .nav-btn {
+        padding: 11px 28px;
+        background: var(--gold);
+        color: var(--forest);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        border: none;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s;
+        position: relative;
+        z-index: 500;
+      }
+      .nav-btn:hover {
+        background: var(--forest-soft);
+        color: var(--gold-lt);
+      }
+      nav.s-light .nav-btn:hover {
+        background: var(--ink);
+        color: var(--gold-lt);
+      }
 
-.fsm-noise{
-  position:absolute;inset:0;pointer-events:none;opacity:.025;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size:180px;
-}
+      /* ─── FULLSCREEN MENU ─── */
+      @keyframes menuSlideIn {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(0);
+        }
+      }
+      @keyframes menuSlideOut {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-100%);
+        }
+      }
+      @keyframes imgFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(1.04);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+      @keyframes itemReveal {
+        from {
+          opacity: 0;
+          transform: translateY(22px) skewY(3deg);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) skewY(0);
+        }
+      }
+      @keyframes captionIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-.fsm-top{
-  height:88px;display:flex;align-items:center;
-  border-bottom:1px solid rgba(184,150,60,.1);
-  margin-bottom:48px;flex-shrink:0;
-}
-.fsm-logo{height:26px;filter:invert(1) sepia(.2) hue-rotate(40deg) saturate(.5) brightness(1.5);opacity:.85}
+      #fsMenu {
+        position: fixed;
+        inset: 0;
+        z-index: 300;
+        display: grid;
+        grid-template-columns: 55% 45%;
+        pointer-events: none;
+        visibility: hidden;
+      }
+      #fsMenu.opening,
+      #fsMenu.open {
+        visibility: visible;
+        pointer-events: all;
+      }
 
-.fsm-nav ul{list-style:none;flex:1}
-.fsm-nav{flex:1;display:flex;align-items:center}
+      .fsm-left {
+        background: var(--forest);
+        display: flex;
+        flex-direction: column;
+        padding: 0 64px 48px;
+        position: relative;
+        overflow: hidden;
+        transform: translateX(-100%);
+        transition: transform 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      #fsMenu.open .fsm-left {
+        transform: translateX(0);
+      }
 
-.fsm-item{
-  border-bottom:1px solid rgba(184,150,60,.08);
-  overflow:hidden;
-}
-.fsm-item:first-child{border-top:1px solid rgba(184,150,60,.08)}
+      .fsm-noise {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        opacity: 0.025;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        background-size: 180px;
+      }
 
-.fsm-link{
-  display:flex;align-items:center;gap:20px;
-  padding:18px 0;text-decoration:none;
-  position:relative;
-  transform:translateY(40px) skewY(4deg);
-  opacity:0;
-  transition:transform .65s cubic-bezier(.22,1,.36,1),opacity .5s;
-}
-#fsMenu.open .fsm-link{transform:translateY(0) skewY(0);opacity:1}
-#fsMenu.open .fsm-item:nth-child(1) .fsm-link{transition-delay:.12s}
-#fsMenu.open .fsm-item:nth-child(2) .fsm-link{transition-delay:.18s}
-#fsMenu.open .fsm-item:nth-child(3) .fsm-link{transition-delay:.24s}
-#fsMenu.open .fsm-item:nth-child(4) .fsm-link{transition-delay:.30s}
-#fsMenu.open .fsm-item:nth-child(5) .fsm-link{transition-delay:.36s}
-#fsMenu.open .fsm-item:nth-child(6) .fsm-link{transition-delay:.42s}
+      .fsm-top {
+        height: 88px;
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid rgba(184, 150, 60, 0.1);
+        margin-bottom: 48px;
+        flex-shrink: 0;
+      }
+      .fsm-logo {
+        height: 26px;
+        filter: invert(1) sepia(0.2) hue-rotate(40deg) saturate(0.5)
+          brightness(1.5);
+        opacity: 0.85;
+      }
 
-.fsm-link::before{
-  content:'';position:absolute;left:-64px;right:-64px;top:0;bottom:0;
-  background:rgba(184,150,60,.04);
-  transform:scaleY(0);transform-origin:bottom;
-  transition:transform .3s ease;
-}
-.fsm-link:hover::before{transform:scaleY(1)}
+      .fsm-nav ul {
+        list-style: none;
+        flex: 1;
+      }
+      .fsm-nav {
+        flex: 1;
+        display: flex;
+        align-items: center;
+      }
 
-.fsm-num{
-  font-family:'DM Sans',sans-serif;font-size:.55rem;letter-spacing:3px;
-  color:var(--gold);opacity:.6;min-width:28px;flex-shrink:0;
-  transition:opacity .2s;
-}
-.fsm-link:hover .fsm-num{opacity:1}
+      .fsm-item {
+        border-bottom: 1px solid rgba(184, 150, 60, 0.08);
+        overflow: hidden;
+      }
+      .fsm-item:first-child {
+        border-top: 1px solid rgba(184, 150, 60, 0.08);
+      }
 
-.fsm-label{flex:1;display:flex;flex-direction:column;gap:3px}
+      .fsm-link {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 18px 0;
+        text-decoration: none;
+        position: relative;
+        transform: translateY(40px) skewY(4deg);
+        opacity: 0;
+        transition:
+          transform 0.65s cubic-bezier(0.22, 1, 0.36, 1),
+          opacity 0.5s;
+      }
+      #fsMenu.open .fsm-link {
+        transform: translateY(0) skewY(0);
+        opacity: 1;
+      }
+      #fsMenu.open .fsm-item:nth-child(1) .fsm-link {
+        transition-delay: 0.12s;
+      }
+      #fsMenu.open .fsm-item:nth-child(2) .fsm-link {
+        transition-delay: 0.18s;
+      }
+      #fsMenu.open .fsm-item:nth-child(3) .fsm-link {
+        transition-delay: 0.24s;
+      }
+      #fsMenu.open .fsm-item:nth-child(4) .fsm-link {
+        transition-delay: 0.3s;
+      }
+      #fsMenu.open .fsm-item:nth-child(5) .fsm-link {
+        transition-delay: 0.36s;
+      }
+      #fsMenu.open .fsm-item:nth-child(6) .fsm-link {
+        transition-delay: 0.42s;
+      }
 
-.fsm-title{
-  font-family:'Playfair Display',serif;
-  font-size:clamp(1.6rem,2.8vw,2.4rem);
-  font-weight:400;color:var(--sage);
-  line-height:1;
-  transition:color .2s,transform .3s;
-  display:block;
-}
-.fsm-link:hover .fsm-title{color:var(--gold-lt);transform:translateX(6px)}
+      .fsm-link::before {
+        content: "";
+        position: absolute;
+        left: -64px;
+        right: -64px;
+        top: 0;
+        bottom: 0;
+        background: rgba(184, 150, 60, 0.04);
+        transform: scaleY(0);
+        transform-origin: bottom;
+        transition: transform 0.3s ease;
+      }
+      .fsm-link:hover::before {
+        transform: scaleY(1);
+      }
 
-.fsm-hint{
-  font-family:'Cormorant Garamond',serif;font-style:italic;
-  font-size:.85rem;color:var(--on-dk-dim);
-  display:block;
-  transition:color .2s;
-}
-.fsm-link:hover .fsm-hint{color:rgba(184,150,60,.55)}
+      .fsm-num {
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.55rem;
+        letter-spacing: 3px;
+        color: var(--gold);
+        opacity: 0.6;
+        min-width: 28px;
+        flex-shrink: 0;
+        transition: opacity 0.2s;
+      }
+      .fsm-link:hover .fsm-num {
+        opacity: 1;
+      }
 
-.fsm-arrow{
-  font-size:1rem;color:var(--gold);
-  opacity:0;transform:translateX(-8px);
-  transition:opacity .25s,transform .3s;
-  flex-shrink:0;
-}
-.fsm-link:hover .fsm-arrow{opacity:1;transform:translateX(0)}
+      .fsm-label {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+      }
 
-.fsm-footer{
-  display:flex;align-items:flex-end;gap:40px;flex-wrap:wrap;
-  padding-top:32px;border-top:1px solid rgba(184,150,60,.1);
-  flex-shrink:0;
-  opacity:0;transform:translateY(12px);
-  transition:opacity .5s .5s,transform .5s .5s;
-}
-#fsMenu.open .fsm-footer{opacity:1;transform:translateY(0)}
+      .fsm-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+        font-weight: 400;
+        color: var(--sage);
+        line-height: 1;
+        transition:
+          color 0.2s,
+          transform 0.3s;
+        display: block;
+      }
+      .fsm-link:hover .fsm-title {
+        color: var(--gold-lt);
+        transform: translateX(6px);
+      }
 
-.fsm-info-tag{font-size:.52rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:5px}
-.fsm-info-val{font-size:.78rem;color:var(--on-dk-dim);line-height:1.7}
-.fsm-info-val a{color:var(--gold-lt);text-decoration:none;transition:color .2s}
-.fsm-info-val a:hover{color:var(--sage)}
+      .fsm-hint {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 0.85rem;
+        color: var(--on-dk-dim);
+        display: block;
+        transition: color 0.2s;
+      }
+      .fsm-link:hover .fsm-hint {
+        color: rgba(184, 150, 60, 0.55);
+      }
 
-.fsm-socials{display:flex;gap:10px;margin-left:auto}
-.fsm-soc{width:36px;height:36px;border:1px solid rgba(184,150,60,.2);display:flex;align-items:center;justify-content:center;color:var(--on-dk-dim);font-size:.62rem;text-decoration:none;font-family:'DM Sans',sans-serif;transition:all .25s}
-.fsm-soc:hover{border-color:var(--gold);color:var(--gold)}
+      .fsm-arrow {
+        font-size: 1rem;
+        color: var(--gold);
+        opacity: 0;
+        transform: translateX(-8px);
+        transition:
+          opacity 0.25s,
+          transform 0.3s;
+        flex-shrink: 0;
+      }
+      .fsm-link:hover .fsm-arrow {
+        opacity: 1;
+        transform: translateX(0);
+      }
 
-/* Panneau droit */
-.fsm-right{
-  position:relative;overflow:hidden;
-  transform:translateX(100%);
-  transition:transform .7s cubic-bezier(.77,0,.18,1);
-}
-#fsMenu.open .fsm-right{transform:translateX(0)}
+      .fsm-footer {
+        display: flex;
+        align-items: flex-end;
+        gap: 40px;
+        flex-wrap: wrap;
+        padding-top: 32px;
+        border-top: 1px solid rgba(184, 150, 60, 0.1);
+        flex-shrink: 0;
+        opacity: 0;
+        transform: translateY(12px);
+        transition:
+          opacity 0.5s 0.5s,
+          transform 0.5s 0.5s;
+      }
+      #fsMenu.open .fsm-footer {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-.fsm-img{
-  position:absolute;inset:0;
-  background-size:cover;background-position:center;
-  background-color:var(--forest-soft);
-  opacity:0;
-  transition:opacity .6s ease;
-}
-.fsm-img.active{opacity:1}
-.fsm-right-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(15,20,12,.75) 0%,rgba(15,20,12,.1) 50%,transparent 100%),linear-gradient(to right,rgba(15,20,12,.3) 0%,transparent 40%)}
+      .fsm-info-tag {
+        font-size: 0.52rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 5px;
+      }
+      .fsm-info-val {
+        font-size: 0.78rem;
+        color: var(--on-dk-dim);
+        line-height: 1.7;
+      }
+      .fsm-info-val a {
+        color: var(--gold-lt);
+        text-decoration: none;
+        transition: color 0.2s;
+      }
+      .fsm-info-val a:hover {
+        color: var(--sage);
+      }
 
-.fsm-right-caption{
-  position:absolute;bottom:48px;left:40px;right:40px;
-  font-family:'Playfair Display',serif;font-style:italic;
-  font-size:1.5rem;font-weight:400;color:var(--sage);
-  line-height:1.2;
-  opacity:0;transform:translateY(8px);
-  transition:opacity .4s,transform .4s;
-  pointer-events:none;
-}
-.fsm-right-tag{
-  position:absolute;bottom:32px;left:40px;
-  font-size:.55rem;letter-spacing:4px;text-transform:uppercase;
-  color:var(--gold);opacity:0;
-  transition:opacity .4s .1s;
-  pointer-events:none;
-}
-#fsMenu.open .fsm-right-caption{opacity:1;transform:translateY(0);transition-delay:.55s}
-#fsMenu.open .fsm-right-tag{opacity:1;transition-delay:.6s}
+      .fsm-socials {
+        display: flex;
+        gap: 10px;
+        margin-left: auto;
+      }
+      .fsm-soc {
+        width: 36px;
+        height: 36px;
+        border: 1px solid rgba(184, 150, 60, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--on-dk-dim);
+        font-size: 0.62rem;
+        text-decoration: none;
+        font-family: "DM Sans", sans-serif;
+        transition: all 0.25s;
+      }
+      .fsm-soc:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
 
-@media(max-width:768px){
-  #fsMenu{grid-template-columns:1fr}
-  .fsm-right{display:none}
-  .fsm-left{padding:0 28px 36px}
-  .fsm-top{height:72px;margin-bottom:28px}
-  .fsm-link{padding:14px 0}
-}
+      /* Panneau droit */
+      .fsm-right {
+        position: relative;
+        overflow: hidden;
+        transform: translateX(100%);
+        transition: transform 0.7s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      #fsMenu.open .fsm-right {
+        transform: translateX(0);
+      }
 
-@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
-@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes tkr{from{transform:translateX(0)}to{transform:translateX(-50%)}}
-@keyframes bar{0%{transform:translateX(-100%)}50%{transform:translateX(0)}100%{transform:translateX(100%)}}
+      .fsm-img {
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        background-color: var(--forest-soft);
+        opacity: 0;
+        transition: opacity 0.6s ease;
+      }
+      .fsm-img.active {
+        opacity: 1;
+      }
+      .fsm-right-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(
+            to top,
+            rgba(15, 20, 12, 0.75) 0%,
+            rgba(15, 20, 12, 0.1) 50%,
+            transparent 100%
+          ),
+          linear-gradient(to right, rgba(15, 20, 12, 0.3) 0%, transparent 40%);
+      }
 
-/* HERO */
-.hero{min-height:100vh;background:var(--forest);position:relative;overflow:hidden;display:flex;align-items:center}
-.hero-glow{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 55% 65% at 85% 45%,rgba(184,150,60,.1) 0%,transparent 65%),radial-gradient(ellipse 40% 50% at 5% 75%,rgba(48,64,40,.6) 0%,transparent 60%)}
-.hero-dots{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(circle,rgba(184,150,60,.07) 1px,transparent 1px);background-size:36px 36px}
-.hero-inner{position:relative;z-index:2;padding:160px 64px 100px;max-width:880px}
-.eyebrow{display:inline-flex;align-items:center;gap:14px;font-size:.6rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:28px;animation:rise .8s .1s both}
-.eyebrow::before{content:'';width:32px;height:1px;background:var(--gold);opacity:.5}
-.hero-h1{font-family:'Playfair Display',serif;font-size:clamp(4.5rem,9.5vw,9rem);color:var(--sage);line-height:.9;font-weight:400;animation:rise .9s .2s both}
-.hero-h1 em{font-style:italic;color:var(--gold-lt)}
-.hero-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--on-dk-dim);margin-top:22px;animation:rise .9s .35s both}
-.hero-btns{display:flex;gap:14px;margin-top:50px;flex-wrap:wrap;animation:rise .9s .5s both}
-.hero-ring{position:absolute;border-radius:50%;border:1px solid rgba(184,150,60,.08);pointer-events:none;top:50%;transform:translateY(-50%)}
-.scroll-row{position:absolute;bottom:40px;left:64px;display:flex;align-items:center;gap:14px;color:var(--on-dk-dim);font-size:.57rem;letter-spacing:3px;text-transform:uppercase;animation:rise 1s .9s both}
-.sbar{width:40px;height:1px;background:rgba(184,150,60,.3);position:relative;overflow:hidden}
-.sbar::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;background:var(--gold);animation:bar 2s ease infinite}
+      .fsm-right-caption {
+        position: absolute;
+        bottom: 48px;
+        left: 40px;
+        right: 40px;
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.5rem;
+        font-weight: 400;
+        color: var(--sage);
+        line-height: 1.2;
+        opacity: 0;
+        transform: translateY(8px);
+        transition:
+          opacity 0.4s,
+          transform 0.4s;
+        pointer-events: none;
+      }
+      .fsm-right-tag {
+        position: absolute;
+        bottom: 32px;
+        left: 40px;
+        font-size: 0.55rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        opacity: 0;
+        transition: opacity 0.4s 0.1s;
+        pointer-events: none;
+      }
+      #fsMenu.open .fsm-right-caption {
+        opacity: 1;
+        transform: translateY(0);
+        transition-delay: 0.55s;
+      }
+      #fsMenu.open .fsm-right-tag {
+        opacity: 1;
+        transition-delay: 0.6s;
+      }
 
-/* BTNS */
-.btn-fill{display:inline-flex;align-items:center;gap:10px;padding:17px 44px;background:var(--gold);color:var(--forest);font-family:'DM Sans',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:none;cursor:pointer;position:relative;overflow:hidden;font-weight:500;transition:color .3s}
-.btn-fill::after{content:'';position:absolute;inset:0;background:var(--olive);transform:translateX(-102%);transition:transform .4s cubic-bezier(.77,0,.18,1)}
-.btn-fill:hover{color:var(--gold-lt)}
-.btn-fill:hover::after{transform:translateX(0)}
-.btn-fill span{position:relative;z-index:1}
-.btn-gdk{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border:1px solid rgba(184,150,60,.35);color:var(--on-dk);font-family:'DM Sans',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;background:transparent;cursor:pointer;transition:all .3s;text-decoration:none}
-.btn-gdk:hover{border-color:var(--gold);color:var(--gold)}
-.btn-glt{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border:1px solid rgba(30,43,26,.3);color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;background:transparent;cursor:pointer;transition:all .3s;text-decoration:none}
-.btn-glt:hover{border-color:var(--gold-warm);color:var(--gold-warm)}
+      @media (max-width: 768px) {
+        #fsMenu {
+          grid-template-columns: 1fr;
+        }
+        .fsm-right {
+          display: none;
+        }
+        .fsm-left {
+          padding: 0 28px 36px;
+        }
+        .fsm-top {
+          height: 72px;
+          margin-bottom: 28px;
+        }
+        .fsm-link {
+          padding: 14px 0;
+        }
+      }
 
-/* TICKER */
-.ticker{background:var(--gold);overflow:hidden;white-space:nowrap}
-.tkr-track{display:inline-flex;animation:tkr 24s linear infinite;padding:17px 0}
-.tkr-item{display:inline-flex;align-items:center;gap:20px;padding:0 36px;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--forest);font-weight:500}
-.tkr-dot{width:4px;height:4px;background:var(--forest);border-radius:50%;opacity:.3}
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes tkr {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-50%);
+        }
+      }
+      @keyframes bar {
+        0% {
+          transform: translateX(-100%);
+        }
+        50% {
+          transform: translateX(0);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
 
-/* SEC HELPERS */
-.sec-sage{background:var(--sage);padding:100px 64px;position:relative}
-.sec-sage::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 50% 60% at 95% 5%,rgba(184,150,60,.06) 0%,transparent 60%)}
-.sec-forest{background:var(--forest);padding:100px 64px;position:relative;overflow:hidden}
-.sec-forest::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(45deg,rgba(184,150,60,.015) 0px,rgba(184,150,60,.015) 1px,transparent 1px,transparent 55px)}
-.sec-olive{background:var(--olive);padding:100px 64px;position:relative;overflow:hidden}
-.sec-olive::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:repeating-linear-gradient(0deg,rgba(233,238,231,.02) 0px,rgba(233,238,231,.02) 1px,transparent 1px,transparent 70px),repeating-linear-gradient(90deg,rgba(233,238,231,.02) 0px,rgba(233,238,231,.02) 1px,transparent 1px,transparent 70px)}
-.sec-sage-lt{background:var(--sage-lt);padding:100px 64px}
-.sec-moss{background:var(--moss);padding:64px}
+      /* HERO */
+      .hero {
+        min-height: 100vh;
+        background: var(--forest);
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+      }
+      .hero-glow {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background:
+          radial-gradient(
+            ellipse 55% 65% at 85% 45%,
+            rgba(184, 150, 60, 0.1) 0%,
+            transparent 65%
+          ),
+          radial-gradient(
+            ellipse 40% 50% at 5% 75%,
+            rgba(48, 64, 40, 0.6) 0%,
+            transparent 60%
+          );
+      }
+      .hero-dots {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: radial-gradient(
+          circle,
+          rgba(184, 150, 60, 0.07) 1px,
+          transparent 1px
+        );
+        background-size: 36px 36px;
+      }
+      .hero-inner {
+        position: relative;
+        z-index: 2;
+        padding: 160px 64px 100px;
+        max-width: 880px;
+      }
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 0.6rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 28px;
+        animation: rise 0.8s 0.1s both;
+      }
+      .eyebrow::before {
+        content: "";
+        width: 32px;
+        height: 1px;
+        background: var(--gold);
+        opacity: 0.5;
+      }
+      .hero-h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(4.5rem, 9.5vw, 9rem);
+        color: var(--sage);
+        line-height: 0.9;
+        font-weight: 400;
+        animation: rise 0.9s 0.2s both;
+      }
+      .hero-h1 em {
+        font-style: italic;
+        color: var(--gold-lt);
+      }
+      .hero-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 1.4rem;
+        color: var(--on-dk-dim);
+        margin-top: 22px;
+        animation: rise 0.9s 0.35s both;
+      }
+      .hero-btns {
+        display: flex;
+        gap: 14px;
+        margin-top: 50px;
+        flex-wrap: wrap;
+        animation: rise 0.9s 0.5s both;
+      }
+      .hero-ring {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid rgba(184, 150, 60, 0.08);
+        pointer-events: none;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .scroll-row {
+        position: absolute;
+        bottom: 40px;
+        left: 64px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        color: var(--on-dk-dim);
+        font-size: 0.57rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        animation: rise 1s 0.9s both;
+      }
+      .sbar {
+        width: 40px;
+        height: 1px;
+        background: rgba(184, 150, 60, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+      .sbar::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--gold);
+        animation: bar 2s ease infinite;
+      }
 
-.sh{margin-bottom:56px}
-.sh-tag{font-size:.57rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.sh-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:400;line-height:1.1}
-.sh-dk{color:var(--on-dk)}
-.sh-lt{color:var(--ink)}
-.sh-rule{width:44px;height:2px;background:var(--gold);margin-top:16px}
+      /* BTNS */
+      .btn-fill {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 17px 44px;
+        background: var(--gold);
+        color: var(--forest);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+        position: relative;
+        overflow: hidden;
+        font-weight: 500;
+        transition: color 0.3s;
+      }
+      .btn-fill::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: var(--olive);
+        transform: translateX(-102%);
+        transition: transform 0.4s cubic-bezier(0.77, 0, 0.18, 1);
+      }
+      .btn-fill:hover {
+        color: var(--gold-lt);
+      }
+      .btn-fill:hover::after {
+        transform: translateX(0);
+      }
+      .btn-fill span {
+        position: relative;
+        z-index: 1;
+      }
+      .btn-gdk {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 44px;
+        border: 1px solid rgba(184, 150, 60, 0.35);
+        color: var(--on-dk);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .btn-gdk:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .btn-glt {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 44px;
+        border: 1px solid rgba(30, 43, 26, 0.3);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        background: transparent;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+      .btn-glt:hover {
+        border-color: var(--gold-warm);
+        color: var(--gold-warm);
+      }
 
-/* CATEGORIES */
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px}
-.cat-card{position:relative;height:244px;overflow:hidden;cursor:pointer;background:var(--forest-soft)}
-.cat-card.tall{height:320px}
-.cat-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .55s cubic-bezier(.25,.46,.45,.94)}
-.cat-card:hover .cat-bg{transform:scale(1.07)}
-.cat-ov{position:absolute;inset:0;background:linear-gradient(to top,rgba(30,43,26,.92) 0%,rgba(30,43,26,.12) 55%,transparent 100%);transition:background .4s}
-.cat-card:hover .cat-ov{background:linear-gradient(to top,rgba(30,43,26,.97) 5%,rgba(30,43,26,.5) 100%)}
-.cat-body{position:absolute;bottom:0;left:0;right:0;padding:22px;transform:translateY(3px);transition:transform .35s}
-.cat-card:hover .cat-body{transform:translateY(0)}
-.cat-ico{font-size:1.35rem;margin-bottom:8px;opacity:.75}
-.cat-nm{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--sage);font-weight:400}
-.cat-sub{font-size:.56rem;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-top:4px;opacity:0;transition:opacity .25s .05s}
-.cat-card:hover .cat-sub{opacity:1}
-.cat-arr{position:absolute;top:16px;right:16px;width:34px;height:34px;border:1px solid rgba(184,150,60,.35);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:.9rem;opacity:0;transform:translate(3px,-3px);transition:all .3s}
-.cat-card:hover .cat-arr{opacity:1;transform:translate(0,0)}
-.bg-a{background:linear-gradient(135deg,#2A3818,#3D5228)}
-.bg-b{background:linear-gradient(135deg,#3A2810,#6A4218)}
-.bg-c{background:linear-gradient(135deg,#182A18,#284228)}
-.bg-d{background:linear-gradient(135deg,#2A1A0A,#503010)}
-.bg-e{background:linear-gradient(135deg,#1A2030,#2A3050)}
-.bg-f{background:linear-gradient(135deg,#2A1828,#482840)}
-.bg-g{background:linear-gradient(135deg,#0A1E2A,#1A3040)}
-.bg-h{background:linear-gradient(135deg,#201C08,#3C3410)}
+      /* TICKER */
+      .ticker {
+        background: var(--gold);
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .tkr-track {
+        display: inline-flex;
+        animation: tkr 24s linear infinite;
+        padding: 17px 0;
+      }
+      .tkr-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 20px;
+        padding: 0 36px;
+        font-size: 0.6rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--forest);
+        font-weight: 500;
+      }
+      .tkr-dot {
+        width: 4px;
+        height: 4px;
+        background: var(--forest);
+        border-radius: 50%;
+        opacity: 0.3;
+      }
 
-/* TABS */
-.tab-bar{display:flex;flex-wrap:wrap;border-bottom:1px solid rgba(184,150,60,.15);margin-bottom:48px}
-.tab-btn{padding:14px 26px;background:none;border:none;font-family:'DM Sans',sans-serif;font-size:.62rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;position:relative;transition:color .3s}
-.tab-btn::after{content:'';position:absolute;bottom:-1px;left:0;right:0;height:2px;background:var(--gold);transform:scaleX(0);transition:transform .3s}
-.tab-btn.active::after{transform:scaleX(1)}
-.tbar-dk .tab-btn{color:var(--on-dk-dim)}
-.tbar-dk .tab-btn.active{color:var(--gold)}
-.tab-pane{display:none}
-.tab-pane.active{display:block;animation:fadeUp .4s ease}
+      /* SEC HELPERS */
+      .sec-sage {
+        background: var(--sage);
+        padding: 100px 64px;
+        position: relative;
+      }
+      .sec-sage::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background: radial-gradient(
+          ellipse 50% 60% at 95% 5%,
+          rgba(184, 150, 60, 0.06) 0%,
+          transparent 60%
+        );
+      }
+      .sec-forest {
+        background: var(--forest);
+        padding: 100px 64px;
+        position: relative;
+        overflow: hidden;
+      }
+      .sec-forest::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image: repeating-linear-gradient(
+          45deg,
+          rgba(184, 150, 60, 0.015) 0px,
+          rgba(184, 150, 60, 0.015) 1px,
+          transparent 1px,
+          transparent 55px
+        );
+      }
+      .sec-olive {
+        background: var(--olive);
+        padding: 100px 64px;
+        position: relative;
+        overflow: hidden;
+      }
+      .sec-olive::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        background-image:
+          repeating-linear-gradient(
+            0deg,
+            rgba(233, 238, 231, 0.02) 0px,
+            rgba(233, 238, 231, 0.02) 1px,
+            transparent 1px,
+            transparent 70px
+          ),
+          repeating-linear-gradient(
+            90deg,
+            rgba(233, 238, 231, 0.02) 0px,
+            rgba(233, 238, 231, 0.02) 1px,
+            transparent 1px,
+            transparent 70px
+          );
+      }
+      .sec-sage-lt {
+        background: var(--sage-lt);
+        padding: 100px 64px;
+      }
+      .sec-moss {
+        background: var(--moss);
+        padding: 64px;
+      }
 
-/* MENU CARDS */
-.mgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:1px}
-.mgrid-dk{background:rgba(184,150,60,.07)}
-.mcard{padding:26px 28px;display:flex;gap:18px;align-items:flex-start;transition:background .3s}
-.mcard-dk{background:var(--forest)}
-.mcard-dk:hover{background:rgba(184,150,60,.05)}
-.memo{width:72px;height:72px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.7rem;border:1px solid rgba(184,150,60,.12);background:rgba(184,150,60,.05)}
-.minfo{flex:1}
-.mname{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;letter-spacing:.3px;color:var(--sage)}
-.mdesc{font-size:.72rem;line-height:1.65;margin-top:5px;font-weight:300;color:var(--on-dk-dim)}
-.mprice{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--gold);margin-top:10px}
+      .sh {
+        margin-bottom: 56px;
+      }
+      .sh-tag {
+        font-size: 0.57rem;
+        letter-spacing: 5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+      .sh-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 3.5vw, 3rem);
+        font-weight: 400;
+        line-height: 1.1;
+      }
+      .sh-dk {
+        color: var(--on-dk);
+      }
+      .sh-lt {
+        color: var(--ink);
+      }
+      .sh-rule {
+        width: 44px;
+        height: 2px;
+        background: var(--gold);
+        margin-top: 16px;
+      }
 
-/* ABOUT */
-.about-split{display:grid;grid-template-columns:1fr 1fr;gap:0}
-.avisual{background:var(--forest-mid);position:relative;min-height:600px;overflow:hidden;display:flex;align-items:center;justify-content:center}
-.avisual-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .6s ease}
-.avisual:hover .avisual-img{transform:scale(1.03)}
-.avisual-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(30,43,26,.35) 0%,rgba(30,43,26,.1) 100%);pointer-events:none}
-.acorner{position:absolute;width:56px;height:56px}
-.acorner.tl{top:24px;left:24px;border-top:1px solid rgba(184,150,60,.2);border-left:1px solid rgba(184,150,60,.2)}
-.acorner.br{bottom:24px;right:24px;border-bottom:1px solid rgba(184,150,60,.2);border-right:1px solid rgba(184,150,60,.2)}
-.alabel{position:absolute;bottom:30px;left:0;right:0;text-align:center;font-size:.55rem;letter-spacing:3px;text-transform:uppercase;color:var(--on-dk-dim)}
-.atext{background:var(--sage);padding:80px 64px;display:flex;flex-direction:column;justify-content:center}
-.aquote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.7rem;color:var(--ink);line-height:1.45;margin-bottom:28px;position:relative;padding-left:22px}
-.aquote::before{content:'\201C';position:absolute;left:0;top:-8px;font-size:3.5rem;color:var(--gold);opacity:.35;line-height:1}
-.abody{font-size:.82rem;color:var(--text-muted);line-height:1.9;margin-bottom:14px}
-.astats{display:flex;gap:36px;margin-top:36px;padding-top:36px;border-top:1px solid rgba(30,43,26,.12)}
-.stn{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);line-height:1}
-.stl{font-size:.58rem;letter-spacing:2px;text-transform:uppercase;color:var(--text-dim);margin-top:5px}
+      /* CATEGORIES */
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 4px;
+      }
+      .cat-card {
+        position: relative;
+        height: 244px;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--forest-soft);
+      }
+      .cat-card.tall {
+        height: 320px;
+      }
+      .cat-bg {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.55s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      }
+      .cat-card:hover .cat-bg {
+        transform: scale(1.07);
+      }
+      .cat-ov {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to top,
+          rgba(30, 43, 26, 0.92) 0%,
+          rgba(30, 43, 26, 0.12) 55%,
+          transparent 100%
+        );
+        transition: background 0.4s;
+      }
+      .cat-card:hover .cat-ov {
+        background: linear-gradient(
+          to top,
+          rgba(30, 43, 26, 0.97) 5%,
+          rgba(30, 43, 26, 0.5) 100%
+        );
+      }
+      .cat-body {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 22px;
+        transform: translateY(3px);
+        transition: transform 0.35s;
+      }
+      .cat-card:hover .cat-body {
+        transform: translateY(0);
+      }
+      .cat-ico {
+        font-size: 1.35rem;
+        margin-bottom: 8px;
+        opacity: 0.75;
+      }
+      .cat-nm {
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        color: var(--sage);
+        font-weight: 400;
+      }
+      .cat-sub {
+        font-size: 0.56rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-top: 4px;
+        opacity: 0;
+        transition: opacity 0.25s 0.05s;
+      }
+      .cat-card:hover .cat-sub {
+        opacity: 1;
+      }
+      .cat-arr {
+        position: absolute;
+        top: 16px;
+        right: 16px;
+        width: 34px;
+        height: 34px;
+        border: 1px solid rgba(184, 150, 60, 0.35);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--gold);
+        font-size: 0.9rem;
+        opacity: 0;
+        transform: translate(3px, -3px);
+        transition: all 0.3s;
+      }
+      .cat-card:hover .cat-arr {
+        opacity: 1;
+        transform: translate(0, 0);
+      }
+      .bg-a {
+        background: linear-gradient(135deg, #2a3818, #3d5228);
+      }
+      .bg-b {
+        background: linear-gradient(135deg, #3a2810, #6a4218);
+      }
+      .bg-c {
+        background: linear-gradient(135deg, #182a18, #284228);
+      }
+      .bg-d {
+        background: linear-gradient(135deg, #2a1a0a, #503010);
+      }
+      .bg-e {
+        background: linear-gradient(135deg, #1a2030, #2a3050);
+      }
+      .bg-f {
+        background: linear-gradient(135deg, #2a1828, #482840);
+      }
+      .bg-g {
+        background: linear-gradient(135deg, #0a1e2a, #1a3040);
+      }
+      .bg-h {
+        background: linear-gradient(135deg, #201c08, #3c3410);
+      }
 
-/* TICKER 2 */
-.ticker2{background:var(--sage-mid);overflow:hidden;white-space:nowrap}
-.tkr2-track{display:inline-flex;animation:tkr 28s linear infinite;padding:22px 0}
-.tkr2-item{display:inline-flex;align-items:center;gap:18px;padding:0 40px;font-size:.6rem;letter-spacing:3px;text-transform:uppercase;color:var(--ink);font-weight:400}
-.tkr2-sep{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold-warm);opacity:.6}
+      /* TABS */
+      .tab-bar {
+        display: flex;
+        flex-wrap: wrap;
+        border-bottom: 1px solid rgba(184, 150, 60, 0.15);
+        margin-bottom: 48px;
+      }
+      .tab-btn {
+        padding: 14px 26px;
+        background: none;
+        border: none;
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.62rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        position: relative;
+        transition: color 0.3s;
+      }
+      .tab-btn::after {
+        content: "";
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--gold);
+        transform: scaleX(0);
+        transition: transform 0.3s;
+      }
+      .tab-btn.active::after {
+        transform: scaleX(1);
+      }
+      .tbar-dk .tab-btn {
+        color: var(--on-dk-dim);
+      }
+      .tbar-dk .tab-btn.active {
+        color: var(--gold);
+      }
+      .tab-pane {
+        display: none;
+      }
+      .tab-pane.active {
+        display: block;
+        animation: fadeUp 0.4s ease;
+      }
 
-/* SPECS */
-.spec-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
-.scard{padding:52px 36px;background:rgba(233,238,231,.04);border:1px solid rgba(184,150,60,.1);transition:all .4s}
-.scard:hover{background:rgba(233,238,231,.07);border-color:rgba(184,150,60,.25);transform:translateY(-3px)}
-.sico{font-size:2.2rem;margin-bottom:18px;opacity:.65}
-.snm{font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:400;color:var(--on-dk);margin-bottom:12px}
-.stxt{font-size:.78rem;line-height:1.75;color:var(--on-dk-dim)}
+      /* MENU CARDS */
+      .mgrid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+        gap: 1px;
+      }
+      .mgrid-dk {
+        background: rgba(184, 150, 60, 0.07);
+      }
+      .mcard {
+        padding: 26px 28px;
+        display: flex;
+        gap: 18px;
+        align-items: flex-start;
+        transition: background 0.3s;
+      }
+      .mcard-dk {
+        background: var(--forest);
+      }
+      .mcard-dk:hover {
+        background: rgba(184, 150, 60, 0.05);
+      }
+      .memo {
+        width: 72px;
+        height: 72px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.7rem;
+        border: 1px solid rgba(184, 150, 60, 0.12);
+        background: rgba(184, 150, 60, 0.05);
+      }
+      .minfo {
+        flex: 1;
+      }
+      .mname {
+        font-family: "Cormorant Garamond", serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        color: var(--sage);
+      }
+      .mdesc {
+        font-size: 0.72rem;
+        line-height: 1.65;
+        margin-top: 5px;
+        font-weight: 300;
+        color: var(--on-dk-dim);
+      }
+      .mprice {
+        font-family: "Playfair Display", serif;
+        font-size: 1.05rem;
+        color: var(--gold);
+        margin-top: 10px;
+      }
 
-/* KIDS */
-.kids-band{background:var(--moss);padding:64px;display:flex;align-items:center;gap:60px}
-.kids-tag{font-size:.57rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.kids-title{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:400;color:var(--on-dk);margin-bottom:14px}
-.kids-desc{font-size:.82rem;color:var(--on-dk-dim);line-height:1.8;max-width:480px}
-.kids-items{display:flex;gap:3px}
-.kitem{background:rgba(233,238,231,.06);border:1px solid rgba(184,150,60,.12);padding:24px 28px;text-align:center;min-width:130px;transition:all .3s;cursor:pointer}
-.kitem:hover{background:rgba(184,150,60,.1);border-color:rgba(184,150,60,.3)}
-.kico{font-size:1.6rem;margin-bottom:8px}
-.knm{font-size:.68rem;letter-spacing:1px;text-transform:uppercase;color:var(--on-dk);font-weight:400}
-.kprice{font-family:'Playfair Display',serif;font-size:.9rem;color:var(--gold);margin-top:6px}
+      /* ABOUT */
+      .about-split {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0;
+      }
+      .avisual {
+        background: var(--forest-mid);
+        position: relative;
+        min-height: 600px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .avisual-img {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        transition: transform 0.6s ease;
+      }
+      .avisual:hover .avisual-img {
+        transform: scale(1.03);
+      }
+      .avisual-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(30, 43, 26, 0.35) 0%,
+          rgba(30, 43, 26, 0.1) 100%
+        );
+        pointer-events: none;
+      }
+      .acorner {
+        position: absolute;
+        width: 56px;
+        height: 56px;
+      }
+      .acorner.tl {
+        top: 24px;
+        left: 24px;
+        border-top: 1px solid rgba(184, 150, 60, 0.2);
+        border-left: 1px solid rgba(184, 150, 60, 0.2);
+      }
+      .acorner.br {
+        bottom: 24px;
+        right: 24px;
+        border-bottom: 1px solid rgba(184, 150, 60, 0.2);
+        border-right: 1px solid rgba(184, 150, 60, 0.2);
+      }
+      .alabel {
+        position: absolute;
+        bottom: 30px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        font-size: 0.55rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--on-dk-dim);
+      }
+      .atext {
+        background: var(--sage);
+        padding: 80px 64px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+      .aquote {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        font-size: 1.7rem;
+        color: var(--ink);
+        line-height: 1.45;
+        margin-bottom: 28px;
+        position: relative;
+        padding-left: 22px;
+      }
+      .aquote::before {
+        content: "\201C";
+        position: absolute;
+        left: 0;
+        top: -8px;
+        font-size: 3.5rem;
+        color: var(--gold);
+        opacity: 0.35;
+        line-height: 1;
+      }
+      .abody {
+        font-size: 0.82rem;
+        color: var(--text-muted);
+        line-height: 1.9;
+        margin-bottom: 14px;
+      }
+      .astats {
+        display: flex;
+        gap: 36px;
+        margin-top: 36px;
+        padding-top: 36px;
+        border-top: 1px solid rgba(30, 43, 26, 0.12);
+      }
+      .stn {
+        font-family: "Playfair Display", serif;
+        font-size: 2.5rem;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .stl {
+        font-size: 0.58rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-top: 5px;
+      }
 
-/* GALLERY */
-.ggrid{display:grid;grid-template-columns:2fr 1fr 1fr;grid-template-rows:240px 240px;gap:4px}
-.gcell{overflow:hidden;position:relative;cursor:pointer}
-.gcell.big{grid-row:span 2}
-.gimg{width:100%;height:100%;object-fit:cover;object-position:center;display:block;transition:transform .5s ease}
-.gcell:hover .gimg{transform:scale(1.05)}
-.gcell:nth-child(1){background:var(--forest-soft)}
-.gcell:nth-child(2){background:var(--moss)}
-.gcell:nth-child(3){background:#2A3518}
-.gcell:nth-child(4){background:#1E3020}
-.gcell:nth-child(5){background:#243820}
-.gshine{position:absolute;inset:0;background:linear-gradient(135deg,rgba(184,150,60,.06),transparent);opacity:0;transition:opacity .3s}
-.gcell:hover .gshine{opacity:1}
+      /* TICKER 2 */
+      .ticker2 {
+        background: var(--sage-mid);
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      .tkr2-track {
+        display: inline-flex;
+        animation: tkr 28s linear infinite;
+        padding: 22px 0;
+      }
+      .tkr2-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 18px;
+        padding: 0 40px;
+        font-size: 0.6rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--ink);
+        font-weight: 400;
+      }
+      .tkr2-sep {
+        font-family: "Playfair Display", serif;
+        font-size: 1rem;
+        color: var(--gold-warm);
+        opacity: 0.6;
+      }
 
-/* FOOTER */
-footer{background:var(--forest);padding:80px 64px 40px;border-top:1px solid rgba(184,150,60,.1)}
-.ftop{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:56px;padding-bottom:56px;border-bottom:1px solid rgba(184,150,60,.07)}
-.flogo{height:28px;filter:invert(1) sepia(.2) hue-rotate(40deg) saturate(.5) brightness(1.6);opacity:.8;display:block;margin-bottom:14px}
-.ftagline{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--on-dk-dim);font-size:.95rem;margin-bottom:16px}
-.fp{font-size:.78rem;color:var(--on-dk-dim);line-height:1.8;max-width:260px}
-.fsocs{display:flex;gap:10px;margin-top:22px}
-.fsoc{width:38px;height:38px;border:1px solid rgba(184,150,60,.18);display:flex;align-items:center;justify-content:center;color:var(--on-dk-dim);font-size:.68rem;text-decoration:none;transition:all .3s;font-family:'DM Sans',sans-serif}
-.fsoc:hover{border-color:var(--gold);color:var(--gold)}
-.fcol h4{font-size:.56rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:20px}
-.fcol ul{list-style:none}
-.fcol ul li{font-size:.78rem;color:var(--on-dk-dim);margin-bottom:10px;line-height:1.5}
-.fcol ul li a{color:inherit;text-decoration:none;transition:color .3s}
-.fcol ul li a:hover{color:var(--sage)}
-.fbot{display:flex;justify-content:space-between;align-items:center;padding-top:28px;font-size:.6rem;letter-spacing:1px;color:var(--on-dk-dim);opacity:.4}
+      /* SPECS */
+      .spec-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 3px;
+      }
+      .scard {
+        padding: 52px 36px;
+        background: rgba(233, 238, 231, 0.04);
+        border: 1px solid rgba(184, 150, 60, 0.1);
+        transition: all 0.4s;
+      }
+      .scard:hover {
+        background: rgba(233, 238, 231, 0.07);
+        border-color: rgba(184, 150, 60, 0.25);
+        transform: translateY(-3px);
+      }
+      .sico {
+        font-size: 2.2rem;
+        margin-bottom: 18px;
+        opacity: 0.65;
+      }
+      .snm {
+        font-family: "Playfair Display", serif;
+        font-size: 1.25rem;
+        font-weight: 400;
+        color: var(--on-dk);
+        margin-bottom: 12px;
+      }
+      .stxt {
+        font-size: 0.78rem;
+        line-height: 1.75;
+        color: var(--on-dk-dim);
+      }
 
-/* MODAL */
-.modal-bg{display:none;position:fixed;inset:0;z-index:500;background:rgba(15,22,12,.92);backdrop-filter:blur(6px);align-items:center;justify-content:center}
-.modal-bg.open{display:flex}
-.modal-box{background:var(--forest-mid);border:1px solid rgba(184,150,60,.2);width:90%;max-width:500px;padding:56px;position:relative;animation:fadeUp .35s ease}
-.modal-x{position:absolute;top:22px;right:22px;background:none;border:none;color:var(--on-dk-dim);font-size:1.4rem;cursor:pointer;line-height:1;transition:color .3s}
-.modal-x:hover{color:var(--gold)}
-.modal-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--sage);margin-bottom:6px}
-.modal-sub{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--on-dk-dim);font-size:.95rem;margin-bottom:32px}
-.frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.fg{margin-bottom:16px}
-.fg label{display:block;font-size:.56rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:7px}
-.fg input,.fg select{width:100%;padding:13px 15px;background:rgba(0,0,0,.3);border:1px solid rgba(184,150,60,.18);color:var(--sage);font-family:'DM Sans',sans-serif;font-size:.82rem;font-weight:300;outline:none;transition:border-color .3s;appearance:none}
-.fg input:focus,.fg select:focus{border-color:var(--gold)}
-.fg select option{background:var(--forest-mid)}
-.fsub{width:100%;padding:17px;background:var(--gold);border:none;color:var(--forest);font-family:'DM Sans',sans-serif;font-size:.65rem;letter-spacing:3px;text-transform:uppercase;cursor:pointer;margin-top:8px;transition:all .3s;font-weight:500}
-.fsub:hover{background:var(--sage);color:var(--ink)}
+      /* KIDS */
+      .kids-band {
+        background: var(--moss);
+        padding: 64px;
+        display: flex;
+        align-items: center;
+        gap: 60px;
+      }
+      .kids-tag {
+        font-size: 0.57rem;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 10px;
+      }
+      .kids-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2.2rem;
+        font-weight: 400;
+        color: var(--on-dk);
+        margin-bottom: 14px;
+      }
+      .kids-desc {
+        font-size: 0.82rem;
+        color: var(--on-dk-dim);
+        line-height: 1.8;
+        max-width: 480px;
+      }
+      .kids-items {
+        display: flex;
+        gap: 3px;
+      }
+      .kitem {
+        background: rgba(233, 238, 231, 0.06);
+        border: 1px solid rgba(184, 150, 60, 0.12);
+        padding: 24px 28px;
+        text-align: center;
+        min-width: 130px;
+        transition: all 0.3s;
+        cursor: pointer;
+      }
+      .kitem:hover {
+        background: rgba(184, 150, 60, 0.1);
+        border-color: rgba(184, 150, 60, 0.3);
+      }
+      .kico {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+      }
+      .knm {
+        font-size: 0.68rem;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        color: var(--on-dk);
+        font-weight: 400;
+      }
+      .kprice {
+        font-family: "Playfair Display", serif;
+        font-size: 0.9rem;
+        color: var(--gold);
+        margin-top: 6px;
+      }
 
-/* SIDE DOTS */
-.sdots{position:fixed;right:26px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:10px;z-index:100}
-.sd{width:7px;height:7px;border-radius:50%;cursor:pointer;transition:all .3s;border:1px solid rgba(184,150,60,.35);background:transparent}
-.sd.active,.sd:hover{background:var(--gold);border-color:var(--gold);transform:scale(1.3)}
+      /* GALLERY */
+      .ggrid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr;
+        grid-template-rows: 240px 240px;
+        gap: 4px;
+      }
+      .gcell {
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+      .gcell.big {
+        grid-row: span 2;
+      }
+      .gimg {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        display: block;
+        transition: transform 0.5s ease;
+      }
+      .gcell:hover .gimg {
+        transform: scale(1.05);
+      }
+      .gcell:nth-child(1) {
+        background: var(--forest-soft);
+      }
+      .gcell:nth-child(2) {
+        background: var(--moss);
+      }
+      .gcell:nth-child(3) {
+        background: #2a3518;
+      }
+      .gcell:nth-child(4) {
+        background: #1e3020;
+      }
+      .gcell:nth-child(5) {
+        background: #243820;
+      }
+      .gshine {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          rgba(184, 150, 60, 0.06),
+          transparent
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .gcell:hover .gshine {
+        opacity: 1;
+      }
 
-@media(max-width:960px){
-  nav{padding:20px 24px}
-  nav.s-dark,nav.s-light{padding:14px 24px}
-  .nav-links{display:none}
-  .sec-sage,.sec-forest,.sec-olive,.sec-sage-lt,.sec-moss{padding:70px 24px}
-  .cat-grid{grid-template-columns:repeat(2,1fr)}
-  .cat-card.tall{height:244px}
-  .about-split{grid-template-columns:1fr}
-  .avisual{min-height:260px}
-  .ftop{grid-template-columns:1fr 1fr}
-  .spec-grid{grid-template-columns:1fr}
-  .ggrid{grid-template-columns:1fr 1fr;grid-template-rows:auto}
-  .gcell.big{grid-row:span 1}
-  .sdots{display:none}
-  .hero-inner{padding:140px 24px 80px}
-  .frow{grid-template-columns:1fr}
-  .modal-box{padding:36px 24px}
-  .kids-band{flex-direction:column;padding:48px 24px;gap:32px}
-  .kids-items{flex-wrap:wrap}
-  .atext{padding:56px 32px}
-}
-</style>
-</head>
-<body>
-<div id="cur"></div><div id="cur-ring"></div>
+      /* FOOTER */
+      footer {
+        background: var(--forest);
+        padding: 80px 64px 40px;
+        border-top: 1px solid rgba(184, 150, 60, 0.1);
+      }
+      .ftop {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 56px;
+        padding-bottom: 56px;
+        border-bottom: 1px solid rgba(184, 150, 60, 0.07);
+      }
+      .flogo {
+        height: 28px;
+        filter: invert(1) sepia(0.2) hue-rotate(40deg) saturate(0.5)
+          brightness(1.6);
+        opacity: 0.8;
+        display: block;
+        margin-bottom: 14px;
+      }
+      .ftagline {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        color: var(--on-dk-dim);
+        font-size: 0.95rem;
+        margin-bottom: 16px;
+      }
+      .fp {
+        font-size: 0.78rem;
+        color: var(--on-dk-dim);
+        line-height: 1.8;
+        max-width: 260px;
+      }
+      .fsocs {
+        display: flex;
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .fsoc {
+        width: 38px;
+        height: 38px;
+        border: 1px solid rgba(184, 150, 60, 0.18);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--on-dk-dim);
+        font-size: 0.68rem;
+        text-decoration: none;
+        transition: all 0.3s;
+        font-family: "DM Sans", sans-serif;
+      }
+      .fsoc:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .fcol h4 {
+        font-size: 0.56rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 20px;
+      }
+      .fcol ul {
+        list-style: none;
+      }
+      .fcol ul li {
+        font-size: 0.78rem;
+        color: var(--on-dk-dim);
+        margin-bottom: 10px;
+        line-height: 1.5;
+      }
+      .fcol ul li a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+      .fcol ul li a:hover {
+        color: var(--sage);
+      }
+      .fbot {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-top: 28px;
+        font-size: 0.6rem;
+        letter-spacing: 1px;
+        color: var(--on-dk-dim);
+        opacity: 0.4;
+      }
 
-<div class="sdots" id="sdots">
-  <div class="sd active" data-i="0"></div>
-  <div class="sd" data-i="1"></div>
-  <div class="sd" data-i="2"></div>
-  <div class="sd" data-i="3"></div>
-  <div class="sd" data-i="4"></div>
-  <div class="sd" data-i="5"></div>
-  <div class="sd" data-i="6"></div>
-</div>
+      /* MODAL */
+      .modal-bg {
+        display: none;
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background: rgba(15, 22, 12, 0.92);
+        backdrop-filter: blur(6px);
+        align-items: center;
+        justify-content: center;
+      }
+      .modal-bg.open {
+        display: flex;
+      }
+      .modal-box {
+        background: var(--forest-mid);
+        border: 1px solid rgba(184, 150, 60, 0.2);
+        width: 90%;
+        max-width: 500px;
+        padding: 56px;
+        position: relative;
+        animation: fadeUp 0.35s ease;
+      }
+      .modal-x {
+        position: absolute;
+        top: 22px;
+        right: 22px;
+        background: none;
+        border: none;
+        color: var(--on-dk-dim);
+        font-size: 1.4rem;
+        cursor: pointer;
+        line-height: 1;
+        transition: color 0.3s;
+      }
+      .modal-x:hover {
+        color: var(--gold);
+      }
+      .modal-title {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        color: var(--sage);
+        margin-bottom: 6px;
+      }
+      .modal-sub {
+        font-family: "Cormorant Garamond", serif;
+        font-style: italic;
+        color: var(--on-dk-dim);
+        font-size: 0.95rem;
+        margin-bottom: 32px;
+      }
+      .frow {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      .fg {
+        margin-bottom: 16px;
+      }
+      .fg label {
+        display: block;
+        font-size: 0.56rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 7px;
+      }
+      .fg input,
+      .fg select {
+        width: 100%;
+        padding: 13px 15px;
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(184, 150, 60, 0.18);
+        color: var(--sage);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.82rem;
+        font-weight: 300;
+        outline: none;
+        transition: border-color 0.3s;
+        appearance: none;
+      }
+      .fg input:focus,
+      .fg select:focus {
+        border-color: var(--gold);
+      }
+      .fg select option {
+        background: var(--forest-mid);
+      }
+      .fsub {
+        width: 100%;
+        padding: 17px;
+        background: var(--gold);
+        border: none;
+        color: var(--forest);
+        font-family: "DM Sans", sans-serif;
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        cursor: pointer;
+        margin-top: 8px;
+        transition: all 0.3s;
+        font-weight: 500;
+      }
+      .fsub:hover {
+        background: var(--sage);
+        color: var(--ink);
+      }
 
-<nav id="mainNav">
-  <button class="hamburger" id="hamburger" aria-label="Ouvrir le menu" aria-expanded="false">
-    <span class="hb-line"></span>
-    <span class="hb-line"></span>
-    <span class="hb-line"></span>
-  </button>
-  <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCABeAgUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//9k=" alt="Boostan" class="nav-logo logo-inv" id="navLogo">
-  <button class="nav-btn" onclick="openModal()">Réserver</button>
-</nav>
+      /* SIDE DOTS */
+      .sdots {
+        position: fixed;
+        right: 26px;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        z-index: 100;
+      }
+      .sd {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all 0.3s;
+        border: 1px solid rgba(184, 150, 60, 0.35);
+        background: transparent;
+      }
+      .sd.active,
+      .sd:hover {
+        background: var(--gold);
+        border-color: var(--gold);
+        transform: scale(1.3);
+      }
 
-<!-- ══ FULLSCREEN MENU OVERLAY ══ -->
-<div id="fsMenu" aria-hidden="true">
-  <!-- Panneau gauche : liens -->
-  <div class="fsm-left">
-    <div class="fsm-noise"></div>
+      @media (max-width: 960px) {
+        nav {
+          padding: 20px 24px;
+        }
+        nav.s-dark,
+        nav.s-light {
+          padding: 14px 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        .sec-sage,
+        .sec-forest,
+        .sec-olive,
+        .sec-sage-lt,
+        .sec-moss {
+          padding: 70px 24px;
+        }
+        .cat-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .cat-card.tall {
+          height: 244px;
+        }
+        .about-split {
+          grid-template-columns: 1fr;
+        }
+        .avisual {
+          min-height: 260px;
+        }
+        .ftop {
+          grid-template-columns: 1fr 1fr;
+        }
+        .spec-grid {
+          grid-template-columns: 1fr;
+        }
+        .ggrid {
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: auto;
+        }
+        .gcell.big {
+          grid-row: span 1;
+        }
+        .sdots {
+          display: none;
+        }
+        .hero-inner {
+          padding: 140px 24px 80px;
+        }
+        .frow {
+          grid-template-columns: 1fr;
+        }
+        .modal-box {
+          padding: 36px 24px;
+        }
+        .kids-band {
+          flex-direction: column;
+          padding: 48px 24px;
+          gap: 32px;
+        }
+        .kids-items {
+          flex-wrap: wrap;
+        }
+        .atext {
+          padding: 56px 32px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="cur"></div>
+    <div id="cur-ring"></div>
 
-    <div class="fsm-top">
-      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCABeAgUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//9k=" alt="Boostan" class="fsm-logo">
+    <div class="sdots" id="sdots">
+      <div class="sd active" data-i="0"></div>
+      <div class="sd" data-i="1"></div>
+      <div class="sd" data-i="2"></div>
+      <div class="sd" data-i="3"></div>
+      <div class="sd" data-i="4"></div>
+      <div class="sd" data-i="5"></div>
+      <div class="sd" data-i="6"></div>
     </div>
 
-    <nav class="fsm-nav" role="navigation">
-      <ul>
-        <li class="fsm-item" data-img="0">
-          <a href="#hero" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">01</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Accueil</span>
-              <span class="fsm-hint">Bienvenue au Boostan</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-        <li class="fsm-item" data-img="1">
-          <a href="#categories" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">02</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Notre carte</span>
-              <span class="fsm-hint">8 univers culinaires</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-        <li class="fsm-item" data-img="2">
-          <a href="#menu" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">03</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Le menu</span>
-              <span class="fsm-hint">Starters, brochettes, desserts…</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-        <li class="fsm-item" data-img="3">
-          <a href="#about" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">04</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Le restaurant</span>
-              <span class="fsm-hint">Notre histoire, notre âme</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-        <li class="fsm-item" data-img="4">
-          <a href="#galerie" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">05</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Galerie</span>
-              <span class="fsm-hint">L'ambiance en images</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-        <li class="fsm-item" data-img="5">
-          <a href="#contact" class="fsm-link" onclick="closeMenu()">
-            <span class="fsm-num">06</span>
-            <span class="fsm-label">
-              <span class="fsm-title">Contact</span>
-              <span class="fsm-hint">Horaires & informations</span>
-            </span>
-            <span class="fsm-arrow">→</span>
-          </a>
-        </li>
-      </ul>
+    <nav id="mainNav">
+      <button
+        class="hamburger"
+        id="hamburger"
+        aria-label="Ouvrir le menu"
+        aria-expanded="false"
+      >
+        <span class="hb-line"></span>
+        <span class="hb-line"></span>
+        <span class="hb-line"></span>
+      </button>
+      <img
+        src="./logo.png"
+        alt="Boostan"
+        class="nav-logo logo-inv"
+        id="navLogo"
+      />
+      <button class="nav-btn" onclick="openModal()">Réserver</button>
     </nav>
 
-    <div class="fsm-footer">
-      <div class="fsm-info">
-        <div class="fsm-info-tag">Horaires</div>
-        <div class="fsm-info-val">Lun–Jeu &amp; Dim : 12h–00h<br>Ven–Sam : 12h–02h</div>
+    <!-- ══ FULLSCREEN MENU OVERLAY ══ -->
+    <div id="fsMenu" aria-hidden="true">
+      <!-- Panneau gauche : liens -->
+      <div class="fsm-left">
+        <div class="fsm-noise"></div>
+
+        <div class="fsm-top">
+          <img
+            src="./logo.png"
+            alt="Boostan"
+            class="fsm-logo"
+          />
+        </div>
+
+        <nav class="fsm-nav" role="navigation">
+          <ul>
+            <li class="fsm-item" data-img="0">
+              <a href="#hero" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">01</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Accueil</span>
+                  <span class="fsm-hint">Bienvenue au Boostan</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+            <li class="fsm-item" data-img="1">
+              <a href="#categories" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">02</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Notre carte</span>
+                  <span class="fsm-hint">8 univers culinaires</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+            <li class="fsm-item" data-img="2">
+              <a href="#menu" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">03</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Le menu</span>
+                  <span class="fsm-hint">Starters, brochettes, desserts…</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+            <li class="fsm-item" data-img="3">
+              <a href="#about" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">04</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Le restaurant</span>
+                  <span class="fsm-hint">Notre histoire, notre âme</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+            <li class="fsm-item" data-img="4">
+              <a href="#galerie" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">05</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Galerie</span>
+                  <span class="fsm-hint">L'ambiance en images</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+            <li class="fsm-item" data-img="5">
+              <a href="#contact" class="fsm-link" onclick="closeMenu()">
+                <span class="fsm-num">06</span>
+                <span class="fsm-label">
+                  <span class="fsm-title">Contact</span>
+                  <span class="fsm-hint">Horaires & informations</span>
+                </span>
+                <span class="fsm-arrow">→</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="fsm-footer">
+          <div class="fsm-info">
+            <div class="fsm-info-tag">Horaires</div>
+            <div class="fsm-info-val">
+              Lun–Jeu &amp; Dim : 12h–00h<br />Ven–Sam : 12h–02h
+            </div>
+          </div>
+          <div class="fsm-info">
+            <div class="fsm-info-tag">Réservations</div>
+            <div class="fsm-info-val">
+              <a
+                href="#"
+                onclick="
+                  closeMenu();
+                  setTimeout(openModal, 400);
+                  return false;
+                "
+                >Sur demande →</a
+              >
+            </div>
+          </div>
+          <div class="fsm-socials">
+            <a href="#" class="fsm-soc">ig</a>
+            <a href="#" class="fsm-soc">fb</a>
+            <a href="#" class="fsm-soc">tt</a>
+          </div>
+        </div>
       </div>
-      <div class="fsm-info">
-        <div class="fsm-info-tag">Réservations</div>
-        <div class="fsm-info-val"><a href="#" onclick="closeMenu();setTimeout(openModal,400);return false">Sur demande →</a></div>
-      </div>
-      <div class="fsm-socials">
-        <a href="#" class="fsm-soc">ig</a>
-        <a href="#" class="fsm-soc">fb</a>
-        <a href="#" class="fsm-soc">tt</a>
-      </div>
-    </div>
-  </div>
 
-  <!-- Panneau droit : image preview -->
-  <div class="fsm-right" id="fsmRight">
-    <div class="fsm-img active" style="background-image:url('VOTRE-IMAGE-ACCUEIL.jpg')"></div>
-    <div class="fsm-img" style="background-image:url('VOTRE-IMAGE-STARTERS.jpg')"></div>
-    <div class="fsm-img" style="background-image:url('VOTRE-IMAGE-BROCHETTES.jpg')"></div>
-    <div class="fsm-img" style="background-image:url('VOTRE-IMAGE-RESTAURANT.jpg')"></div>
-    <div class="fsm-img" style="background-image:url('VOTRE-IMAGE-GALERIE-1.jpg')"></div>
-    <div class="fsm-img" style="background-image:url('VOTRE-IMAGE-GALERIE-2.jpg')"></div>
-    <div class="fsm-right-overlay"></div>
-    <div class="fsm-right-caption" id="fsmCaption">Bienvenue au Boostan</div>
-    <div class="fsm-right-tag" id="fsmTag">Restaurant &amp; Salon de Thé</div>
-  </div>
-</div>
-
-<!-- ① HERO – FOREST DARK -->
-<section id="hero" class="hero">
-  <div class="hero-glow"></div>
-  <div class="hero-dots"></div>
-  <div class="hero-ring" style="right:-120px;width:540px;height:540px"></div>
-  <div class="hero-ring" style="right:-220px;width:760px;height:760px;opacity:.5"></div>
-  <div class="hero-inner">
-    <div class="eyebrow">Restaurant &amp; Salon de Thé</div>
-    <h1 class="hero-h1">Boo<em>stan</em></h1>
-    <p class="hero-sub">Une cuisine généreuse aux saveurs du monde</p>
-    <div class="hero-btns">
-      <a href="#menu" class="btn-fill"><span>Découvrir le menu</span></a>
-      <button class="btn-gdk" onclick="openModal()">Réserver une table</button>
-    </div>
-  </div>
-  <div style="position:absolute;right:64px;bottom:90px;animation:rise 1s .9s both">
-    <div style="width:100px;height:100px;border:1px solid rgba(184,150,60,.2);border-radius:50%;display:flex;align-items:center;justify-content:center;animation:spin 24s linear infinite">
-      <div style="text-align:center"><div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--gold);line-height:1">7j/7</div><div style="font-size:.48rem;letter-spacing:2px;text-transform:uppercase;color:var(--on-dk-dim)">ouvert</div></div>
-    </div>
-  </div>
-  <div class="scroll-row"><div class="sbar"></div>Défiler</div>
-</section>
-
-<!-- TICKER OR -->
-<div class="ticker"><div class="tkr-track">
-  <span class="tkr-item">Ouvert 7 jours sur 7 <span class="tkr-dot"></span></span>
-  <span class="tkr-item">12h à minuit <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Vendredi &amp; Samedi jusqu'à 02h <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Brochettes &amp; Grillades <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Salon de Thé &amp; Narguilé <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Ouvert 7 jours sur 7 <span class="tkr-dot"></span></span>
-  <span class="tkr-item">12h à minuit <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Vendredi &amp; Samedi jusqu'à 02h <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Brochettes &amp; Grillades <span class="tkr-dot"></span></span>
-  <span class="tkr-item">Salon de Thé &amp; Narguilé <span class="tkr-dot"></span></span>
-</div></div>
-
-<!-- ② CATEGORIES – SAGE CLAIR #E9EEE7 -->
-<section id="categories" class="sec-sage">
-  <div class="sh"><div class="sh-tag">Explorer</div><h2 class="sh-title sh-lt">Notre carte</h2><div class="sh-rule"></div></div>
-  <div class="cat-grid">
-    <div class="cat-card tall" onclick="showTab('starters')">
-      <img src="VOTRE-IMAGE-STARTERS.jpg" alt="Starters" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Starters</div><div class="cat-sub">Entrées & Mezzés</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('brochettes')">
-      <img src="VOTRE-IMAGE-BROCHETTES.jpg" alt="Brochettes" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Brochettes</div><div class="cat-sub">Grillades maison</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('salades')">
-      <img src="VOTRE-IMAGE-SALADES.jpg" alt="Salades" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Salades</div><div class="cat-sub">Fraîcheur & légèreté</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('burgers')">
-      <img src="VOTRE-IMAGE-BURGERS.jpg" alt="Burgers" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Burgers</div><div class="cat-sub">Pain brioché</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('pates')">
-      <img src="VOTRE-IMAGE-PATES.jpg" alt="Pâtes" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Pâtes</div><div class="cat-sub">Sauces maison</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('desserts')">
-      <img src="VOTRE-IMAGE-DESSERTS.jpg" alt="Desserts" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Desserts</div><div class="cat-sub">Douceurs signature</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('boissons')">
-      <img src="VOTRE-IMAGE-BOISSONS.jpg" alt="Boissons" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Boissons</div><div class="cat-sub">Fraîches & chaudes</div></div><div class="cat-arr">→</div>
-    </div>
-    <div class="cat-card" onclick="showTab('starters')">
-      <img src="VOTRE-IMAGE-NARGUILES.jpg" alt="Narguilés" class="cat-bg">
-      <div class="cat-ov"></div><div class="cat-body"><div class="cat-nm">Narguilés</div><div class="cat-sub">Lounge & détente</div></div><div class="cat-arr">→</div>
-    </div>
-  </div>
-</section>
-
-<!-- ③ MENU – FOREST DARK -->
-<section id="menu" class="sec-forest">
-  <div class="sh"><div class="sh-tag">La carte complète</div><h2 class="sh-title sh-dk">Le menu</h2><div class="sh-rule"></div></div>
-  <div class="tab-bar tbar-dk">
-    <button class="tab-btn active" id="tb-starters"   onclick="showTab('starters')">Starters</button>
-    <button class="tab-btn"        id="tb-brochettes" onclick="showTab('brochettes')">Brochettes</button>
-    <button class="tab-btn"        id="tb-salades"    onclick="showTab('salades')">Salades</button>
-    <button class="tab-btn"        id="tb-burgers"    onclick="showTab('burgers')">Burgers</button>
-    <button class="tab-btn"        id="tb-pates"      onclick="showTab('pates')">Pâtes</button>
-    <button class="tab-btn"        id="tb-desserts"   onclick="showTab('desserts')">Desserts</button>
-    <button class="tab-btn"        id="tb-boissons"   onclick="showTab('boissons')">Boissons</button>
-  </div>
-  <div class="tab-pane active" id="pane-starters"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🫙</div><div class="minfo"><div class="mname">Hmiss</div><div class="mdesc">Poivrons grillés, tomates, oignons, ail, paprika, persil (piquant ou non)</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍆</div><div class="minfo"><div class="mname">Aubergines marinées</div><div class="mdesc">Tranche d'aubergine marinée grillée au barbecue avec épices et herbes</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🥣</div><div class="minfo"><div class="mname">Hoummous du Boostan</div><div class="mdesc">Purée de pois chiches, tahini, pignon de pin torréfié, cumin, ail</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🌶️</div><div class="minfo"><div class="mname">Mouhammara</div><div class="mdesc">Poivrons rouges grillés, noix de pécan caramélisées au miel de thym, piments</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🥑</div><div class="minfo"><div class="mname">Guacamole</div><div class="mdesc">Purée d'avocat, ail, huile d'olive et épices</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🥒</div><div class="minfo"><div class="mname">Tatziki</div><div class="mdesc">Concombre, yaourt grec, citron, ail, épices, aneth et menthe</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍳</div><div class="minfo"><div class="mname">Shakshoukha</div><div class="mdesc">Poivrons grillés, écrasé de tomates, oignons, ail, paprika, persil et œuf</div><div class="mprice">7 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🥩</div><div class="minfo"><div class="mname">Hoummous au filet de boeuf</div><div class="mdesc">Hoummous du Boostan au filet de boeuf grillé</div><div class="mprice">9 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-brochettes"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🍖</div><div class="minfo"><div class="mname">Mix Grill</div><div class="mdesc">Assortiment de viandes grillées au choix — accompagnements inclus</div><div class="mprice">à partir de 29 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🐄</div><div class="minfo"><div class="mname">Filet de bœuf charolais</div><div class="mdesc">Filet de bœuf charolais grillé</div><div class="mprice">25 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🐑</div><div class="minfo"><div class="mname">Agneau braisé</div><div class="mdesc">Agneau braisé aux épices</div><div class="mprice">24 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🐟</div><div class="minfo"><div class="mname">Saumon mariné</div><div class="mdesc">Pavé de saumon mariné grillé</div><div class="mprice">24 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🦐</div><div class="minfo"><div class="mname">Crevettes</div><div class="mdesc">Crevettes marinées grillées</div><div class="mprice">20 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍗</div><div class="minfo"><div class="mname">Filet de poulet</div><div class="mdesc">Filet de poulet mariné grillé</div><div class="mprice">17 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🌶️</div><div class="minfo"><div class="mname">Kefta de bœuf charolais</div><div class="mdesc">Brochettes de kefta maison</div><div class="mprice">18 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🔥</div><div class="minfo"><div class="mname">Merguez</div><div class="mdesc">Merguez maison grillées</div><div class="mprice">16 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-salades"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🥗</div><div class="minfo"><div class="mname">Salade du Boostan César</div><div class="mdesc">Mesclun, burrata, guacamole, poulet pané, sauce césar parmesan</div><div class="mprice">22 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🦐</div><div class="minfo"><div class="mname">Salade Crevettes marinées</div><div class="mdesc">Mesclun, tomate cerise, burrata, guacamole et crevettes marinées</div><div class="mprice">22 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🐟</div><div class="minfo"><div class="mname">Salade Saumon mariné</div><div class="mdesc">Mesclun, tomate cerise, burrata, guacamole et pavé de saumon</div><div class="mprice">24 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🧀</div><div class="minfo"><div class="mname">Salade Burrata</div><div class="mdesc">Mesclun, tomate cerise, burrata, croûton, huile d'olive, crème balsamique</div><div class="mprice">13 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-burgers"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🍔</div><div class="minfo"><div class="mname">Le Classique</div><div class="mdesc">Pain brioché, bœuf haché, mayo, ketchup, salade, tomates, cornichons, cheddar</div><div class="mprice">15 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🐄</div><div class="minfo"><div class="mname">Le Charolais</div><div class="mdesc">Pain brioché, filet de bœuf, confit d'oignons rouges, tatziki, cheddar</div><div class="mprice">25 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🌿</div><div class="minfo"><div class="mname">Le Boostan</div><div class="mdesc">Pain brioché, bœuf haché, houmous maison, salade fraîcheur, tomates, cheddar</div><div class="mprice">19 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-pates"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🍄</div><div class="minfo"><div class="mname">Champignon</div><div class="mdesc">Fusilli, parmesan, sauce champignon — poulet ou filet de bœuf +5€</div><div class="mprice">15 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🧀</div><div class="minfo"><div class="mname">Gorgonzola</div><div class="mdesc">Fusilli, parmesan, sauce gorgonzola — poulet ou filet de bœuf +5€</div><div class="mprice">15 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🌿</div><div class="minfo"><div class="mname">Pesto Pistache</div><div class="mdesc">Fusilli, parmesan, pesto à la pistache — poulet ou filet de bœuf +5€</div><div class="mprice">17 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍅</div><div class="minfo"><div class="mname">Arrabiata</div><div class="mdesc">Fusilli, sauce arrabiata, piments, parmesan — poulet ou filet de bœuf +5€</div><div class="mprice">15 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-desserts"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🍵</div><div class="minfo"><div class="mname">Pistarosa</div><div class="mdesc">Milkshake pistache, crème de pistache, eau de rose et chantilly</div><div class="mprice">10 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍓</div><div class="minfo"><div class="mname">Dacquoise Fraise Pistache</div><div class="mdesc">Génoise aux amandes, chantilly mascarpone, fraise et pistache</div><div class="mprice">10 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🧋</div><div class="minfo"><div class="mname">Milkshakes</div><div class="mdesc">Vanille, pistache, bueno, oreo, spéculos au choix</div><div class="mprice">8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍞</div><div class="minfo"><div class="mname">Brioche perdue</div><div class="mdesc">Moelleuse caramélisée, crème de pistache ou nutella — supp glace +2€</div><div class="mprice">8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🫐</div><div class="minfo"><div class="mname">Cheesecake</div><div class="mdesc">Frais et léger, mangue-passion ou framboise</div><div class="mprice">8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍫</div><div class="minfo"><div class="mname">Fondant au chocolat</div><div class="mdesc">Cœur fondant intense en chocolat — supp glace +2€</div><div class="mprice">6 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍮</div><div class="minfo"><div class="mname">Crème Brûlée / Pistache</div><div class="mdesc">Classique ou à la pistache selon disponibilité</div><div class="mprice">6 / 8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">☕</div><div class="minfo"><div class="mname">Tiramisu</div><div class="mdesc">Crémeux, saveurs Nutella-spéculos ou caramel-daim</div><div class="mprice">7 €</div></div></div>
-  </div></div>
-  <div class="tab-pane" id="pane-boissons"><div class="mgrid mgrid-dk">
-    <div class="mcard mcard-dk"><div class="memo">🍋</div><div class="minfo"><div class="mname">Limonade Maison 50cl</div><div class="mdesc">Limonade artisanale fraîche du jour</div><div class="mprice">8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍵</div><div class="minfo"><div class="mname">Thé glacé maison 50cl</div><div class="mdesc">Thé glacé artisanal maison</div><div class="mprice">7 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍹</div><div class="minfo"><div class="mname">Maxi Virgin Mojito</div><div class="mdesc">Menthe fraîche, citron vert, limonade maison, sucre de canne</div><div class="mprice">9 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🌹</div><div class="minfo"><div class="mname">Le Boostan</div><div class="mdesc">Rose, litchi, orange, grenade</div><div class="mprice">9 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍍</div><div class="minfo"><div class="mname">Le Tropical</div><div class="mdesc">Ananas, coco, passion</div><div class="mprice">8 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍵</div><div class="minfo"><div class="mname">Grande Théière</div><div class="mdesc">Thé à la menthe pour la table</div><div class="mprice">15 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">☕</div><div class="minfo"><div class="mname">Espresso</div><div class="mdesc">Café espresso serré</div><div class="mprice">4 €</div></div></div>
-    <div class="mcard mcard-dk"><div class="memo">🍫</div><div class="minfo"><div class="mname">Chocolat viennois</div><div class="mdesc">Chocolat chaud onctueux avec chantilly</div><div class="mprice">5 €</div></div></div>
-  </div></div>
-</section>
-
-<!-- ④ ABOUT – SAGE CLAIR + FOREST VISUEL -->
-<section id="about" style="background:var(--sage);padding:0">
-  <div class="about-split">
-    <div class="avisual">
-      <img src="VOTRE-IMAGE-RESTAURANT.jpg" alt="Ambiance Boostan" class="avisual-img">
-      <div class="avisual-overlay"></div>
-      <div class="acorner tl"></div><div class="acorner br"></div>
-    </div>
-    <div class="atext">
-      <div style="font-size:.56rem;letter-spacing:5px;text-transform:uppercase;color:var(--gold);margin-bottom:12px">Notre histoire</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,3vw,2.7rem);font-weight:400;color:var(--ink);margin-bottom:28px;line-height:1.1">À propos<br>du restaurant</h2>
-      <p class="aquote">Une table où les saveurs du monde se rencontrent dans une atmosphère intime et chaleureuse.</p>
-      <p class="abody">Boostan est un restaurant et salon de thé qui vous invite à voyager à travers des saveurs méditerranéennes et orientales, sublimées par des produits frais et une cuisine généreuse.</p>
-      <p class="abody">Du déjeuner jusqu'aux dernières heures, notre espace s'adapte à toutes vos envies : repas en famille, dîner entre amis, soirée lounge narguilé.</p>
-      <div class="astats">
-        <div><div class="stn">7j/7</div><div class="stl">Ouverture</div></div>
-        <div><div class="stn">02h</div><div class="stl">En week-end</div></div>
-        <div><div class="stn">50+</div><div class="stl">Références</div></div>
+      <!-- Panneau droit : image preview -->
+      <div class="fsm-right" id="fsmRight">
+        <div
+          class="fsm-img active"
+          style="background-image: url(./accueil.jpg)"
+        ></div>
+        <div
+          class="fsm-img"
+          style="background-image: url(./galerie/image4.jpg)"
+        ></div>
+        <div
+          class="fsm-img"
+          style="background-image: url(./galerie/image3.jpg)"
+        ></div>
+        <div
+          class="fsm-img"
+          style="background-image: url(./ambiance.jpg)"
+        ></div>
+        <div
+          class="fsm-img"
+          style="background-image: url(./galerie/image1.jpg)"
+        ></div>
+        <div
+          class="fsm-img"
+          style="background-image: url(./galerie/image2.jpg)"
+        ></div>
+        <div class="fsm-right-overlay"></div>
+        <div class="fsm-right-caption" id="fsmCaption">
+          Bienvenue au Boostan
+        </div>
+        <div class="fsm-right-tag" id="fsmTag">
+          Restaurant &amp; Salon de Thé
+        </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- TICKER SAGE-MID -->
-<div class="ticker2"><div class="tkr2-track">
-  <span class="tkr2-item">Lun–Jeu &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Vendredi–Samedi &nbsp; 12h – 02h <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Dimanche &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Réservation sur demande <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Lun–Jeu &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Vendredi–Samedi &nbsp; 12h – 02h <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Dimanche &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span>
-  <span class="tkr2-item">Réservation sur demande <span class="tkr2-sep">✦</span></span>
-</div></div>
+    <!-- ① HERO – FOREST DARK -->
+    <section id="hero" class="hero">
+      <div class="hero-glow"></div>
+      <div class="hero-dots"></div>
+      <div
+        class="hero-ring"
+        style="right: -120px; width: 540px; height: 540px"
+      ></div>
+      <div
+        class="hero-ring"
+        style="right: -220px; width: 760px; height: 760px; opacity: 0.5"
+      ></div>
+      <div class="hero-inner">
+        <div class="eyebrow">Restaurant &amp; Salon de Thé</div>
+        <h1 class="hero-h1">Boo<em>stan</em></h1>
+        <p class="hero-sub">Une cuisine généreuse aux saveurs du monde</p>
+        <div class="hero-btns">
+          <a href="#menu" class="btn-fill"><span>Découvrir le menu</span></a>
+          <button class="btn-gdk" onclick="openModal()">
+            Réserver une table
+          </button>
+        </div>
+      </div>
+      <div
+        style="
+          position: absolute;
+          right: 64px;
+          bottom: 90px;
+          animation: rise 1s 0.9s both;
+        "
+      >
+        <div
+          style="
+            width: 100px;
+            height: 100px;
+            border: 1px solid rgba(184, 150, 60, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: spin 24s linear infinite;
+          "
+        >
+          <div style="text-align: center">
+            <div
+              style="
+                font-family: &quot;Playfair Display&quot;, serif;
+                font-size: 1.5rem;
+                color: var(--gold);
+                line-height: 1;
+              "
+            >
+              7j/7
+            </div>
+            <div
+              style="
+                font-size: 0.48rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                color: var(--on-dk-dim);
+              "
+            >
+              ouvert
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="scroll-row">
+        <div class="sbar"></div>
+        Défiler
+      </div>
+    </section>
 
-<!-- ⑤ SPECIALTIES – OLIVE DARK -->
-<section id="specialties" class="sec-olive" style="text-align:center">
-  <div class="sh" style="max-width:580px;margin:0 auto 60px">
-    <div class="sh-tag" style="text-align:center">Notre identité</div>
-    <h2 class="sh-title sh-dk" style="text-align:center">L'expérience <em style="font-style:italic;color:var(--gold-lt)">Boostan</em></h2>
-    <div class="sh-rule" style="margin:16px auto 0"></div>
-  </div>
-  <div class="spec-grid">
-    <div class="scard"><div class="sico">🔥</div><div class="snm">Grillades au barbecue</div><div class="stxt">Viandes et poissons grillés sur braise, marinés selon des recettes maison transmises avec passion.</div></div>
-    <div class="scard"><div class="sico">🌿</div><div class="snm">Saveurs méditerranéennes</div><div class="stxt">Produits frais du marché, épices soigneusement sélectionnées, cuisine généreuse aux couleurs du Maghreb.</div></div>
-    <div class="scard"><div class="sico">💨</div><div class="snm">Salon de thé & Narguilé</div><div class="stxt">Un espace lounge chaleureux pour prolonger le repas autour d'une théière à la menthe ou d'un narguilé.</div></div>
-  </div>
-</section>
-
-<!-- ⑥ KIDS – MOSS DARK -->
-<div class="kids-band sec-moss">
-  <div style="flex:1">
-    <div class="kids-tag">Pour les petits</div>
-    <div class="kids-title">Menu enfant</div>
-    <div class="kids-desc">Un menu complet pensé pour les enfants : plat, accompagnement, compote, boisson et friandise.</div>
-    <div style="margin-top:28px"><button class="btn-fill" onclick="openModal()"><span>Réserver</span></button></div>
-  </div>
-  <div class="kids-items">
-    <div class="kitem"><div class="kico">🍖</div><div class="knm">Kefta</div><div class="kprice">inclus</div></div>
-    <div class="kitem"><div class="kico">🌶️</div><div class="knm">Merguez</div><div class="kprice">inclus</div></div>
-    <div class="kitem"><div class="kico">🍗</div><div class="knm">Nuggets</div><div class="kprice">inclus</div></div>
-    <div class="kitem" style="background:rgba(184,150,60,.12);border-color:rgba(184,150,60,.35)"><div class="kico">🎁</div><div class="knm">Menu complet</div><div class="kprice">10 €</div></div>
-  </div>
-</div>
-
-<!-- ⑦ GALLERY – SAGE TRÈS CLAIR -->
-<section id="galerie" class="sec-sage-lt">
-  <div class="sh"><div class="sh-tag">Atmosphère</div><h2 class="sh-title sh-lt">Notre ambiance</h2><div class="sh-rule"></div></div>
-  <div class="ggrid">
-    <div class="gcell big">
-      <img src="VOTRE-IMAGE-GALERIE-1.jpg" alt="Galerie Boostan 1" class="gimg">
-      <div class="gshine"></div>
+    <!-- TICKER OR -->
+    <div class="ticker">
+      <div class="tkr-track">
+        <span class="tkr-item"
+          >Ouvert 7 jours sur 7 <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item">12h à minuit <span class="tkr-dot"></span></span>
+        <span class="tkr-item"
+          >Vendredi &amp; Samedi jusqu'à 02h <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item"
+          >Brochettes &amp; Grillades <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item"
+          >Salon de Thé &amp; Narguilé <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item"
+          >Ouvert 7 jours sur 7 <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item">12h à minuit <span class="tkr-dot"></span></span>
+        <span class="tkr-item"
+          >Vendredi &amp; Samedi jusqu'à 02h <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item"
+          >Brochettes &amp; Grillades <span class="tkr-dot"></span
+        ></span>
+        <span class="tkr-item"
+          >Salon de Thé &amp; Narguilé <span class="tkr-dot"></span
+        ></span>
+      </div>
     </div>
-    <div class="gcell">
-      <img src="VOTRE-IMAGE-GALERIE-2.jpg" alt="Galerie Boostan 2" class="gimg">
-      <div class="gshine"></div>
+
+    <!-- ② CATEGORIES – SAGE CLAIR #E9EEE7 -->
+    <section id="categories" class="sec-sage">
+      <div class="sh">
+        <div class="sh-tag">Explorer</div>
+        <h2 class="sh-title sh-lt">Notre carte</h2>
+        <div class="sh-rule"></div>
+      </div>
+      <div class="cat-grid">
+        <div class="cat-card tall" onclick="showTab('starters')">
+          <img src="./starters.png" alt="Starters" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Starters</div>
+            <div class="cat-sub">Entrées & Mezzés</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('brochettes')">
+          <img
+            src="./brochettes.png"
+            alt="Brochettes"
+            class="cat-bg"
+          />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Brochettes</div>
+            <div class="cat-sub">Grillades maison</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('salades')">
+          <img src="./salades.png" alt="Salades" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Salades</div>
+            <div class="cat-sub">Fraîcheur & légèreté</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('burgers')">
+          <img src="./burgers.png" alt="Burgers" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Burgers</div>
+            <div class="cat-sub">Pain brioché</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('pates')">
+          <img src="./pates.png" alt="Pâtes" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Pâtes</div>
+            <div class="cat-sub">Sauces maison</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('desserts')">
+          <img src="./desserts.png" alt="Desserts" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Desserts</div>
+            <div class="cat-sub">Douceurs signature</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('boissons')">
+          <img src="./boissons.png" alt="Boissons" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Boissons</div>
+            <div class="cat-sub">Fraîches & chaudes</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+        <div class="cat-card" onclick="showTab('starters')">
+          <img src="./narguilles.png" alt="Narguilés" class="cat-bg" />
+          <div class="cat-ov"></div>
+          <div class="cat-body">
+            <div class="cat-nm">Narguilés</div>
+            <div class="cat-sub">Lounge & détente</div>
+          </div>
+          <div class="cat-arr">→</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ③ MENU – FOREST DARK -->
+    <section id="menu" class="sec-forest">
+      <div class="sh">
+        <div class="sh-tag">La carte complète</div>
+        <h2 class="sh-title sh-dk">Le menu</h2>
+        <div class="sh-rule"></div>
+      </div>
+      <div class="tab-bar tbar-dk">
+        <button
+          class="tab-btn active"
+          id="tb-starters"
+          onclick="showTab('starters')"
+        >
+          Starters
+        </button>
+        <button
+          class="tab-btn"
+          id="tb-brochettes"
+          onclick="showTab('brochettes')"
+        >
+          Brochettes
+        </button>
+        <button class="tab-btn" id="tb-salades" onclick="showTab('salades')">
+          Salades
+        </button>
+        <button class="tab-btn" id="tb-burgers" onclick="showTab('burgers')">
+          Burgers
+        </button>
+        <button class="tab-btn" id="tb-pates" onclick="showTab('pates')">
+          Pâtes
+        </button>
+        <button class="tab-btn" id="tb-desserts" onclick="showTab('desserts')">
+          Desserts
+        </button>
+        <button class="tab-btn" id="tb-boissons" onclick="showTab('boissons')">
+          Boissons
+        </button>
+      </div>
+      <div class="tab-pane active" id="pane-starters">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🫙</div>
+            <div class="minfo">
+              <div class="mname">Hmiss</div>
+              <div class="mdesc">
+                Poivrons grillés, tomates, oignons, ail, paprika, persil
+                (piquant ou non)
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍆</div>
+            <div class="minfo">
+              <div class="mname">Aubergines marinées</div>
+              <div class="mdesc">
+                Tranche d'aubergine marinée grillée au barbecue avec épices et
+                herbes
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🥣</div>
+            <div class="minfo">
+              <div class="mname">Hoummous du Boostan</div>
+              <div class="mdesc">
+                Purée de pois chiches, tahini, pignon de pin torréfié, cumin,
+                ail
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🌶️</div>
+            <div class="minfo">
+              <div class="mname">Mouhammara</div>
+              <div class="mdesc">
+                Poivrons rouges grillés, noix de pécan caramélisées au miel de
+                thym, piments
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🥑</div>
+            <div class="minfo">
+              <div class="mname">Guacamole</div>
+              <div class="mdesc">
+                Purée d'avocat, ail, huile d'olive et épices
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🥒</div>
+            <div class="minfo">
+              <div class="mname">Tatziki</div>
+              <div class="mdesc">
+                Concombre, yaourt grec, citron, ail, épices, aneth et menthe
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍳</div>
+            <div class="minfo">
+              <div class="mname">Shakshoukha</div>
+              <div class="mdesc">
+                Poivrons grillés, écrasé de tomates, oignons, ail, paprika,
+                persil et œuf
+              </div>
+              <div class="mprice">7 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🥩</div>
+            <div class="minfo">
+              <div class="mname">Hoummous au filet de boeuf</div>
+              <div class="mdesc">
+                Hoummous du Boostan au filet de boeuf grillé
+              </div>
+              <div class="mprice">9 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-brochettes">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🍖</div>
+            <div class="minfo">
+              <div class="mname">Mix Grill</div>
+              <div class="mdesc">
+                Assortiment de viandes grillées au choix — accompagnements
+                inclus
+              </div>
+              <div class="mprice">à partir de 29 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🐄</div>
+            <div class="minfo">
+              <div class="mname">Filet de bœuf charolais</div>
+              <div class="mdesc">Filet de bœuf charolais grillé</div>
+              <div class="mprice">25 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🐑</div>
+            <div class="minfo">
+              <div class="mname">Agneau braisé</div>
+              <div class="mdesc">Agneau braisé aux épices</div>
+              <div class="mprice">24 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🐟</div>
+            <div class="minfo">
+              <div class="mname">Saumon mariné</div>
+              <div class="mdesc">Pavé de saumon mariné grillé</div>
+              <div class="mprice">24 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🦐</div>
+            <div class="minfo">
+              <div class="mname">Crevettes</div>
+              <div class="mdesc">Crevettes marinées grillées</div>
+              <div class="mprice">20 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍗</div>
+            <div class="minfo">
+              <div class="mname">Filet de poulet</div>
+              <div class="mdesc">Filet de poulet mariné grillé</div>
+              <div class="mprice">17 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🌶️</div>
+            <div class="minfo">
+              <div class="mname">Kefta de bœuf charolais</div>
+              <div class="mdesc">Brochettes de kefta maison</div>
+              <div class="mprice">18 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🔥</div>
+            <div class="minfo">
+              <div class="mname">Merguez</div>
+              <div class="mdesc">Merguez maison grillées</div>
+              <div class="mprice">16 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-salades">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🥗</div>
+            <div class="minfo">
+              <div class="mname">Salade du Boostan César</div>
+              <div class="mdesc">
+                Mesclun, burrata, guacamole, poulet pané, sauce césar parmesan
+              </div>
+              <div class="mprice">22 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🦐</div>
+            <div class="minfo">
+              <div class="mname">Salade Crevettes marinées</div>
+              <div class="mdesc">
+                Mesclun, tomate cerise, burrata, guacamole et crevettes marinées
+              </div>
+              <div class="mprice">22 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🐟</div>
+            <div class="minfo">
+              <div class="mname">Salade Saumon mariné</div>
+              <div class="mdesc">
+                Mesclun, tomate cerise, burrata, guacamole et pavé de saumon
+              </div>
+              <div class="mprice">24 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🧀</div>
+            <div class="minfo">
+              <div class="mname">Salade Burrata</div>
+              <div class="mdesc">
+                Mesclun, tomate cerise, burrata, croûton, huile d'olive, crème
+                balsamique
+              </div>
+              <div class="mprice">13 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-burgers">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🍔</div>
+            <div class="minfo">
+              <div class="mname">Le Classique</div>
+              <div class="mdesc">
+                Pain brioché, bœuf haché, mayo, ketchup, salade, tomates,
+                cornichons, cheddar
+              </div>
+              <div class="mprice">15 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🐄</div>
+            <div class="minfo">
+              <div class="mname">Le Charolais</div>
+              <div class="mdesc">
+                Pain brioché, filet de bœuf, confit d'oignons rouges, tatziki,
+                cheddar
+              </div>
+              <div class="mprice">25 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🌿</div>
+            <div class="minfo">
+              <div class="mname">Le Boostan</div>
+              <div class="mdesc">
+                Pain brioché, bœuf haché, houmous maison, salade fraîcheur,
+                tomates, cheddar
+              </div>
+              <div class="mprice">19 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-pates">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🍄</div>
+            <div class="minfo">
+              <div class="mname">Champignon</div>
+              <div class="mdesc">
+                Fusilli, parmesan, sauce champignon — poulet ou filet de bœuf
+                +5€
+              </div>
+              <div class="mprice">15 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🧀</div>
+            <div class="minfo">
+              <div class="mname">Gorgonzola</div>
+              <div class="mdesc">
+                Fusilli, parmesan, sauce gorgonzola — poulet ou filet de bœuf
+                +5€
+              </div>
+              <div class="mprice">15 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🌿</div>
+            <div class="minfo">
+              <div class="mname">Pesto Pistache</div>
+              <div class="mdesc">
+                Fusilli, parmesan, pesto à la pistache — poulet ou filet de bœuf
+                +5€
+              </div>
+              <div class="mprice">17 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍅</div>
+            <div class="minfo">
+              <div class="mname">Arrabiata</div>
+              <div class="mdesc">
+                Fusilli, sauce arrabiata, piments, parmesan — poulet ou filet de
+                bœuf +5€
+              </div>
+              <div class="mprice">15 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-desserts">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🍵</div>
+            <div class="minfo">
+              <div class="mname">Pistarosa</div>
+              <div class="mdesc">
+                Milkshake pistache, crème de pistache, eau de rose et chantilly
+              </div>
+              <div class="mprice">10 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍓</div>
+            <div class="minfo">
+              <div class="mname">Dacquoise Fraise Pistache</div>
+              <div class="mdesc">
+                Génoise aux amandes, chantilly mascarpone, fraise et pistache
+              </div>
+              <div class="mprice">10 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🧋</div>
+            <div class="minfo">
+              <div class="mname">Milkshakes</div>
+              <div class="mdesc">
+                Vanille, pistache, bueno, oreo, spéculos au choix
+              </div>
+              <div class="mprice">8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍞</div>
+            <div class="minfo">
+              <div class="mname">Brioche perdue</div>
+              <div class="mdesc">
+                Moelleuse caramélisée, crème de pistache ou nutella — supp glace
+                +2€
+              </div>
+              <div class="mprice">8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🫐</div>
+            <div class="minfo">
+              <div class="mname">Cheesecake</div>
+              <div class="mdesc">
+                Frais et léger, mangue-passion ou framboise
+              </div>
+              <div class="mprice">8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍫</div>
+            <div class="minfo">
+              <div class="mname">Fondant au chocolat</div>
+              <div class="mdesc">
+                Cœur fondant intense en chocolat — supp glace +2€
+              </div>
+              <div class="mprice">6 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍮</div>
+            <div class="minfo">
+              <div class="mname">Crème Brûlée / Pistache</div>
+              <div class="mdesc">
+                Classique ou à la pistache selon disponibilité
+              </div>
+              <div class="mprice">6 / 8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">☕</div>
+            <div class="minfo">
+              <div class="mname">Tiramisu</div>
+              <div class="mdesc">
+                Crémeux, saveurs Nutella-spéculos ou caramel-daim
+              </div>
+              <div class="mprice">7 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tab-pane" id="pane-boissons">
+        <div class="mgrid mgrid-dk">
+          <div class="mcard mcard-dk">
+            <div class="memo">🍋</div>
+            <div class="minfo">
+              <div class="mname">Limonade Maison 50cl</div>
+              <div class="mdesc">Limonade artisanale fraîche du jour</div>
+              <div class="mprice">8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍵</div>
+            <div class="minfo">
+              <div class="mname">Thé glacé maison 50cl</div>
+              <div class="mdesc">Thé glacé artisanal maison</div>
+              <div class="mprice">7 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍹</div>
+            <div class="minfo">
+              <div class="mname">Maxi Virgin Mojito</div>
+              <div class="mdesc">
+                Menthe fraîche, citron vert, limonade maison, sucre de canne
+              </div>
+              <div class="mprice">9 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🌹</div>
+            <div class="minfo">
+              <div class="mname">Le Boostan</div>
+              <div class="mdesc">Rose, litchi, orange, grenade</div>
+              <div class="mprice">9 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍍</div>
+            <div class="minfo">
+              <div class="mname">Le Tropical</div>
+              <div class="mdesc">Ananas, coco, passion</div>
+              <div class="mprice">8 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍵</div>
+            <div class="minfo">
+              <div class="mname">Grande Théière</div>
+              <div class="mdesc">Thé à la menthe pour la table</div>
+              <div class="mprice">15 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">☕</div>
+            <div class="minfo">
+              <div class="mname">Espresso</div>
+              <div class="mdesc">Café espresso serré</div>
+              <div class="mprice">4 €</div>
+            </div>
+          </div>
+          <div class="mcard mcard-dk">
+            <div class="memo">🍫</div>
+            <div class="minfo">
+              <div class="mname">Chocolat viennois</div>
+              <div class="mdesc">Chocolat chaud onctueux avec chantilly</div>
+              <div class="mprice">5 €</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ④ ABOUT – SAGE CLAIR + FOREST VISUEL -->
+    <section id="about" style="background: var(--sage); padding: 0">
+      <div class="about-split">
+        <div class="avisual">
+          <img
+            src="./ambiance.jpg"
+            alt="Ambiance Boostan"
+            class="avisual-img"
+          />
+          <div class="avisual-overlay"></div>
+          <div class="acorner tl"></div>
+          <div class="acorner br"></div>
+        </div>
+        <div class="atext">
+          <div
+            style="
+              font-size: 0.56rem;
+              letter-spacing: 5px;
+              text-transform: uppercase;
+              color: var(--gold);
+              margin-bottom: 12px;
+            "
+          >
+            Notre histoire
+          </div>
+          <h2
+            style="
+              font-family: &quot;Playfair Display&quot;, serif;
+              font-size: clamp(2rem, 3vw, 2.7rem);
+              font-weight: 400;
+              color: var(--ink);
+              margin-bottom: 28px;
+              line-height: 1.1;
+            "
+          >
+            À propos<br />du restaurant
+          </h2>
+          <p class="aquote">
+            Une table où les saveurs du monde se rencontrent dans une atmosphère
+            intime et chaleureuse.
+          </p>
+          <p class="abody">
+            Boostan est un restaurant et salon de thé qui vous invite à voyager
+            à travers des saveurs méditerranéennes et orientales, sublimées par
+            des produits frais et une cuisine généreuse.
+          </p>
+          <p class="abody">
+            Du déjeuner jusqu'aux dernières heures, notre espace s'adapte à
+            toutes vos envies : repas en famille, dîner entre amis, soirée
+            lounge narguilé.
+          </p>
+          <div class="astats">
+            <div>
+              <div class="stn">7j/7</div>
+              <div class="stl">Ouverture</div>
+            </div>
+            <div>
+              <div class="stn">02h</div>
+              <div class="stl">En week-end</div>
+            </div>
+            <div>
+              <div class="stn">50+</div>
+              <div class="stl">Références</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TICKER SAGE-MID -->
+    <div class="ticker2">
+      <div class="tkr2-track">
+        <span class="tkr2-item"
+          >Lun–Jeu &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Vendredi–Samedi &nbsp; 12h – 02h
+          <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Dimanche &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Réservation sur demande <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Lun–Jeu &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Vendredi–Samedi &nbsp; 12h – 02h
+          <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Dimanche &nbsp; 12h – Minuit <span class="tkr2-sep">✦</span></span
+        >
+        <span class="tkr2-item"
+          >Réservation sur demande <span class="tkr2-sep">✦</span></span
+        >
+      </div>
     </div>
-    <div class="gcell">
-      <img src="VOTRE-IMAGE-GALERIE-3.jpg" alt="Galerie Boostan 3" class="gimg">
-      <div class="gshine"></div>
+
+    <!-- ⑤ SPECIALTIES – OLIVE DARK -->
+    <section id="specialties" class="sec-olive" style="text-align: center">
+      <div class="sh" style="max-width: 580px; margin: 0 auto 60px">
+        <div class="sh-tag" style="text-align: center">Notre identité</div>
+        <h2 class="sh-title sh-dk" style="text-align: center">
+          L'expérience
+          <em style="font-style: italic; color: var(--gold-lt)">Boostan</em>
+        </h2>
+        <div class="sh-rule" style="margin: 16px auto 0"></div>
+      </div>
+      <div class="spec-grid">
+        <div class="scard">
+          <div class="sico">🔥</div>
+          <div class="snm">Grillades au barbecue</div>
+          <div class="stxt">
+            Viandes et poissons grillés sur braise, marinés selon des recettes
+            maison transmises avec passion.
+          </div>
+        </div>
+        <div class="scard">
+          <div class="sico">🌿</div>
+          <div class="snm">Saveurs méditerranéennes</div>
+          <div class="stxt">
+            Produits frais du marché, épices soigneusement sélectionnées,
+            cuisine généreuse aux couleurs du Maghreb.
+          </div>
+        </div>
+        <div class="scard">
+          <div class="sico">💨</div>
+          <div class="snm">Salon de thé & Narguilé</div>
+          <div class="stxt">
+            Un espace lounge chaleureux pour prolonger le repas autour d'une
+            théière à la menthe ou d'un narguilé.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ⑥ KIDS – MOSS DARK -->
+    <div class="kids-band sec-moss">
+      <div style="flex: 1">
+        <div class="kids-tag">Pour les petits</div>
+        <div class="kids-title">Menu enfant</div>
+        <div class="kids-desc">
+          Un menu complet pensé pour les enfants : plat, accompagnement,
+          compote, boisson et friandise.
+        </div>
+        <div style="margin-top: 28px">
+          <button class="btn-fill" onclick="openModal()">
+            <span>Réserver</span>
+          </button>
+        </div>
+      </div>
+      <div class="kids-items">
+        <div class="kitem">
+          <div class="kico">🍖</div>
+          <div class="knm">Kefta</div>
+          <div class="kprice">inclus</div>
+        </div>
+        <div class="kitem">
+          <div class="kico">🌶️</div>
+          <div class="knm">Merguez</div>
+          <div class="kprice">inclus</div>
+        </div>
+        <div class="kitem">
+          <div class="kico">🍗</div>
+          <div class="knm">Nuggets</div>
+          <div class="kprice">inclus</div>
+        </div>
+        <div
+          class="kitem"
+          style="
+            background: rgba(184, 150, 60, 0.12);
+            border-color: rgba(184, 150, 60, 0.35);
+          "
+        >
+          <div class="kico">🎁</div>
+          <div class="knm">Menu complet</div>
+          <div class="kprice">10 €</div>
+        </div>
+      </div>
     </div>
-    <div class="gcell">
-      <img src="VOTRE-IMAGE-GALERIE-4.jpg" alt="Galerie Boostan 4" class="gimg">
-      <div class="gshine"></div>
+
+    <!-- ⑦ GALLERY – SAGE TRÈS CLAIR -->
+    <section id="galerie" class="sec-sage-lt">
+      <div class="sh">
+        <div class="sh-tag">Atmosphère</div>
+        <h2 class="sh-title sh-lt">Notre ambiance</h2>
+        <div class="sh-rule"></div>
+      </div>
+      <div class="ggrid">
+        <div class="gcell big">
+          <img
+            src="./galerie/image1.jpg"
+            alt="Galerie Boostan 1"
+            class="gimg"
+          />
+          <div class="gshine"></div>
+        </div>
+        <div class="gcell">
+          <img
+            src="./galerie/image2.jpg"
+            alt="Galerie Boostan 2"
+            class="gimg"
+          />
+          <div class="gshine"></div>
+        </div>
+        <div class="gcell">
+          <img
+            src="./galerie/image3.jpg"
+            alt="Galerie Boostan 3"
+            class="gimg"
+          />
+          <div class="gshine"></div>
+        </div>
+        <div class="gcell">
+          <img
+            src="./galerie/image4.jpg"
+            alt="Galerie Boostan 4"
+            class="gimg"
+          />
+          <div class="gshine"></div>
+        </div>
+        <div class="gcell">
+          <img
+            src="./galerie/image5.jpg"
+            alt="Galerie Boostan 5"
+            class="gimg"
+          />
+          <div class="gshine"></div>
+        </div>
+      </div>
+      <div
+        style="
+          margin-top: 44px;
+          text-align: center;
+          display: flex;
+          gap: 14px;
+          justify-content: center;
+          flex-wrap: wrap;
+        "
+      >
+        <button class="btn-fill" onclick="openModal()">
+          <span>Réserver une table</span>
+        </button>
+        <a href="#menu" class="btn-glt">Voir le menu</a>
+      </div>
+    </section>
+
+    <!-- FOOTER – FOREST DARK -->
+    <footer id="contact">
+      <div class="ftop">
+        <div>
+          <img
+            src="./logo.png"
+            alt="Boostan"
+            class="flogo"
+          />
+          <div class="ftagline">Restaurant & Salon de Thé</div>
+          <p class="fp">
+            Une cuisine généreuse et authentique, ouverte à tous les instants du
+            repas.
+          </p>
+          <div class="fsocs">
+            <a class="fsoc" href="#">ig</a><a class="fsoc" href="#">fb</a
+            ><a class="fsoc" href="#">tt</a>
+          </div>
+        </div>
+        <div class="fcol">
+          <h4>La carte</h4>
+          <ul>
+            <li><a href="#">Starters & Mezzés</a></li>
+            <li><a href="#">Brochettes</a></li>
+            <li><a href="#">Salades</a></li>
+            <li><a href="#">Burgers</a></li>
+            <li><a href="#">Pâtes</a></li>
+            <li><a href="#">Desserts</a></li>
+            <li><a href="#">Boissons</a></li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Horaires</h4>
+          <ul>
+            <li>Lun — Jeu<br />12h00 – 00h00</li>
+            <li style="margin-top: 12px">Ven — Sam<br />12h00 – 02h00</li>
+            <li style="margin-top: 12px">Dimanche<br />12h00 – 00h00</li>
+          </ul>
+        </div>
+        <div class="fcol">
+          <h4>Infos</h4>
+          <ul>
+            <li>Réservations disponibles</li>
+            <li>Narguilé sur place</li>
+            <li>Menu enfants 10€</li>
+            <li>
+              <a
+                href="#"
+                onclick="
+                  openModal();
+                  return false;
+                "
+                style="color: var(--gold)"
+                >Réserver →</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="fbot">
+        <span>© 2025 Boostan — Restaurant & Salon de Thé</span
+        ><span>Tous droits réservés</span>
+      </div>
+    </footer>
+
+    <!-- MODAL -->
+    <div class="modal-bg" id="modal">
+      <div class="modal-box">
+        <button class="modal-x" onclick="closeModal()">×</button>
+        <div class="modal-title">Réserver</div>
+        <div class="modal-sub">une table au Boostan</div>
+        <div class="frow">
+          <div class="fg">
+            <label>Prénom</label
+            ><input type="text" placeholder="Votre prénom" />
+          </div>
+          <div class="fg">
+            <label>Nom</label><input type="text" placeholder="Votre nom" />
+          </div>
+        </div>
+        <div class="frow">
+          <div class="fg"><label>Date</label><input type="date" /></div>
+          <div class="fg">
+            <label>Heure</label
+            ><select>
+              <option>12h00</option>
+              <option>12h30</option>
+              <option>13h00</option>
+              <option>19h00</option>
+              <option>19h30</option>
+              <option>20h00</option>
+              <option>20h30</option>
+              <option>21h00</option>
+              <option>21h30</option>
+            </select>
+          </div>
+        </div>
+        <div class="fg">
+          <label>Personnes</label
+          ><select>
+            <option>1 personne</option>
+            <option>2 personnes</option>
+            <option>3 personnes</option>
+            <option>4 personnes</option>
+            <option>5 personnes</option>
+            <option>6 personnes</option>
+            <option>7+ personnes</option>
+          </select>
+        </div>
+        <div class="fg">
+          <label>Téléphone</label
+          ><input type="tel" placeholder="+33 6 00 00 00 00" />
+        </div>
+        <button class="fsub" onclick="submitRes()">
+          Confirmer la réservation
+        </button>
+      </div>
     </div>
-    <div class="gcell">
-      <img src="VOTRE-IMAGE-GALERIE-5.jpg" alt="Galerie Boostan 5" class="gimg">
-      <div class="gshine"></div>
-    </div>
-  </div>
-  <div style="margin-top:44px;text-align:center;display:flex;gap:14px;justify-content:center;flex-wrap:wrap">
-    <button class="btn-fill" onclick="openModal()"><span>Réserver une table</span></button>
-    <a href="#menu" class="btn-glt">Voir le menu</a>
-  </div>
-</section>
 
-<!-- FOOTER – FOREST DARK -->
-<footer id="contact">
-  <div class="ftop">
-    <div>
-      <img src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/wAARCABeAgUDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB//9k=" alt="Boostan" class="flogo">
-      <div class="ftagline">Restaurant & Salon de Thé</div>
-      <p class="fp">Une cuisine généreuse et authentique, ouverte à tous les instants du repas.</p>
-      <div class="fsocs"><a class="fsoc" href="#">ig</a><a class="fsoc" href="#">fb</a><a class="fsoc" href="#">tt</a></div>
-    </div>
-    <div class="fcol"><h4>La carte</h4><ul>
-      <li><a href="#">Starters & Mezzés</a></li><li><a href="#">Brochettes</a></li>
-      <li><a href="#">Salades</a></li><li><a href="#">Burgers</a></li>
-      <li><a href="#">Pâtes</a></li><li><a href="#">Desserts</a></li><li><a href="#">Boissons</a></li>
-    </ul></div>
-    <div class="fcol"><h4>Horaires</h4><ul>
-      <li>Lun — Jeu<br>12h00 – 00h00</li>
-      <li style="margin-top:12px">Ven — Sam<br>12h00 – 02h00</li>
-      <li style="margin-top:12px">Dimanche<br>12h00 – 00h00</li>
-    </ul></div>
-    <div class="fcol"><h4>Infos</h4><ul>
-      <li>Réservations disponibles</li><li>Narguilé sur place</li>
-      <li>Menu enfants 10€</li>
-      <li><a href="#" onclick="openModal();return false" style="color:var(--gold)">Réserver →</a></li>
-    </ul></div>
-  </div>
-  <div class="fbot"><span>© 2025 Boostan — Restaurant & Salon de Thé</span><span>Tous droits réservés</span></div>
-</footer>
+    <script>
+      // ── Cursor
+      const cur = document.getElementById("cur"),
+        ring = document.getElementById("cur-ring");
+      document.addEventListener("mousemove", (e) => {
+        cur.style.left = e.clientX + "px";
+        cur.style.top = e.clientY + "px";
+        setTimeout(() => {
+          ring.style.left = e.clientX + "px";
+          ring.style.top = e.clientY + "px";
+        }, 90);
+      });
 
-<!-- MODAL -->
-<div class="modal-bg" id="modal">
-  <div class="modal-box">
-    <button class="modal-x" onclick="closeModal()">×</button>
-    <div class="modal-title">Réserver</div>
-    <div class="modal-sub">une table au Boostan</div>
-    <div class="frow">
-      <div class="fg"><label>Prénom</label><input type="text" placeholder="Votre prénom"></div>
-      <div class="fg"><label>Nom</label><input type="text" placeholder="Votre nom"></div>
-    </div>
-    <div class="frow">
-      <div class="fg"><label>Date</label><input type="date"></div>
-      <div class="fg"><label>Heure</label><select><option>12h00</option><option>12h30</option><option>13h00</option><option>19h00</option><option>19h30</option><option>20h00</option><option>20h30</option><option>21h00</option><option>21h30</option></select></div>
-    </div>
-    <div class="fg"><label>Personnes</label><select><option>1 personne</option><option>2 personnes</option><option>3 personnes</option><option>4 personnes</option><option>5 personnes</option><option>6 personnes</option><option>7+ personnes</option></select></div>
-    <div class="fg"><label>Téléphone</label><input type="tel" placeholder="+33 6 00 00 00 00"></div>
-    <button class="fsub" onclick="submitRes()">Confirmer la réservation</button>
-  </div>
-</div>
+      // ── Nav scroll style
+      const secBg = [
+        { id: "hero", dark: true },
+        { id: "categories", dark: false },
+        { id: "menu", dark: true },
+        { id: "about", dark: false },
+        { id: "specialties", dark: true },
+        { id: "galerie", dark: false },
+        { id: "contact", dark: true },
+      ];
+      const nav = document.getElementById("mainNav"),
+        nLogo = document.getElementById("navLogo");
+      let menuOpen = false;
+      function updateNav() {
+        if (menuOpen) return;
+        const sy = window.scrollY;
+        let dk = true;
+        for (const s of secBg) {
+          const el = document.getElementById(s.id);
+          if (!el) continue;
+          if (sy >= el.offsetTop - 80) dk = s.dark;
+        }
+        if (sy > 60) {
+          nav.className = dk ? "s-dark" : "s-light";
+          nLogo.className = dk ? "nav-logo logo-inv" : "nav-logo logo-dk";
+        } else {
+          nav.className = "";
+          nLogo.className = "nav-logo logo-inv";
+        }
+      }
+      window.addEventListener("scroll", updateNav);
 
-<script>
-// ── Cursor
-const cur=document.getElementById('cur'),ring=document.getElementById('cur-ring');
-document.addEventListener('mousemove',e=>{cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';setTimeout(()=>{ring.style.left=e.clientX+'px';ring.style.top=e.clientY+'px';},90);});
+      // ── Fullscreen menu
+      const fsm = document.getElementById("fsMenu");
+      const hb = document.getElementById("hamburger");
+      const imgs = fsm.querySelectorAll(".fsm-img");
+      const caption = document.getElementById("fsmCaption");
+      const captionTag = document.getElementById("fsmTag");
 
-// ── Nav scroll style
-const secBg=[{id:'hero',dark:true},{id:'categories',dark:false},{id:'menu',dark:true},{id:'about',dark:false},{id:'specialties',dark:true},{id:'galerie',dark:false},{id:'contact',dark:true}];
-const nav=document.getElementById('mainNav'),nLogo=document.getElementById('navLogo');
-let menuOpen=false;
-function updateNav(){
-  if(menuOpen)return;
-  const sy=window.scrollY;let dk=true;
-  for(const s of secBg){const el=document.getElementById(s.id);if(!el)continue;if(sy>=el.offsetTop-80)dk=s.dark;}
-  if(sy>60){nav.className=dk?'s-dark':'s-light';nLogo.className=dk?'nav-logo logo-inv':'nav-logo logo-dk';}
-  else{nav.className='';nLogo.className='nav-logo logo-inv';}
-}
-window.addEventListener('scroll',updateNav);
+      const menuData = [
+        { label: "Bienvenue au Boostan", tag: "Restaurant & Salon de Thé" },
+        { label: "Notre carte", tag: "8 univers culinaires" },
+        { label: "Brochettes & grillades", tag: "Le menu complet" },
+        { label: "L'âme du restaurant", tag: "Notre histoire" },
+        { label: "L'ambiance Boostan", tag: "Galerie photos" },
+        { label: "Venez nous voir", tag: "Contact & horaires" },
+      ];
 
-// ── Fullscreen menu
-const fsm=document.getElementById('fsMenu');
-const hb=document.getElementById('hamburger');
-const imgs=fsm.querySelectorAll('.fsm-img');
-const caption=document.getElementById('fsmCaption');
-const captionTag=document.getElementById('fsmTag');
+      function openMenu() {
+        menuOpen = true;
+        hb.classList.add("open");
+        hb.setAttribute("aria-expanded", "true");
+        fsm.classList.add("open");
+        nav.className = "s-dark";
+        nLogo.className = "nav-logo logo-inv";
+        document.body.style.overflow = "hidden";
+      }
+      function closeMenu() {
+        menuOpen = false;
+        hb.classList.remove("open");
+        hb.setAttribute("aria-expanded", "false");
+        fsm.classList.remove("open");
+        document.body.style.overflow = "";
+        setTimeout(updateNav, 50);
+      }
+      hb.addEventListener("click", () => (menuOpen ? closeMenu() : openMenu()));
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && menuOpen) closeMenu();
+      });
 
-const menuData=[
-  {label:'Bienvenue au Boostan',   tag:'Restaurant & Salon de Thé'},
-  {label:'Notre carte',            tag:'8 univers culinaires'},
-  {label:'Brochettes & grillades', tag:'Le menu complet'},
-  {label:'L\'âme du restaurant',   tag:'Notre histoire'},
-  {label:'L\'ambiance Boostan',    tag:'Galerie photos'},
-  {label:'Venez nous voir',        tag:'Contact & horaires'},
-];
+      // Image crossfade on hover
+      fsm.querySelectorAll(".fsm-item").forEach((item) => {
+        item.addEventListener("mouseenter", () => {
+          const idx = +item.dataset.img;
+          imgs.forEach((img, i) => img.classList.toggle("active", i === idx));
+          const d = menuData[idx] || {};
+          // animate caption swap
+          caption.style.opacity = "0";
+          caption.style.transform = "translateY(8px)";
+          captionTag.style.opacity = "0";
+          setTimeout(() => {
+            caption.textContent = d.label || "";
+            captionTag.textContent = d.tag || "";
+            caption.style.transition = "opacity .35s,transform .35s";
+            captionTag.style.transition = "opacity .35s .06s";
+            caption.style.opacity = "1";
+            caption.style.transform = "translateY(0)";
+            captionTag.style.opacity = "1";
+          }, 160);
+        });
+      });
 
-function openMenu(){
-  menuOpen=true;
-  hb.classList.add('open');
-  hb.setAttribute('aria-expanded','true');
-  fsm.classList.add('open');
-  nav.className='s-dark';
-  nLogo.className='nav-logo logo-inv';
-  document.body.style.overflow='hidden';
-}
-function closeMenu(){
-  menuOpen=false;
-  hb.classList.remove('open');
-  hb.setAttribute('aria-expanded','false');
-  fsm.classList.remove('open');
-  document.body.style.overflow='';
-  setTimeout(updateNav,50);
-}
-hb.addEventListener('click',()=>menuOpen?closeMenu():openMenu());
-document.addEventListener('keydown',e=>{if(e.key==='Escape'&&menuOpen)closeMenu();});
+      // ── Side dots
+      const secIds = [
+        "hero",
+        "categories",
+        "menu",
+        "about",
+        "specialties",
+        "galerie",
+        "contact",
+      ];
+      function updateDots() {
+        const sy = window.scrollY + window.innerHeight / 2;
+        secIds.forEach((id, i) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          const d = document.querySelector(`.sd[data-i="${i}"]`);
+          if (d)
+            d.classList.toggle(
+              "active",
+              sy >= el.offsetTop && sy < el.offsetTop + el.offsetHeight,
+            );
+        });
+      }
+      window.addEventListener("scroll", updateDots);
+      document.querySelectorAll(".sd").forEach((d) =>
+        d.addEventListener("click", () => {
+          document
+            .getElementById(secIds[+d.dataset.i])
+            ?.scrollIntoView({ behavior: "smooth" });
+        }),
+      );
 
-// Image crossfade on hover
-fsm.querySelectorAll('.fsm-item').forEach(item=>{
-  item.addEventListener('mouseenter',()=>{
-    const idx=+item.dataset.img;
-    imgs.forEach((img,i)=>img.classList.toggle('active',i===idx));
-    const d=menuData[idx]||{};
-    // animate caption swap
-    caption.style.opacity='0';caption.style.transform='translateY(8px)';
-    captionTag.style.opacity='0';
-    setTimeout(()=>{
-      caption.textContent=d.label||'';
-      captionTag.textContent=d.tag||'';
-      caption.style.transition='opacity .35s,transform .35s';
-      captionTag.style.transition='opacity .35s .06s';
-      caption.style.opacity='1';caption.style.transform='translateY(0)';
-      captionTag.style.opacity='1';
-    },160);
-  });
-});
+      // ── Tabs
+      function showTab(n) {
+        document
+          .querySelectorAll(".tab-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelectorAll(".tab-pane")
+          .forEach((p) => p.classList.remove("active"));
+        const btn = document.getElementById("tb-" + n),
+          pane = document.getElementById("pane-" + n);
+        if (btn) btn.classList.add("active");
+        if (pane) pane.classList.add("active");
+        document
+          .getElementById("menu")
+          ?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
 
-// ── Side dots
-const secIds=['hero','categories','menu','about','specialties','galerie','contact'];
-function updateDots(){const sy=window.scrollY+window.innerHeight/2;secIds.forEach((id,i)=>{const el=document.getElementById(id);if(!el)return;const d=document.querySelector(`.sd[data-i="${i}"]`);if(d)d.classList.toggle('active',sy>=el.offsetTop&&sy<el.offsetTop+el.offsetHeight);});}
-window.addEventListener('scroll',updateDots);
-document.querySelectorAll('.sd').forEach(d=>d.addEventListener('click',()=>{document.getElementById(secIds[+d.dataset.i])?.scrollIntoView({behavior:'smooth'});}));
-
-// ── Tabs
-function showTab(n){
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
-  const btn=document.getElementById('tb-'+n),pane=document.getElementById('pane-'+n);
-  if(btn)btn.classList.add('active');if(pane)pane.classList.add('active');
-  document.getElementById('menu')?.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-// ── Reservation modal
-function openModal(){document.getElementById('modal').classList.add('open');document.body.style.overflow='hidden';}
-function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow='';}
-document.getElementById('modal').addEventListener('click',e=>{if(e.target===document.getElementById('modal'))closeModal();});
-function submitRes(){alert('Réservation envoyée ! Nous vous confirmerons par téléphone.');closeModal();}
-</script>
-</body>
+      // ── Reservation modal
+      function openModal() {
+        document.getElementById("modal").classList.add("open");
+        document.body.style.overflow = "hidden";
+      }
+      function closeModal() {
+        document.getElementById("modal").classList.remove("open");
+        document.body.style.overflow = "";
+      }
+      document.getElementById("modal").addEventListener("click", (e) => {
+        if (e.target === document.getElementById("modal")) closeModal();
+      });
+      function submitRes() {
+        alert("Réservation envoyée ! Nous vous confirmerons par téléphone.");
+        closeModal();
+      }
+    </script>
+  </body>
 </html>
